@@ -4,7 +4,7 @@
 	import TapePlayer from './components/TapePlayer.svelte';
 
 	let initialized = false;
-	let music;
+	let music = null;
 
 	async function initalizeMusicKit() {
 		MusicKit.configure({
@@ -20,43 +20,29 @@
 		return true;
 	}
 
-	async function getRecentMusic() {
-		music.authorize().then(async() => {
-			let results = await music.api.library;
-
-			let recentlyAdded = await results.recentlyAdded();
-
-			let track = recentlyAdded[0].attributes.playParams;
-
-			let obj = {
-				[track.kind]: track.id 
-			};
-
-			let queue = await music.setQueue(obj);
-
-			music.play();
-
-			// setInterval(async () => {
-			// 	console.log(await music._player._currentPlayer.audio.currentTime)
-			// }, 1000)
-		});
-	}
-
 	onMount(async () => {
 		initialized = await initalizeMusicKit();
-	})
+	});
 </script>
 
 <main>
 	{#await initialized}
 		<h1>initializing...</h1>
 	{:then}
-		<h1>initialized</h1>
-		<button on:click={getRecentMusic}>get recent music</button>
-		<TapePlayer />
+		{#if music}
+			<TapePlayer  
+				{music}
+			/>
+		{/if}
 	{/await}
 </main>
 
 <style>
-	
+	main {
+		display: grid;
+		width: 100%;
+		height: 100%;
+		align-items: center;
+		justify-content: center;
+	}
 </style>

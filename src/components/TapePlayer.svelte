@@ -1,16 +1,170 @@
 <script>
-	
+	import { onMount } from 'svelte';
+
+	import TapeCog from './../icons/TapeCog.svelte';
+
+	export let music;
+
+	let playing = false;
+	let playbackStarted = false;
+
+	let duration = 100;
+	let currentTime = 0;
+
+	let interval;
+	let rotation = 0;
+
+	let artwork = '';
+
+	let queue = [];
+	let durations = [];
+	let queuePosition = 0;
+
+	$: if (durations.length > 0 && queuePosition > 0) {
+		currentTime = durations.slice(0, queuePosition).reduce((acc, currentValue) => {
+			return acc + currentValue;
+		});
+	}
+
+	$: portionRemaining = (currentTime / duration) * 100;
+	$: portionPassed = 100 - portionRemaining;
+
+	$: leftStyle = `border: ${Math.floor(portionPassed) / 3}px solid black; transform: rotate(${rotation}deg)`;
+	$: rightStyle = `border: ${portionRemaining / 3 > 3 ? Math.floor(portionRemaining) / 3 : 3}px solid black; transform: rotate(${rotation}deg)`;
+	$: background = `background: linear-gradient(to right, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.6) 100%), url('${artwork}')`;
+
+	async function getRecentMusic() {
+		music.authorize().then(async() => {
+			let results = await music.api.library;
+
+			console.log(await results.artists({limit: 200}));
+
+			let recentlyAdded = await results.recentlyAdded();
+
+			let track = recentlyAdded[0].attributes.playParams;
+
+			let artworkUrl = recentlyAdded[0].attributes.artwork.url;
+
+			let arr = artworkUrl.split('{w}x{h}');
+
+			artwork = arr[0] + '500x500cc.jpeg'
+
+			let obj = {
+				[track.kind]: track.id 
+			};
+
+			await music.setQueue(obj);
+
+			queue = music._player._queue.items;
+
+			duration = await totalDuration();
+		});
+	}
+
+	async function totalDuration() {
+		let total = 0;
+
+		for (let i=0; i<queue.length; i++) {
+			let item = queue[i];
+			let trackDuration = item.attributes.durationInMillis / 1000;
+
+			durations.push(trackDuration);
+
+			total += trackDuration;
+		}
+
+		return total;
+	}
+
+	function startInterval() {
+		interval = setInterval(async () => {
+			currentTime++;
+
+			queuePosition = music._player._queue._position;
+
+			if (currentTime > duration) {
+				stop();
+			}
+			rotation -= 60;
+		}, 1000)
+	}
+
+	function play() {
+		playbackStarted = true;
+
+		music.play();
+		playing = true;
+		startInterval();
+	}
+
+	function pause() {
+		music.pause();
+		playing = false;
+		clearInterval(interval);
+	}
+
+	function stop() {
+		music.stop();
+		playing = false;
+		clearInterval(interval);
+	}
+
+	function next() {		
+		music.changeToMediaAtIndex(queuePosition + 1);
+
+		if (!playing) {
+			playing = true;
+			startInterval();
+		}
+		queuePosition = music._player._queue._position;
+	}
+
+	function previous() {		
+		music.changeToMediaAtIndex(queuePosition - 1);
+		
+		if (!playing) {
+			playing = true;
+			startInterval();
+		}
+		queuePosition = music._player._queue._position;
+	}
+
+	onMount(async() => {
+		await getRecentMusic();
+	});
 </script>
 
 <div class="container">
-	<section id="tape">
-		<aside id="leftSpool">
-			<h1>X</h1>
+	<section id="tape" style={background}>
+		<aside id="leftSpool" style={leftStyle}>
+			<!-- <h1>x</h1> -->
+			<TapeCog />
 		</aside>
-		<aside id="rightSpool">
-			<h1>X</h1>
+		<section id="center">
+			
+		</section>
+		<aside id="rightSpool" style={rightStyle}>
+			<!-- <h1>x</h1> -->
+			<TapeCog />
 		</aside>
+		<section id="line">
+		</section>
 	</section>
+	<section id="buttons">
+		<button on:click={play} disabled={playing}>play</button>
+		<button on:click={pause} disabled={!playing}>pause</button>
+		<button on:click={next} disabled={!playbackStarted || queuePosition == queue.length - 1}>next</button>
+		<button on:click={previous} disabled={!playbackStarted || queuePosition == 0}>previous</button>
+	</section>
+	<ul>
+		{#each queue as item, index}
+			{#if queuePosition == index}
+				<li><strong>{item.attributes.name} by {item.attributes.artistName}</strong></li>
+			{:else}
+				<li>{item.attributes.name} by {item.attributes.artistName}</li>
+			{/if}
+		{/each}
+	</ul>
 </div>
 
 <style>
@@ -19,12 +173,22 @@
 			width: 18rem;
 			height: 11rem;
 		}
+
+		#line {
+			height: 420%;
+			margin-top: -35%;
+		}
 	}
 
 	@media screen and (min-width: 451px) and (max-width: 800px) {
 		#tape {
 			width: 26rem;
 			height: 16rem;
+		}
+
+		#line {
+			height: 400%;
+			margin-top: -42%;
 		}
 	}
 
@@ -33,6 +197,20 @@
 			width: 28rem;
 			height: 17rem;
 		}
+
+		#line {
+			height: 400%;
+			margin-top: -45%;
+		}
+	}
+
+	@keyframes rotate {
+		from {transform: rotate(0deg);}
+		to {transform: rotate(360deg);}
+	}
+
+	h1 {
+		text-anchor: middle;
 	}
 
 	.container {
@@ -41,35 +219,52 @@
 
 	#tape {
 		border: .1rem solid black;
-		border-radius: .1rem;
+		border-radius: 1rem;
 		margin: 0 auto;
 		display: grid;
 		grid-template-columns: 1fr auto 1fr auto 1fr;
-		grid-template-areas: ". left . right .";
+		grid-template-rows: 90% 10%;
+		grid-template-areas: 
+			". left . right ."
+			". line line line .";
 		align-items: center;
 		justify-content: center;
+		background-repeat: no-repeat;
+		box-shadow: .3rem .3rem 0 gray;
+	}
+
+	#line {
+		grid-area: line;
+		border-bottom: 3px solid black;
+		border-left: 3px solid black;
+		border-right: 3px solid black;
+		align-self: flex-start;
 	}
 
 	aside {
 		width: 4rem;
 		height: 4rem;
-		border-radius: 4rem;
-		background: white;
+		border-radius: 4.5rem;
+		background: transparent;
 		text-align: center;
+		transition: all .98s linear;
+		z-index: 10;
 	}
 
 	#leftSpool {
-		border: .5rem solid black;		
 		grid-area: left;
 	}
 
 	#rightSpool {
-		border: 2rem solid black;
-		background: white;
 		grid-area: right;
 	}
 
 	h1 {
 		display: inline-block;
+	}
+
+	#buttons {
+		text-align: center;
+		padding: 1rem;
 	}
 </style>
