@@ -3,13 +3,46 @@
 
 	import TapePlayer from './components/TapePlayer.svelte';
 
+	import { artworkColors } from './stores.js';
+
+	let artwork_colors_value;
+
+	const unsubscribeArtworkColors = artworkColors.subscribe(value => {
+		artwork_colors_value = value;
+	});
+
+	$: colors = `background: linear-gradient(to bottom right, ${artwork_colors_value.DarkVibrant} 0%, ${artwork_colors_value.LightVibrant} 100%)`;
+
 	let initialized = false;
 	let music = null;
 
+	async function getToken() {
+		let res;
+		try {
+			res = await fetch('/api/generateMusicKitToken.js', {
+				method: 'POST',
+				mode: 'cors',
+				cache: 'no-cache',
+				credentials: 'same-origin',
+				headers: {
+				  'Content-Type': 'application/json',
+				  'cache-control': 'no-cache'
+				},
+				body: JSON.stringify('test')
+			});
+
+			let token = await res.json();
+
+			return token;
+		} catch(err) {
+			console.log(err);
+		}
+	}
+
 	async function initalizeMusicKit() {
 		MusicKit.configure({
-		    developerToken: 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkJBQ1RMVUNKTUgifQ.eyJpYXQiOjE1OTEwMzY5MjcsImV4cCI6MTYwNjU4ODkyNywiaXNzIjoiN0ozQk5SWVoyNiJ9.tFxM5qPN-RJDVTB-4IuIjCXBc7YpvpICYXO_fzdfYnkrfktR5AyWVhTlrXyJMCsLIGoRVMd0Roy9kYcoUXINgg',
-		    app: {
+		    developerToken: await getToken(),
+				app: {
 		      name: 'Mixtape Message',
 		      build: '0.0.1'
 		    }
@@ -20,17 +53,34 @@
 		return true;
 	}
 
+	async function getArtists() {
+		music.authorize().then(async() => {
+			let results = await music.api.library;
+
+			let artists = await results.artists({limit: 50, offset: 49});
+
+			console.log(artists)
+		});
+	}
+
 	onMount(async () => {
 		initialized = await initalizeMusicKit();
+
+		await getArtists();
 	});
 </script>
 
-<main>
+<svelte:head>
+	<meta name="theme-color" content={artwork_colors_value.LightVibrant} media="(prefers-color-scheme: light)">
+	<meta name="theme-color" content={artwork_colors_value.DarkVibrant} media="(prefers-color-scheme: dark)">
+</svelte:head>
+
+<main style={colors}>
 	{#await initialized}
 		<h1>initializing...</h1>
 	{:then}
 		{#if music}
-			<TapePlayer  
+			<TapePlayer
 				{music}
 			/>
 		{/if}

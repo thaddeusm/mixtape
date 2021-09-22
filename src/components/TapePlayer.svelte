@@ -3,6 +3,14 @@
 
 	import TapeCog from './../icons/TapeCog.svelte';
 
+	import { artworkColors } from './../stores.js';
+
+	let artwork_colors_value;
+
+	const unsubscribeArtworkColors = artworkColors.subscribe(value => {
+		artwork_colors_value = value;
+	});
+
 	export let music;
 
 	let playing = false;
@@ -29,9 +37,38 @@
 	$: portionRemaining = (currentTime / duration) * 100;
 	$: portionPassed = 100 - portionRemaining;
 
-	$: leftStyle = `border: ${Math.floor(portionPassed) / 3}px solid black; transform: rotate(${rotation}deg)`;
+	$: leftStyle = `border: ${portionPassed / 3 > 3 ? Math.floor(portionPassed) / 3 : 3}px solid black; transform: rotate(${rotation}deg)`;
 	$: rightStyle = `border: ${portionRemaining / 3 > 3 ? Math.floor(portionRemaining) / 3 : 3}px solid black; transform: rotate(${rotation}deg)`;
 	$: background = `background: linear-gradient(to right, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.6) 100%), url('${artwork}')`;
+
+	$: buttonBackground = `background: ${artwork_colors_value.LightVibrant}`;
+
+	async function getImageColors(url) {
+		let data = {
+			photoURL: url
+		};
+
+		let res;
+		try {
+			res = await fetch('/api/parseImageColors.js', {
+				method: 'POST',
+				mode: 'cors',
+				cache: 'no-cache',
+				credentials: 'same-origin',
+				headers: {
+				  'Content-Type': 'application/json',
+				  'cache-control': 'no-cache'
+				},
+				body: JSON.stringify(data)
+			});
+
+			artworkColors.set(await res.json());
+
+			console.log(artwork_colors_value);
+		} catch(err) {
+			console.log(err);
+		}
+	}
 
 	async function getRecentMusic() {
 		music.authorize().then(async() => {
@@ -47,7 +84,9 @@
 
 			let arr = artworkUrl.split('{w}x{h}');
 
-			artwork = arr[0] + '500x500cc.jpeg'
+			artwork = arr[0] + '500x500cc.jpeg';
+
+			await getImageColors(artwork);
 
 			let obj = {
 				[track.kind]: track.id 
@@ -82,7 +121,7 @@
 
 			queuePosition = music._player._queue._position;
 
-			if (currentTime > duration) {
+			if (currentTime >= duration) {
 				stop();
 			}
 			rotation -= 60;
@@ -151,10 +190,10 @@
 		</section>
 	</section>
 	<section id="buttons">
-		<button on:click={play} disabled={playing}>play</button>
-		<button on:click={pause} disabled={!playing}>pause</button>
-		<button on:click={next} disabled={!playbackStarted || queuePosition == queue.length - 1}>next</button>
-		<button on:click={previous} disabled={!playbackStarted || queuePosition == 0}>previous</button>
+		<button style={buttonBackground} on:click={play} disabled={playing}>play</button>
+		<button style={buttonBackground} on:click={pause} disabled={!playing}>pause</button>
+		<button style={buttonBackground} on:click={next} disabled={!playbackStarted || queuePosition == queue.length - 1}>next</button>
+		<button style={buttonBackground} on:click={previous} disabled={!playbackStarted || queuePosition == 0}>previous</button>
 	</section>
 	<ul>
 		{#each queue as item, index}
@@ -230,7 +269,7 @@
 		align-items: center;
 		justify-content: center;
 		background-repeat: no-repeat;
-		box-shadow: .3rem .3rem 0 gray;
+		box-shadow: .05rem .05rem 0 black, -.05rem -.05rem 0 white;
 	}
 
 	#line {

@@ -16,6 +16,8 @@
     "svelte": "^3.0.0"
   },
   "dependencies": {
+    "jsonwebtoken": "^8.5.1",
+    "node-vibrant": "^3.1.5",
     "sirv-cli": "^0.4.4"
   }
 }

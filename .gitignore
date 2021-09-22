@@ -1,6 +1,6 @@
 /node_modules/
 /public/build/
-
+.env
+/api/files/
 .DS_Store
-
 .vercel
