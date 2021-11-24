@@ -74,7 +74,8 @@
 		music.authorize().then(async() => {
 			let results = await music.api.library;
 
-			console.log(await results.artists({limit: 200}));
+			// console.log(await results.search('love', {limit: 10, types: 'songs'}));
+			console.log(await results.playlists({limit: 5}));
 
 			let recentlyAdded = await results.recentlyAdded();
 
@@ -89,7 +90,7 @@
 			await getImageColors(artwork);
 
 			let obj = {
-				[track.kind]: track.id 
+				[track.kind]: track.id
 			};
 
 			await music.setQueue(obj);
@@ -116,7 +117,7 @@
 	}
 
 	function startInterval() {
-		interval = setInterval(async () => {
+		interval = setInterval(() => {
 			currentTime++;
 
 			queuePosition = music._player._queue._position;
@@ -124,31 +125,34 @@
 			if (currentTime >= duration) {
 				stop();
 			}
+
 			rotation -= 60;
 		}, 1000)
 	}
 
 	function play() {
 		playbackStarted = true;
-
-		music.play();
 		playing = true;
 		startInterval();
+
+		music.play();
 	}
 
 	function pause() {
-		music.pause();
 		playing = false;
 		clearInterval(interval);
+
+		music.pause();
 	}
 
 	function stop() {
-		music.stop();
 		playing = false;
 		clearInterval(interval);
+
+		music.stop();
 	}
 
-	function next() {		
+	function next() {
 		music.changeToMediaAtIndex(queuePosition + 1);
 
 		if (!playing) {
@@ -158,9 +162,9 @@
 		queuePosition = music._player._queue._position;
 	}
 
-	function previous() {		
+	function previous() {
 		music.changeToMediaAtIndex(queuePosition - 1);
-		
+
 		if (!playing) {
 			playing = true;
 			startInterval();
@@ -180,7 +184,7 @@
 			<TapeCog />
 		</aside>
 		<section id="center">
-			
+
 		</section>
 		<aside id="rightSpool" style={rightStyle}>
 			<!-- <h1>x</h1> -->
@@ -199,8 +203,6 @@
 		{#each queue as item, index}
 			{#if queuePosition == index}
 				<li><strong>{item.attributes.name} by {item.attributes.artistName}</strong></li>
-			{:else}
-				<li>{item.attributes.name} by {item.attributes.artistName}</li>
 			{/if}
 		{/each}
 	</ul>
@@ -263,7 +265,7 @@
 		display: grid;
 		grid-template-columns: 1fr auto 1fr auto 1fr;
 		grid-template-rows: 90% 10%;
-		grid-template-areas: 
+		grid-template-areas:
 			". left . right ."
 			". line line line .";
 		align-items: center;

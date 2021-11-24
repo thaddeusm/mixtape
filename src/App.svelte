@@ -53,20 +53,8 @@
 		return true;
 	}
 
-	async function getArtists() {
-		music.authorize().then(async() => {
-			let results = await music.api.library;
-
-			let artists = await results.artists({limit: 50, offset: 49});
-
-			console.log(artists)
-		});
-	}
-
 	onMount(async () => {
 		initialized = await initalizeMusicKit();
-
-		await getArtists();
 	});
 </script>
 
