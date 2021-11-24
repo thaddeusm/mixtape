@@ -63,6 +63,8 @@
 			});
 
 			artworkColors.set(await res.json());
+		} catch(err) {
+			console.log(err);
 		}
 	}
 
