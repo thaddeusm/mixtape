@@ -63,19 +63,12 @@
 			});
 
 			artworkColors.set(await res.json());
-
-			console.log(artwork_colors_value);
-		} catch(err) {
-			console.log(err);
 		}
 	}
 
 	async function getRecentMusic() {
 		music.authorize().then(async() => {
 			let results = await music.api.library;
-
-			// console.log(await results.search('love', {limit: 10, types: 'songs'}));
-			console.log(await results.playlists({limit: 5}));
 
 			let recentlyAdded = await results.recentlyAdded();
 
@@ -180,14 +173,12 @@
 <div class="container">
 	<section id="tape" style={background}>
 		<aside id="leftSpool" style={leftStyle}>
-			<!-- <h1>x</h1> -->
 			<TapeCog />
 		</aside>
 		<section id="center">
 
 		</section>
 		<aside id="rightSpool" style={rightStyle}>
-			<!-- <h1>x</h1> -->
 			<TapeCog />
 		</aside>
 		<section id="line">
