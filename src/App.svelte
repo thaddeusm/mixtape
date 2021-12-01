@@ -1,20 +1,27 @@
 <script>
 	import { onMount } from 'svelte';
-
 	import TapePlayer from './components/TapePlayer.svelte';
-
-	import { artworkColors } from './stores.js';
+	import { artworkColors, music, state } from './stores.js';
 
 	let artwork_colors_value;
+	let music_value;
+	let state_value;
 
 	const unsubscribeArtworkColors = artworkColors.subscribe(value => {
 		artwork_colors_value = value;
 	});
 
+	const unsubscribeMusic = music.subscribe(value => {
+		music_value = value;
+	});
+
+	const unsubscribeState = state.subscribe(value => {
+		state_value = value;
+	});
+
 	$: colors = `background: linear-gradient(to bottom right, ${artwork_colors_value.DarkVibrant} 0%, ${artwork_colors_value.LightVibrant} 100%)`;
 
-	let initialized = false;
-	let music = null;
+	let initialized;
 
 	async function getToken() {
 		let res;
@@ -48,13 +55,17 @@
 		    }
 		});
 
-		music = await MusicKit.getInstance();
+		music.set(await MusicKit.getInstance());
 
 		return true;
 	}
 
 	onMount(async () => {
 		initialized = await initalizeMusicKit();
+
+		if (initialized) {
+			state.set('initialized');
+		}
 	});
 </script>
 
@@ -63,13 +74,13 @@
 	<meta name="theme-color" content={artwork_colors_value.DarkVibrant} media="(prefers-color-scheme: dark)">
 </svelte:head>
 
-<main style={colors}>
+<main>
 	{#await initialized}
 		<h1>initializing...</h1>
 	{:then}
-		{#if music}
+		{#if $state == 'initialized'}
 			<TapePlayer
-				{music}
+				music={$music}
 			/>
 		{/if}
 	{/await}
