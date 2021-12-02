@@ -60,11 +60,21 @@
 		return true;
 	}
 
+	async function authorize() {
+		music_value.authorize().then(() => {
+			console.log('authorized');
+		});
+	}
+
 	onMount(async () => {
 		initialized = await initalizeMusicKit();
 
 		if (initialized) {
-			state.set('initialized');
+			if (music_value.isAuthorized) {
+				state.set('authorized');
+			} else {
+				state.set('initialized');
+			}
 		}
 	});
 </script>
@@ -74,24 +84,42 @@
 	<meta name="theme-color" content={artwork_colors_value.DarkVibrant} media="(prefers-color-scheme: dark)">
 </svelte:head>
 
+<header>
+	<h1>Mixtape</h1>
+</header>
 <main>
 	{#await initialized}
 		<h1>initializing...</h1>
 	{:then}
 		{#if $state == 'initialized'}
 			<TapePlayer
-				music={$music}
+				playable={false}
 			/>
+			<section id="authorization">
+				<p>a subscription to Apple Music is required</p>
+				<p>to listen:</p>
+				<section id="authorizationButtonContainer">
+					<button class="call-to-action" on:click={authorize}>
+						Authorize
+					</button>
+				</section>
+			</section>
+		{:else if $state == 'authorized'}
+			<TapePlayer />
 		{/if}
 	{/await}
 </main>
 
 <style>
+	header {
+		padding: 5%;
+	}
+
 	main {
-		display: grid;
-		width: 100%;
-		height: 100%;
-		align-items: center;
-		justify-content: center;
+		text-align: center;
+	}
+
+	#authorization {
+		padding: 10% 5%;
 	}
 </style>

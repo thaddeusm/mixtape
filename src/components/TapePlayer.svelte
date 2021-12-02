@@ -3,15 +3,20 @@
 
 	import TapeCog from './../icons/TapeCog.svelte';
 
-	import { artworkColors } from './../stores.js';
+	import { artworkColors, music } from './../stores.js';
 
 	let artwork_colors_value;
+	let music_value;
 
 	const unsubscribeArtworkColors = artworkColors.subscribe(value => {
 		artwork_colors_value = value;
 	});
 
-	export let music;
+	const unsubscribeMusic = music.subscribe(value => {
+		music_value = value;
+	});
+
+	export let playable = true;
 
 	let playing = false;
 	let playbackStarted = false;
@@ -69,8 +74,8 @@
 	}
 
 	async function getRecentMusic() {
-		music.authorize().then(async() => {
-			let results = await music.api.library;
+		music_value.authorize().then(async() => {
+			let results = await music_value.api.library;
 
 			let recentlyAdded = await results.recentlyAdded();
 
@@ -88,9 +93,9 @@
 				[track.kind]: track.id
 			};
 
-			await music.setQueue(obj);
+			await music_value.setQueue(obj);
 
-			queue = music._player._queue.items;
+			queue = music_value._player._queue.items;
 
 			duration = await totalDuration();
 		});
@@ -115,7 +120,7 @@
 		interval = setInterval(() => {
 			currentTime++;
 
-			queuePosition = music._player._queue._position;
+			queuePosition = music_value._player._queue._position;
 
 			if (currentTime >= duration) {
 				stop();
@@ -130,41 +135,41 @@
 		playing = true;
 		startInterval();
 
-		music.play();
+		music_value.play();
 	}
 
 	function pause() {
 		playing = false;
 		clearInterval(interval);
 
-		music.pause();
+		music_value.pause();
 	}
 
 	function stop() {
 		playing = false;
 		clearInterval(interval);
 
-		music.stop();
+		music_value.stop();
 	}
 
 	function next() {
-		music.changeToMediaAtIndex(queuePosition + 1);
+		music_value.changeToMediaAtIndex(queuePosition + 1);
 
 		if (!playing) {
 			playing = true;
 			startInterval();
 		}
-		queuePosition = music._player._queue._position;
+		queuePosition = music_value._player._queue._position;
 	}
 
 	function previous() {
-		music.changeToMediaAtIndex(queuePosition - 1);
+		music_value.changeToMediaAtIndex(queuePosition - 1);
 
 		if (!playing) {
 			playing = true;
 			startInterval();
 		}
-		queuePosition = music._player._queue._position;
+		queuePosition = music_value._player._queue._position;
 	}
 
 	onMount(async() => {
@@ -186,12 +191,14 @@
 		<section id="line">
 		</section>
 	</section>
-	<section id="buttons">
-		<button style={buttonBackground} on:click={play} disabled={playing}>play</button>
-		<button style={buttonBackground} on:click={pause} disabled={!playing}>pause</button>
-		<button style={buttonBackground} on:click={next} disabled={!playbackStarted || queuePosition == queue.length - 1}>next</button>
-		<button style={buttonBackground} on:click={previous} disabled={!playbackStarted || queuePosition == 0}>previous</button>
-	</section>
+	{#if playable}
+		<section id="buttons">
+			<button style={buttonBackground} on:click={play} disabled={playing}>play</button>
+			<button style={buttonBackground} on:click={pause} disabled={!playing}>pause</button>
+			<button style={buttonBackground} on:click={next} disabled={!playbackStarted || queuePosition == queue.length - 1}>next</button>
+			<button style={buttonBackground} on:click={previous} disabled={!playbackStarted || queuePosition == 0}>previous</button>
+		</section>
+	{/if}
 	<ul>
 		{#each queue as item, index}
 			{#if queuePosition == index}

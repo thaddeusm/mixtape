@@ -1,7 +1,3 @@
-<script>
-	
-</script>
-
 <svg width="100%" height="100%" viewBox="0 0 500 500" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
     <use xlink:href="#_Image1" x="19.386" y="0" width="461.448px" height="500px" transform="matrix(0.998804,0,0,1,0,0)"/>
     <g transform="matrix(1,0,0,1,-5.50156,-5.50156)">
