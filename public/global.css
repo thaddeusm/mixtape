@@ -59,10 +59,28 @@ h2 {
 	font-weight: var(--default-weight);
 }
 
+h3 {
+	font-size: 1.2rem;
+	font-weight: var(--default-weight);
+}
+
+h4 {
+	font-size: 1rem;
+	font-weight: var(--default-weight);
+}
+
 p {
 	font-size: 1.2rem;
 	font-weight: var(--default-weight);
 	margin: 1.5rem .5rem;
+}
+
+button:hover {
+	cursor: pointer;
+}
+
+button: disabled {
+	cursor: not-allowed;
 }
 
 .call-to-action {

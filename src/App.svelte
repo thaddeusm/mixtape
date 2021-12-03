@@ -1,6 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import TapePlayer from './components/TapePlayer.svelte';
+	import Playlist from './components/Playlist.svelte';
 	import { artworkColors, music, state } from './stores.js';
 
 	let artwork_colors_value;
@@ -106,6 +107,7 @@
 			</section>
 		{:else if $state == 'authorized'}
 			<TapePlayer />
+			<Playlist />
 		{/if}
 	{/await}
 </main>

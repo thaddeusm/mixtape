@@ -2,11 +2,17 @@
 	import { onMount } from 'svelte';
 
 	import TapeCog from './../icons/TapeCog.svelte';
+	import Play from './../icons/Play.svelte';
+	import Pause from './../icons/Pause.svelte';
+	import Next from './../icons/Next.svelte';
+	import Previous from './../icons/Previous.svelte';
 
-	import { artworkColors, music } from './../stores.js';
+	import { artworkColors, music, queue, queuePosition } from './../stores.js';
 
 	let artwork_colors_value;
 	let music_value;
+	let queue_value;
+	let queue_position_value;
 
 	const unsubscribeArtworkColors = artworkColors.subscribe(value => {
 		artwork_colors_value = value;
@@ -14,6 +20,14 @@
 
 	const unsubscribeMusic = music.subscribe(value => {
 		music_value = value;
+	});
+
+	const unsubscribeQueue = queue.subscribe(value => {
+		queue_value = value;
+	});
+
+	const unsubscribeQueuePosition = queuePosition.subscribe(value => {
+		queue_position_value = value;
 	});
 
 	export let playable = true;
@@ -29,12 +43,10 @@
 
 	let artwork = '';
 
-	let queue = [];
 	let durations = [];
-	let queuePosition = 0;
 
-	$: if (durations.length > 0 && queuePosition > 0) {
-		currentTime = durations.slice(0, queuePosition).reduce((acc, currentValue) => {
+	$: if (durations.length > 0 && queue_position_value > 0) {
+		currentTime = durations.slice(0, queue_position_value).reduce((acc, currentValue) => {
 			return acc + currentValue;
 		});
 	}
@@ -46,7 +58,8 @@
 	$: rightStyle = `border: ${portionRemaining / 3 > 3 ? Math.floor(portionRemaining) / 3 : 3}px solid black; transform: rotate(${rotation}deg)`;
 	$: background = `background: linear-gradient(to right, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.6) 100%), url('${artwork}')`;
 
-	$: buttonBackground = `background: ${artwork_colors_value.LightVibrant}`;
+	$: actionButtonColor = artwork_colors_value.Vibrant;
+	$: defaultButtonColor = artwork_colors_value.DarkVibrant;
 
 	async function getImageColors(url) {
 		let data = {
@@ -68,6 +81,7 @@
 			});
 
 			artworkColors.set(await res.json());
+			console.log(artwork_colors_value)
 		} catch(err) {
 			console.log(err);
 		}
@@ -95,7 +109,7 @@
 
 			await music_value.setQueue(obj);
 
-			queue = music_value._player._queue.items;
+			queue.set(music_value._player._queue.items);
 
 			duration = await totalDuration();
 		});
@@ -104,8 +118,8 @@
 	async function totalDuration() {
 		let total = 0;
 
-		for (let i=0; i<queue.length; i++) {
-			let item = queue[i];
+		for (let i=0; i<queue_value.length; i++) {
+			let item = queue_value[i];
 			let trackDuration = item.attributes.durationInMillis / 1000;
 
 			durations.push(trackDuration);
@@ -120,7 +134,7 @@
 		interval = setInterval(() => {
 			currentTime++;
 
-			queuePosition = music_value._player._queue._position;
+			queuePosition.set(music_value._player._queue._position);
 
 			if (currentTime >= duration) {
 				stop();
@@ -134,47 +148,44 @@
 		playbackStarted = true;
 		playing = true;
 		startInterval();
-
 		music_value.play();
 	}
 
 	function pause() {
 		playing = false;
 		clearInterval(interval);
-
 		music_value.pause();
 	}
 
 	function stop() {
 		playing = false;
 		clearInterval(interval);
-
 		music_value.stop();
 	}
 
 	function next() {
-		music_value.changeToMediaAtIndex(queuePosition + 1);
+		music_value.changeToMediaAtIndex(queue_position_value + 1);
 
 		if (!playing) {
 			playing = true;
 			startInterval();
 		}
-		queuePosition = music_value._player._queue._position;
+		queuePosition.set(music_value._player._queue._position);
 	}
 
 	function previous() {
-		music_value.changeToMediaAtIndex(queuePosition - 1);
+		music_value.changeToMediaAtIndex(queue_position_value - 1);
 
 		if (!playing) {
 			playing = true;
 			startInterval();
 		}
-		queuePosition = music_value._player._queue._position;
+		queuePosition.set(music_value._player._queue._position);
 	}
 
-	onMount(async() => {
-		await getRecentMusic();
-	});
+	onMount(() => {
+		getRecentMusic();
+	})
 </script>
 
 <div class="container">
@@ -190,29 +201,33 @@
 		</aside>
 		<section id="line">
 		</section>
-	</section>
-	{#if playable}
-		<section id="buttons">
-			<button style={buttonBackground} on:click={play} disabled={playing}>play</button>
-			<button style={buttonBackground} on:click={pause} disabled={!playing}>pause</button>
-			<button style={buttonBackground} on:click={next} disabled={!playbackStarted || queuePosition == queue.length - 1}>next</button>
-			<button style={buttonBackground} on:click={previous} disabled={!playbackStarted || queuePosition == 0}>previous</button>
-		</section>
-	{/if}
-	<ul>
-		{#each queue as item, index}
-			{#if queuePosition == index}
-				<li><strong>{item.attributes.name} by {item.attributes.artistName}</strong></li>
+		<section id="controls">
+			{#if playable}
+				<button on:click={previous} disabled={!playbackStarted || queuePosition == 0}>
+					<Previous color={defaultButtonColor} width={'1.5rem'} height={'1.5rem'} />
+				</button>
+				{#if !playing}
+					<button on:click={play}>
+						<Play color={actionButtonColor} width={'2rem'} height={'2rem'} />
+					</button>
+				{:else}
+					<button on:click={pause}>
+						<Pause color={actionButtonColor} width={'2rem'} height={'2rem'} />
+					</button>
+				{/if}
+				<button on:click={next} disabled={!playbackStarted || queuePosition == queue.length - 1}>
+					<Next color={defaultButtonColor} width={'1.5rem'} height={'1.5rem'} />
+				</button>
 			{/if}
-		{/each}
-	</ul>
+		</section>
+	</section>
 </div>
 
 <style>
 	@media screen and (max-width: 450px) {
 		#tape {
-			width: 18rem;
-			height: 11rem;
+			width: 21rem;
+			height: 14rem;
 		}
 
 		#line {
@@ -223,8 +238,8 @@
 
 	@media screen and (min-width: 451px) and (max-width: 800px) {
 		#tape {
-			width: 26rem;
-			height: 16rem;
+			width: 33rem;
+			height: 21rem;
 		}
 
 		#line {
@@ -235,8 +250,8 @@
 
 	@media screen and (min-width: 801px) {
 		#tape {
-			width: 28rem;
-			height: 17rem;
+			width: 35rem;
+			height: 22rem;
 		}
 
 		#line {
@@ -250,10 +265,6 @@
 		to {transform: rotate(360deg);}
 	}
 
-	h1 {
-		text-anchor: middle;
-	}
-
 	.container {
 		box-sizing: content-box;
 	}
@@ -264,10 +275,11 @@
 		margin: 0 auto;
 		display: grid;
 		grid-template-columns: 1fr auto 1fr auto 1fr;
-		grid-template-rows: 90% 10%;
+		grid-template-rows: 70% 10% 20%;
 		grid-template-areas:
 			". left . right ."
-			". line line line .";
+			". line line line ."
+			". controls controls controls .";
 		align-items: center;
 		justify-content: center;
 		background-repeat: no-repeat;
@@ -279,7 +291,7 @@
 		border-bottom: 3px solid black;
 		border-left: 3px solid black;
 		border-right: 3px solid black;
-		align-self: flex-start;
+		align-self: center;
 	}
 
 	aside {
@@ -300,12 +312,17 @@
 		grid-area: right;
 	}
 
-	h1 {
-		display: inline-block;
+	#controls {
+		grid-area: controls;
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+		align-items: center;
 	}
 
-	#buttons {
-		text-align: center;
-		padding: 1rem;
+	#controls button {
+		display: block;
+		background: none;
+		outline: none;
+		border: none;
 	}
 </style>
