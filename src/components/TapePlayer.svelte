@@ -58,8 +58,8 @@
 	$: rightStyle = `border: ${portionRemaining / 3 > 3 ? Math.floor(portionRemaining) / 3 : 3}px solid black; transform: rotate(${rotation}deg)`;
 	$: background = `background: linear-gradient(to right, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.6) 100%), url('${artwork}'); box-shadow: .2rem .2rem 0 ${artwork_colors_value.DarkVibrant || black}, -.2rem -.2rem 0 ${artwork_colors_value.LightMuted || white};`;
 
-	$: actionButtonColor = artwork_colors_value.Vibrant;
-	$: defaultButtonColor = artwork_colors_value.DarkVibrant;
+	$: actionButtonColor = artwork_colors_value.DarkVibrant;
+	$: defaultButtonColor = artwork_colors_value.Muted;
 
 	async function getImageColors(url) {
 		let data = {
