@@ -64,11 +64,12 @@
   }
 
   $: listGradient = `background: ${artwork_colors_value.LightVibrant}; background: -webkit-linear-gradient(2deg, ${artwork_colors_value.DarkVibrant}, 10%, ${background}); background: -moz-linear-gradient(2deg, ${artwork_colors_value.DarkVibrant}, 10%, ${background}); background: linear-gradient(2deg, ${artwork_colors_value.DarkVibrant}, 10%, ${background})`;
+  $: listItemShadow = `box-shadow: .05rem .05rem 0 ${artwork_colors_value.DarkVibrant || black}, -.05rem -.05rem 0 ${artwork_colors_value.LightMuted || white};`
 </script>
 
 <ul style={listGradient}>
   {#each $queue as item, index}
-    <li>
+    <li style={listItemShadow}>
       <img src="{getArtwork(item.artworkURL)}" alt={`${item.attributes.albumName} artwork`}>
       <h2>{shortenArtist(item.attributes.artistName)}</h2>
       <h3>{shortenSongTitle(item.attributes.name)}</h3>
@@ -95,7 +96,6 @@
       "art artist"
       "art song";
     align-items: center;
-    box-shadow: .1rem .05rem .1rem var(--text);
   }
 
   li img {

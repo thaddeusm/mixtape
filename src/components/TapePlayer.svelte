@@ -56,7 +56,7 @@
 
 	$: leftStyle = `border: ${portionPassed / 3 > 3 ? Math.floor(portionPassed) / 3 : 3}px solid black; transform: rotate(${rotation}deg)`;
 	$: rightStyle = `border: ${portionRemaining / 3 > 3 ? Math.floor(portionRemaining) / 3 : 3}px solid black; transform: rotate(${rotation}deg)`;
-	$: background = `background: linear-gradient(to right, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.6) 100%), url('${artwork}'); box-shadow: .2rem .2rem 0 ${artwork_colors_value.DarkVibrant || black}, -.2rem -.2rem 0 ${artwork_colors_value.LightMuted || white};`;
+	$: background = `background: linear-gradient(to right, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.6) 100%), url('${artwork}'); background-position: center; box-shadow: .2rem .2rem 0 ${artwork_colors_value.DarkVibrant || black}, -.2rem -.2rem 0 ${artwork_colors_value.LightMuted || white};`;
 
 	$: actionButtonColor = artwork_colors_value.DarkVibrant;
 	$: defaultButtonColor = artwork_colors_value.Muted;
@@ -199,6 +199,7 @@
 		<aside id="rightSpool" style={rightStyle}>
 			<TapeCog />
 		</aside>
+		<section id="line"></section>
 		<section id="controls">
 			{#if playable}
 				<button on:click={previous} disabled={!playbackStarted || queuePosition == 0}>
@@ -224,36 +225,37 @@
 <style>
 	@media screen and (max-width: 530px) {
 		#tape {
-			width: 18rem;
+			width: 20rem;
+			max-width: 310px;
 			height: 13rem;
 		}
 
 		#line {
-			height: 420%;
+			height: 405%;
 			margin-top: -35%;
 		}
 	}
 
 	@media screen and (min-width: 531px) and (max-width: 800px) {
 		#tape {
-			width: 32rem;
-			height: 20rem;
+			width: 28rem;
+			height: 18rem;
 		}
 
 		#line {
-			height: 400%;
+			height: 405%;
 			margin-top: -42%;
 		}
 	}
 
 	@media screen and (min-width: 801px) {
 		#tape {
-			width: 32rem;
-			height: 20rem;
+			width: 28rem;
+			height: 18rem;
 		}
 
 		#line {
-			height: 400%;
+			height: 405%;
 			margin-top: -45%;
 		}
 	}
@@ -273,9 +275,10 @@
 		margin: 0 auto;
 		display: grid;
 		grid-template-columns: 1fr auto 1fr auto 1fr;
-		grid-template-rows: 75% 25%;
+		grid-template-rows: 70% 10% 20%;
 		grid-template-areas:
 			". left . right ."
+			". line line line ."
 			". controls controls controls .";
 		align-items: center;
 		justify-content: center;
@@ -298,6 +301,14 @@
 
 	#rightSpool {
 		grid-area: right;
+	}
+
+	#line {
+		grid-area: line;
+		border-bottom: 1px solid black;
+		border-left: 1px solid black;
+		border-right: 1px solid black;
+		align-self: center;
 	}
 
 	#controls {

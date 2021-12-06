@@ -17,8 +17,6 @@ module.exports = async (req, res) => {
         }
     });
 
-    console.log('test')
-
     return res.status(200).json(jwtToken);
     return res.status(403).json({message: 'error'});
 }

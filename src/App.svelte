@@ -38,8 +38,7 @@
 				headers: {
 				  'Content-Type': 'application/json',
 				  'cache-control': 'no-cache'
-				},
-				body: JSON.stringify('test')
+				}
 			});
 
 			let token = await res.json();
@@ -66,7 +65,7 @@
 
 	async function authorize() {
 		music_value.authorize().then(() => {
-			console.log('authorized');
+			state.set('authorized');
 		});
 	}
 
@@ -132,7 +131,7 @@
 
 <style>
 	header {
-		padding: 5%;
+		padding: 5% 10%;
 	}
 
 	main {
