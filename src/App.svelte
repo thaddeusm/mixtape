@@ -2,11 +2,12 @@
 	import { onMount } from 'svelte';
 	import TapePlayer from './components/TapePlayer.svelte';
 	import Playlist from './components/Playlist.svelte';
-	import { artworkColors, music, state } from './stores.js';
+	import { artworkColors, music, state, colorPreference } from './stores.js';
 
 	let artwork_colors_value;
 	let music_value;
 	let state_value;
+	let color_preference_value;
 
 	const unsubscribeArtworkColors = artworkColors.subscribe(value => {
 		artwork_colors_value = value;
@@ -20,7 +21,9 @@
 		state_value = value;
 	});
 
-	$: colors = `background: linear-gradient(to bottom right, ${artwork_colors_value.DarkVibrant} 0%, ${artwork_colors_value.LightVibrant} 100%)`;
+	const unsubscribeColorPreference = colorPreference.subscribe(value => {
+		color_preference_value = value;
+	});
 
 	let initialized;
 
@@ -67,6 +70,18 @@
 		});
 	}
 
+	function setColorPreference() {
+		let preference = 'light';
+
+		if (window.matchMedia) {
+	    if(window.matchMedia('(prefers-color-scheme: dark)').matches){
+	      preference = 'dark';
+	    }
+	  }
+
+		colorPreference.set(preference);
+	}
+
 	onMount(async () => {
 		initialized = await initalizeMusicKit();
 
@@ -77,6 +92,9 @@
 				state.set('initialized');
 			}
 		}
+
+		window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', setColorPreference);
+		setColorPreference();
 	});
 </script>
 

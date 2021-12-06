@@ -21,3 +21,5 @@ export const artworkColors = writable({
 	Muted: '#FFFFFF',
 	Vibrant: '#FFFFFF'
 });
+
+export const colorPreference = writable('light');

@@ -1,10 +1,11 @@
 <script>
-  import { artworkColors, music, queue, queuePosition } from './../stores.js';
+  import { artworkColors, music, queue, queuePosition, colorPreference } from './../stores.js';
 
   let artwork_colors_value;
   let music_value;
   let queue_value;
   let queue_position_value;
+	let color_preference_value;
 
   const unsubscribeArtworkColors = artworkColors.subscribe(value => {
     artwork_colors_value = value;
@@ -22,6 +23,10 @@
     queue_position_value = value;
   });
 
+  const unsubscribeColorPreference = colorPreference.subscribe(value => {
+		color_preference_value = value;
+	});
+
   $: console.log(queue_value)
 
   function getArtwork(urlTemplate) {
@@ -38,7 +43,19 @@
     }
   }
 
-  $: listGradient = `background: background: ${artwork_colors_value.LightVibrant}; background: -webkit-linear-gradient(25deg, ${artwork_colors_value.DarkVibrant}, Canvas); background: -moz-linear-gradient(25deg, ${artwork_colors_value.DarkVibrant}, Canvas);background: linear-gradient(25deg, ${artwork_colors_value.DarkVibrant}, Canvas)`;
+  let background;
+
+  $: {
+    if (color_preference_value == 'dark') {
+      background = '#1e1e1e';
+    } else {
+      background = '#ffffff';
+    }
+
+    console.log(background);
+  }
+
+  $: listGradient = `background: ${artwork_colors_value.LightVibrant}; background: -webkit-linear-gradient(2deg, ${artwork_colors_value.DarkVibrant}, 10%, ${background}); background: -moz-linear-gradient(2deg, ${artwork_colors_value.DarkVibrant}, 10%, ${background}); background: linear-gradient(2deg, ${artwork_colors_value.DarkVibrant}, 10%, ${background})`;
 </script>
 
 <ul style={listGradient}>
@@ -60,7 +77,8 @@
   li {
     margin: 1.5rem .5rem;
     padding: .5rem 1rem;
-    background: ButtonFace;
+    background: var(--foreground);
+    color: var(--text);
     text-align: left;
     display: grid;
     grid-template-columns: 20% 1fr;
@@ -69,7 +87,7 @@
       "art artist"
       "art song";
     align-items: center;
-    box-shadow: .1rem .05rem .1rem ButtonText;
+    box-shadow: .1rem .05rem .1rem var(--text);
   }
 
   li img {
