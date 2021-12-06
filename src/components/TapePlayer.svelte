@@ -56,7 +56,7 @@
 
 	$: leftStyle = `border: ${portionPassed / 3 > 3 ? Math.floor(portionPassed) / 3 : 3}px solid black; transform: rotate(${rotation}deg)`;
 	$: rightStyle = `border: ${portionRemaining / 3 > 3 ? Math.floor(portionRemaining) / 3 : 3}px solid black; transform: rotate(${rotation}deg)`;
-	$: background = `background: linear-gradient(to right, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.6) 100%), url('${artwork}')`;
+	$: background = `background: linear-gradient(to right, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.6) 100%), url('${artwork}'); box-shadow: .2rem .2rem 0 ${artwork_colors_value.DarkVibrant || black}, -.2rem -.2rem 0 ${artwork_colors_value.LightMuted || white};`;
 
 	$: actionButtonColor = artwork_colors_value.Vibrant;
 	$: defaultButtonColor = artwork_colors_value.DarkVibrant;
@@ -199,8 +199,6 @@
 		<aside id="rightSpool" style={rightStyle}>
 			<TapeCog />
 		</aside>
-		<section id="line">
-		</section>
 		<section id="controls">
 			{#if playable}
 				<button on:click={previous} disabled={!playbackStarted || queuePosition == 0}>
@@ -224,10 +222,10 @@
 </div>
 
 <style>
-	@media screen and (max-width: 450px) {
+	@media screen and (max-width: 530px) {
 		#tape {
-			width: 21rem;
-			height: 14rem;
+			width: 18rem;
+			height: 13rem;
 		}
 
 		#line {
@@ -236,10 +234,10 @@
 		}
 	}
 
-	@media screen and (min-width: 451px) and (max-width: 800px) {
+	@media screen and (min-width: 531px) and (max-width: 800px) {
 		#tape {
-			width: 33rem;
-			height: 21rem;
+			width: 32rem;
+			height: 20rem;
 		}
 
 		#line {
@@ -250,8 +248,8 @@
 
 	@media screen and (min-width: 801px) {
 		#tape {
-			width: 35rem;
-			height: 22rem;
+			width: 32rem;
+			height: 20rem;
 		}
 
 		#line {
@@ -275,23 +273,13 @@
 		margin: 0 auto;
 		display: grid;
 		grid-template-columns: 1fr auto 1fr auto 1fr;
-		grid-template-rows: 70% 10% 20%;
+		grid-template-rows: 75% 25%;
 		grid-template-areas:
 			". left . right ."
-			". line line line ."
 			". controls controls controls .";
 		align-items: center;
 		justify-content: center;
 		background-repeat: no-repeat;
-		box-shadow: .05rem .05rem 0 black, -.05rem -.05rem 0 white;
-	}
-
-	#line {
-		grid-area: line;
-		border-bottom: 3px solid black;
-		border-left: 3px solid black;
-		border-right: 3px solid black;
-		align-self: center;
 	}
 
 	aside {
