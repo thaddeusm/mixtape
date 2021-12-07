@@ -7,12 +7,13 @@
 	import Next from './../icons/Next.svelte';
 	import Previous from './../icons/Previous.svelte';
 
-	import { artworkColors, music, queue, queuePosition } from './../stores.js';
+	import { artworkColors, music, queue, queuePosition, state } from './../stores.js';
 
 	let artwork_colors_value;
 	let music_value;
 	let queue_value;
 	let queue_position_value;
+	let state_value;
 
 	const unsubscribeArtworkColors = artworkColors.subscribe(value => {
 		artwork_colors_value = value;
@@ -30,7 +31,9 @@
 		queue_position_value = value;
 	});
 
-	export let playable = true;
+	const unsubscribeState = state.subscribe(value => {
+		state_value = value;
+	});
 
 	let playing = false;
 	let playbackStarted = false;
@@ -185,7 +188,7 @@
 
 	onMount(() => {
 		getRecentMusic();
-	})
+	});
 </script>
 
 <div class="container">
@@ -201,7 +204,7 @@
 		</aside>
 		<section id="line"></section>
 		<section id="controls">
-			{#if playable}
+			{#if $state == 'authorized'}
 				<button on:click={previous} disabled={!playbackStarted || queuePosition == 0}>
 					<Previous color={defaultButtonColor} width={'1.5rem'} height={'1.5rem'} />
 				</button>

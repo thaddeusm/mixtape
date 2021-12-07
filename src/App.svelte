@@ -1,5 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
+	import Header from './components/Header.svelte';
 	import TapePlayer from './components/TapePlayer.svelte';
 	import Playlist from './components/Playlist.svelte';
 	import { artworkColors, music, state, colorPreference } from './stores.js';
@@ -102,17 +103,13 @@
 	<meta name="theme-color" content={artwork_colors_value.DarkVibrant} media="(prefers-color-scheme: dark)">
 </svelte:head>
 
-<header>
-	<h1>Mixtape</h1>
-</header>
+<Header />
 <main>
 	{#await initialized}
 		<h1>initializing...</h1>
 	{:then}
 		{#if $state == 'initialized'}
-			<TapePlayer
-				playable={false}
-			/>
+			<TapePlayer />
 			<section id="authorization">
 				<p>a subscription to Apple Music is required</p>
 				<p>to listen:</p>
@@ -130,10 +127,6 @@
 </main>
 
 <style>
-	header {
-		padding: 5% 10%;
-	}
-
 	main {
 		text-align: center;
 	}

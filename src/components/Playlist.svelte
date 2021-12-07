@@ -1,6 +1,8 @@
 <script>
   import { artworkColors, music, queue, queuePosition, colorPreference } from './../stores.js';
 
+  import Playlist from './../icons/Playlist.svelte';
+
   let artwork_colors_value;
   let music_value;
   let queue_value;
@@ -65,8 +67,12 @@
 
   $: listGradient = `background: ${artwork_colors_value.LightVibrant}; background: -webkit-linear-gradient(2deg, ${artwork_colors_value.DarkVibrant}, 10%, ${background}); background: -moz-linear-gradient(2deg, ${artwork_colors_value.DarkVibrant}, 10%, ${background}); background: linear-gradient(2deg, ${artwork_colors_value.DarkVibrant}, 10%, ${background})`;
   $: listItemShadow = `box-shadow: .05rem .05rem 0 ${artwork_colors_value.DarkVibrant || black}, -.05rem -.05rem 0 ${artwork_colors_value.LightMuted || white};`
+  $: iconColor = artwork_colors_value.Vibrant;
 </script>
 
+<section id="icon">
+  <Playlist color={iconColor} width={'3rem'} height={'3rem'} />
+</section>
 <ul style={listGradient}>
   {#each $queue as item, index}
     <li style={listItemShadow}>
@@ -78,9 +84,14 @@
 </ul>
 
 <style>
+  #icon {
+    text-align: center;
+    margin-top: 4rem;
+  }
+
   ul {
     margin: 0 auto;
-    padding: 2rem 0 1rem 0;
+    padding: 0 0 1rem 0;
   }
 
   li {
