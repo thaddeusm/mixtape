@@ -29,25 +29,15 @@
 		color_preference_value = value;
 	});
 
-  $: console.log(queue_value)
-
   function getArtwork(urlTemplate) {
     let arr = urlTemplate.split('{w}x{h}');
 
     return arr[0] + '55x55cc.jpeg';
   }
 
-  function shortenArtist(txt) {
-    if (txt.length > 20) {
-      return txt.slice(0, 20) + '...';
-    } else {
-      return txt;
-    }
-  }
-
-  function shortenSongTitle(txt) {
-    if (txt.length > 30) {
-      return txt.slice(0, 30) + '...';
+  function shorten(txt) {
+    if (txt.length > 25) {
+      return txt.slice(0, 25) + '...';
     } else {
       return txt;
     }
@@ -61,8 +51,6 @@
     } else {
       background = '#ffffff';
     }
-
-    console.log(background);
   }
 
   $: listGradient = `background: ${artwork_colors_value.LightVibrant}; background: -webkit-linear-gradient(2deg, ${artwork_colors_value.DarkVibrant}, 10%, ${background}); background: -moz-linear-gradient(2deg, ${artwork_colors_value.DarkVibrant}, 10%, ${background}); background: linear-gradient(2deg, ${artwork_colors_value.DarkVibrant}, 10%, ${background})`;
@@ -77,8 +65,8 @@
   {#each $queue as item, index}
     <li style={listItemShadow}>
       <img src="{getArtwork(item.artworkURL)}" alt={`${item.attributes.albumName} artwork`}>
-      <h2>{shortenArtist(item.attributes.artistName)}</h2>
-      <h3>{shortenSongTitle(item.attributes.name)}</h3>
+      <h2>{shorten(item.attributes.name)}</h2>
+      <h3>{shorten(item.attributes.artistName)}</h3>
     </li>
   {/each}
 </ul>

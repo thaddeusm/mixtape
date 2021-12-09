@@ -7,13 +7,14 @@
 	import Next from './../icons/Next.svelte';
 	import Previous from './../icons/Previous.svelte';
 
-	import { artworkColors, music, queue, queuePosition, state } from './../stores.js';
+	import { artworkColors, music, queue, queuePosition, state, playing } from './../stores.js';
 
 	let artwork_colors_value;
 	let music_value;
 	let queue_value;
 	let queue_position_value;
 	let state_value;
+	let playing_value;
 
 	const unsubscribeArtworkColors = artworkColors.subscribe(value => {
 		artwork_colors_value = value;
@@ -35,8 +36,9 @@
 		state_value = value;
 	});
 
-	let playing = false;
-	let playbackStarted = false;
+	const unsubscribePlaying = playing.subscribe(value => {
+		playing_value = value;
+	});
 
 	let duration = 100;
 	let currentTime = 0;
@@ -84,7 +86,6 @@
 			});
 
 			artworkColors.set(await res.json());
-			console.log(artwork_colors_value)
 		} catch(err) {
 			console.log(err);
 		}
@@ -148,20 +149,19 @@
 	}
 
 	function play() {
-		playbackStarted = true;
-		playing = true;
+		playing.set(true);
 		startInterval();
 		music_value.play();
 	}
 
 	function pause() {
-		playing = false;
+		playing.set(false);
 		clearInterval(interval);
 		music_value.pause();
 	}
 
 	function stop() {
-		playing = false;
+		playing.set(false);
 		clearInterval(interval);
 		music_value.stop();
 	}
@@ -169,8 +169,8 @@
 	function next() {
 		music_value.changeToMediaAtIndex(queue_position_value + 1);
 
-		if (!playing) {
-			playing = true;
+		if (!playing_value) {
+			playing.set(true);
 			startInterval();
 		}
 		queuePosition.set(music_value._player._queue._position);
@@ -179,8 +179,8 @@
 	function previous() {
 		music_value.changeToMediaAtIndex(queue_position_value - 1);
 
-		if (!playing) {
-			playing = true;
+		if (!playing_value) {
+			playing.set(true);
 			startInterval();
 		}
 		queuePosition.set(music_value._player._queue._position);
@@ -188,6 +188,8 @@
 
 	onMount(() => {
 		getRecentMusic();
+
+		console.log(music_value)
 	});
 </script>
 
@@ -205,10 +207,10 @@
 		<section id="line"></section>
 		<section id="controls">
 			{#if $state == 'authorized'}
-				<button on:click={previous} disabled={!playbackStarted || queuePosition == 0}>
+				<button on:click={previous} disabled={queuePosition == 0}>
 					<Previous color={defaultButtonColor} width={'1.5rem'} height={'1.5rem'} />
 				</button>
-				{#if !playing}
+				{#if !$playing}
 					<button on:click={play}>
 						<Play color={actionButtonColor} width={'2rem'} height={'2rem'} />
 					</button>
@@ -217,7 +219,7 @@
 						<Pause color={actionButtonColor} width={'2rem'} height={'2rem'} />
 					</button>
 				{/if}
-				<button on:click={next} disabled={!playbackStarted || queuePosition == queue.length - 1}>
+				<button on:click={next} disabled={queuePosition == queue.length - 1}>
 					<Next color={defaultButtonColor} width={'1.5rem'} height={'1.5rem'} />
 				</button>
 			{/if}

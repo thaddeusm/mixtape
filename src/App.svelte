@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import Header from './components/Header.svelte';
 	import TapePlayer from './components/TapePlayer.svelte';
+	import Description from './components/Description.svelte';
 	import Playlist from './components/Playlist.svelte';
 	import { artworkColors, music, state, colorPreference } from './stores.js';
 
@@ -121,6 +122,7 @@
 			</section>
 		{:else if $state == 'authorized'}
 			<TapePlayer />
+			<Description />
 			<Playlist />
 		{/if}
 	{/await}
@@ -129,6 +131,7 @@
 <style>
 	main {
 		text-align: center;
+		margin-top: 7rem;
 	}
 
 	#authorization {

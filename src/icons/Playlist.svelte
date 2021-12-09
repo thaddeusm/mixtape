@@ -9,29 +9,25 @@
 
 <div {style}>
   <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100%" height="100%" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve">
-  <g id="Black">
-  	<g>
-  		<polyline fill="none" stroke={color} stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="3.5,18.5
-  			2.5,18.5 2.5,6.5 3.5,6.5 		"/>
-
-  			<line fill="none" stroke={color} stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="0.5" y1="17.5" x2="0.5" y2="7.5"/>
-  		<polyline fill="none" stroke={color} stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-  			19.5,18.5 20.5,18.5 20.5,6.5 19.5,6.5 		"/>
-
-  			<line fill="none" stroke={color} stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="22.5" y1="17.5" x2="22.5" y2="7.5"/>
-  		<rect x="5.5" y="5.5" fill="none" stroke={color} stroke-linejoin="round" stroke-miterlimit="10" width="12" height="14"/>
-  		<polyline fill="none" stroke={color} stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-  			10.5,14.5 7.5,14.5 7.5,17.5 10.5,16.5 		"/>
-  		<polyline fill="none" stroke={color} stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-  			15.5,12.5 12.5,12.5 12.5,15.5 15.5,14.5 		"/>
-  		<polyline fill="none" stroke={color} stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-  			10.5,16.5 10.5,9.5 15.5,7.5 15.5,14.5 		"/>
-  	</g>
-  </g>
-  <g id="Frames-24px">
-  	<rect fill="none" width="24" height="24"/>
-  </g>
-  </svg>
+		<g id="Outline_Icons">
+			<g>
+				<path fill={color} d="M20.277,3.084C19.37,2.479,19,1.73,19,0.5C19,0.224,18.776,0,18.5,0S18,0.224,18,0.5V17h-2.5c-1.93,0-3.5,1.57-3.5,3.5
+					s1.57,3.5,3.5,3.5c1.864,0,3.5-1.636,3.5-3.5v-3V3.319c0.207,0.215,0.447,0.413,0.723,0.597c4.187,2.792,2.829,6.285,1.631,9.367
+					l-0.208,0.538c-0.098,0.258,0.031,0.547,0.289,0.646c0.258,0.099,0.548-0.029,0.646-0.288l0.206-0.533
+					C23.487,10.555,25.133,6.321,20.277,3.084z M18,20.5c0,1.18-1.069,2.5-2.5,2.5c-1.378,0-2.5-1.121-2.5-2.5s1.122-2.5,2.5-2.5H18
+					V20.5z"/>
+				<path fill={color} d="M0.5,4h12C12.776,4,13,3.776,13,3.5S12.776,3,12.5,3h-12C0.224,3,0,3.224,0,3.5S0.224,4,0.5,4z"/>
+				<path fill={color} d="M0.5,7h12C12.776,7,13,6.776,13,6.5S12.776,6,12.5,6h-12C0.224,6,0,6.224,0,6.5S0.224,7,0.5,7z"/>
+				<path fill={color} d="M0.5,10h12c0.276,0,0.5-0.224,0.5-0.5S12.776,9,12.5,9h-12C0.224,9,0,9.224,0,9.5S0.224,10,0.5,10z"/>
+				<path fill={color} d="M0.5,13h12c0.276,0,0.5-0.224,0.5-0.5S12.776,12,12.5,12h-12C0.224,12,0,12.224,0,12.5S0.224,13,0.5,13z"/>
+				<path fill={color} d="M10.5,15h-10C0.224,15,0,15.224,0,15.5S0.224,16,0.5,16h10c0.276,0,0.5-0.224,0.5-0.5S10.776,15,10.5,15z"/>
+				<path fill={color} d="M7.5,18h-7C0.224,18,0,18.224,0,18.5S0.224,19,0.5,19h7C7.776,19,8,18.776,8,18.5S7.776,18,7.5,18z"/>
+			</g>
+		</g>
+		<g id="Invisible_Shape">
+			<rect fill="none" width="24" height="24"/>
+		</g>
+	</svg>
 </div>
 
 <style>
