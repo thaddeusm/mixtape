@@ -53,10 +53,7 @@
 		});
 	}
 
-	$: portionRemaining = (currentTime / duration);
-	$: portionPassed = 100 - portionRemaining;
-
-  $: radius = `border: ${10 * (Math.floor(portionPassed) / 100)}px solid black`;
+  $: radius = `border: ${(duration - currentTime) / 200}px solid black`;
 
   function totalDuration() {
 		let total = 0;
