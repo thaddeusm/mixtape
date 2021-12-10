@@ -16,6 +16,6 @@
   p {
     text-align: left;
     line-height: 1.5;
-    padding: 2rem;
+    margin: 10% 7%;
   }
 </style>

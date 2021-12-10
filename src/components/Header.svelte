@@ -32,23 +32,22 @@
 
 <header style={background}>
   <h1>{$mixMeta.title}</h1>
-  <aside>
-    <MiniPlayer />
-  </aside>
-  <!-- {#if y > 300}
-    <MiniPlayer />
-  {/if} -->
+  {#if y > 300}
+    <aside>
+      <MiniPlayer />
+    </aside>
+  {/if}
 </header>
 
 <style>
   header {
-    height: 5rem;
+    height: 4rem;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     display: grid;
-    grid-template-columns: 10% 60% 20% 10%;
+    grid-template-columns: 7% 70% 16% 7%;
     grid-template-rows: 1fr;
     grid-template-areas: ". title MiniPlayer .";
     z-index: 100;

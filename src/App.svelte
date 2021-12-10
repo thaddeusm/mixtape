@@ -4,11 +4,13 @@
 	import TapePlayer from './components/TapePlayer.svelte';
 	import Description from './components/Description.svelte';
 	import Playlist from './components/Playlist.svelte';
-	import { artworkColors, music, state, colorPreference } from './stores.js';
+	import Footer from './components/Footer.svelte';
+
+	import { artworkColors, music, authorized, colorPreference } from './stores.js';
 
 	let artwork_colors_value;
 	let music_value;
-	let state_value;
+	let authorized_value;
 	let color_preference_value;
 
 	const unsubscribeArtworkColors = artworkColors.subscribe(value => {
@@ -19,8 +21,8 @@
 		music_value = value;
 	});
 
-	const unsubscribeState = state.subscribe(value => {
-		state_value = value;
+	const unsubscribeAuthorized = authorized.subscribe(value => {
+		authorized_value = value;
 	});
 
 	const unsubscribeColorPreference = colorPreference.subscribe(value => {
@@ -67,7 +69,7 @@
 
 	async function authorize() {
 		music_value.authorize().then(() => {
-			state.set('authorized');
+			authorized.set(true);
 		});
 	}
 
@@ -88,9 +90,9 @@
 
 		if (initialized) {
 			if (music_value.isAuthorized) {
-				state.set('authorized');
+				authorized.set(true);
 			} else {
-				state.set('initialized');
+				authorized.set(false);
 			}
 		}
 
@@ -109,7 +111,7 @@
 	{#await initialized}
 		<h1>initializing...</h1>
 	{:then}
-		{#if $state == 'initialized'}
+		{#if !$authorized}
 			<TapePlayer />
 			<section id="authorization">
 				<p>a subscription to Apple Music is required</p>
@@ -120,13 +122,14 @@
 					</button>
 				</section>
 			</section>
-		{:else if $state == 'authorized'}
+		{:else}
 			<TapePlayer />
 			<Description />
 			<Playlist />
 		{/if}
 	{/await}
 </main>
+<Footer />
 
 <style>
 	main {

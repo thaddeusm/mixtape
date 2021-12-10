@@ -7,13 +7,13 @@
 	import Next from './../icons/Next.svelte';
 	import Previous from './../icons/Previous.svelte';
 
-	import { artworkColors, music, queue, queuePosition, state, playing } from './../stores.js';
+	import { artworkColors, music, queue, queuePosition, authorized, playing } from './../stores.js';
 
 	let artwork_colors_value;
 	let music_value;
 	let queue_value;
 	let queue_position_value;
-	let state_value;
+	let authorized_value;
 	let playing_value;
 
 	const unsubscribeArtworkColors = artworkColors.subscribe(value => {
@@ -32,8 +32,8 @@
 		queue_position_value = value;
 	});
 
-	const unsubscribeState = state.subscribe(value => {
-		state_value = value;
+	const unsubscribeAuthorized = authorized.subscribe(value => {
+		authorized_value = value;
 	});
 
 	const unsubscribePlaying = playing.subscribe(value => {
@@ -43,12 +43,18 @@
 	let duration = 100;
 	let currentTime = 0;
 
-	let interval;
+	let interval = null;
 	let rotation = 0;
 
 	let artwork = '';
 
 	let durations = [];
+
+	$: if (playing_value) {
+		startInterval();
+	} else {
+		clearInterval(interval);
+	}
 
 	$: if (durations.length > 0 && queue_position_value > 0) {
 		currentTime = durations.slice(0, queue_position_value).reduce((acc, currentValue) => {
@@ -92,31 +98,29 @@
 	}
 
 	async function getRecentMusic() {
-		music_value.authorize().then(async() => {
-			let results = await music_value.api.library;
+		let results = await music_value.api.library;
 
-			let recentlyAdded = await results.recentlyAdded();
+		let recentlyAdded = await results.recentlyAdded();
 
-			let track = recentlyAdded[0].attributes.playParams;
+		let track = recentlyAdded[0].attributes.playParams;
 
-			let artworkUrl = recentlyAdded[0].attributes.artwork.url;
+		let artworkUrl = recentlyAdded[0].attributes.artwork.url;
 
-			let arr = artworkUrl.split('{w}x{h}');
+		let arr = artworkUrl.split('{w}x{h}');
 
-			artwork = arr[0] + '500x500cc.jpeg';
+		artwork = arr[0] + '500x500cc.jpeg';
 
-			await getImageColors(artwork);
+		await getImageColors(artwork);
 
-			let obj = {
-				[track.kind]: track.id
-			};
+		let obj = {
+			[track.kind]: track.id
+		};
 
-			await music_value.setQueue(obj);
+		await music_value.setQueue(obj);
 
-			queue.set(music_value._player._queue.items);
+		queue.set(music_value._player._queue.items);
 
-			duration = await totalDuration();
-		});
+		duration = await totalDuration();
 	}
 
 	async function totalDuration() {
@@ -142,27 +146,34 @@
 
 			if (currentTime >= duration) {
 				stop();
+				reset();
 			}
 
 			rotation -= 60;
 		}, 1000)
 	}
 
+	function reset() {
+		queuePosition.set(0);
+		duration = 100;
+		currentTime = 0;
+
+		clearInterval(interval);
+		rotation = 0;
+	}
+
 	function play() {
 		playing.set(true);
-		startInterval();
 		music_value.play();
 	}
 
 	function pause() {
 		playing.set(false);
-		clearInterval(interval);
 		music_value.pause();
 	}
 
 	function stop() {
 		playing.set(false);
-		clearInterval(interval);
 		music_value.stop();
 	}
 
@@ -171,8 +182,8 @@
 
 		if (!playing_value) {
 			playing.set(true);
-			startInterval();
 		}
+
 		queuePosition.set(music_value._player._queue._position);
 	}
 
@@ -181,13 +192,15 @@
 
 		if (!playing_value) {
 			playing.set(true);
-			startInterval();
 		}
+
 		queuePosition.set(music_value._player._queue._position);
 	}
 
 	onMount(() => {
-		getRecentMusic();
+		if (authorized_value) {
+				getRecentMusic();
+		}
 
 		console.log(music_value)
 	});
@@ -206,8 +219,8 @@
 		</aside>
 		<section id="line"></section>
 		<section id="controls">
-			{#if $state == 'authorized'}
-				<button on:click={previous} disabled={queuePosition == 0}>
+			{#if $authorized}
+				<button on:click={previous} disabled={$queuePosition == 0}>
 					<Previous color={defaultButtonColor} width={'1.5rem'} height={'1.5rem'} />
 				</button>
 				{#if !$playing}
@@ -219,7 +232,7 @@
 						<Pause color={actionButtonColor} width={'2rem'} height={'2rem'} />
 					</button>
 				{/if}
-				<button on:click={next} disabled={queuePosition == queue.length - 1}>
+				<button on:click={next} disabled={$queuePosition == $queue.length - 1}>
 					<Next color={defaultButtonColor} width={'1.5rem'} height={'1.5rem'} />
 				</button>
 			{/if}
@@ -233,6 +246,7 @@
 			width: 20rem;
 			max-width: 310px;
 			height: 13rem;
+			grid-template-columns: 1fr 5rem 5rem 5rem 1fr;
 		}
 
 		#line {
@@ -245,6 +259,7 @@
 		#tape {
 			width: 28rem;
 			height: 18rem;
+			grid-template-columns: 1fr 7rem 5rem 7rem 1fr;
 		}
 
 		#line {
@@ -257,6 +272,7 @@
 		#tape {
 			width: 28rem;
 			height: 18rem;
+			grid-template-columns: 1fr 7rem 5rem 7rem 1fr;
 		}
 
 		#line {
@@ -279,7 +295,6 @@
 		border-radius: 1rem;
 		margin: 0 auto;
 		display: grid;
-		grid-template-columns: 1fr auto 1fr auto 1fr;
 		grid-template-rows: 70% 10% 20%;
 		grid-template-areas:
 			". left . right ."
@@ -295,7 +310,6 @@
 		height: 4rem;
 		border-radius: 4.5rem;
 		background: transparent;
-		text-align: center;
 		transition: all .98s linear;
 		z-index: 10;
 	}
@@ -306,6 +320,7 @@
 
 	#rightSpool {
 		grid-area: right;
+		justify-self: right;
 	}
 
 	#line {
