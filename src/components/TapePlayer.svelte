@@ -107,8 +107,6 @@
 
 		let recentlyAdded = await results.recentlyAdded();
 
-		console.log(recentlyAdded[0])
-
 		mixMeta.set({
 			title: recentlyAdded[0].attributes.name,
 			description: `An album by ${recentlyAdded[0].attributes.artistName} that you most recently added to your Apple Music Library.`

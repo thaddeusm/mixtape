@@ -59,11 +59,11 @@
 <section>
   {#if !$playing}
     <button on:click={play} style={border} class="play">
-      <Play color={actionButtonColor} width={'1.25rem'} height={'1.25rem'} />
+      <Play color={actionButtonColor} width={'1.15rem'} height={'1.15rem'} />
     </button>
   {:else}
     <button on:click={pause} style={border}>
-      <Pause color={actionButtonColor} width={'1.25rem'} height={'1.25rem'} />
+      <Pause color={actionButtonColor} width={'1.15rem'} height={'1.15rem'} />
     </button>
   {/if}
 </section>
@@ -78,7 +78,7 @@
 
   button {
     border-radius: 100%;
-    padding: .5rem;
+    padding: .4rem;
     background: #ffffff;
   }
 </style>

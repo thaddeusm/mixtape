@@ -52,7 +52,7 @@
   <button class="simple" style={color} id="about">about</button>
   <button class="simple" style={color} id="terms">terms</button>
   <button class="simple" id="up" on:click={jumpToTop}>
-    <UpArrow width={'1rem'} height={'1rem'} color={'#ffffff'} />
+    <UpArrow width={'1.15rem'} height={'1.15rem'} color={'#ffffff'} />
   </button>
 </footer>
 
