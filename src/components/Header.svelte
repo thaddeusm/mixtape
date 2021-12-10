@@ -26,12 +26,20 @@
   } else {
     background = `background: ${artwork_colors_value.DarkVibrant || '#1e1e1e'}`;
   }
+
+  function shorten(txt) {
+    if (txt.length > 20) {
+      return txt.slice(0, 20) + '...';
+    } else {
+      return txt;
+    }
+  }
 </script>
 
 <svelte:window bind:scrollY={y}></svelte:window>
 
 <header style={background}>
-  <h1>{$mixMeta.title}</h1>
+  <h2>{shorten($mixMeta.title)}</h2>
   {#if y > 300}
     <aside>
       <MiniPlayer />
@@ -55,7 +63,7 @@
     align-items: center;
   }
 
-  h1 {
+  h2 {
     grid-area: title;
   }
 

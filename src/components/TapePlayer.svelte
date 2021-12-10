@@ -7,7 +7,7 @@
 	import Next from './../icons/Next.svelte';
 	import Previous from './../icons/Previous.svelte';
 
-	import { artworkColors, music, queue, queuePosition, authorized, playing } from './../stores.js';
+	import { artworkColors, music, queue, queuePosition, authorized, playing, mixMeta } from './../stores.js';
 
 	let artwork_colors_value;
 	let music_value;
@@ -15,6 +15,7 @@
 	let queue_position_value;
 	let authorized_value;
 	let playing_value;
+	let mix_meta_value;
 
 	const unsubscribeArtworkColors = artworkColors.subscribe(value => {
 		artwork_colors_value = value;
@@ -38,6 +39,10 @@
 
 	const unsubscribePlaying = playing.subscribe(value => {
 		playing_value = value;
+	});
+
+	const unsubscribeMixMeta = mixMeta.subscribe(value => {
+		mix_meta_value = value;
 	});
 
 	let duration = 100;
@@ -101,6 +106,13 @@
 		let results = await music_value.api.library;
 
 		let recentlyAdded = await results.recentlyAdded();
+
+		console.log(recentlyAdded[0])
+
+		mixMeta.set({
+			title: recentlyAdded[0].attributes.name,
+			description: `An album by ${recentlyAdded[0].attributes.artistName} that you most recently added to your Apple Music Library.`
+		});
 
 		let track = recentlyAdded[0].attributes.playParams;
 
