@@ -112,7 +112,7 @@ button:disabled {
 }
 
 .call-to-action {
-	font-size: 1rem;
+	font-size: 1.2rem;
 	font-weight: 400;
 	padding: .5rem 1rem;
 	border-radius: 0;
@@ -120,4 +120,16 @@ button:disabled {
 	outline: none;
 	background: var(--foreground);
 	color: var(--text);
+}
+
+.simple {
+	font-size: 1rem;
+	font-weight: var(--default-weight);
+	border: none;
+	outline: none;
+	background: none;
+}
+
+.simple:hover {
+	background: none;
 }

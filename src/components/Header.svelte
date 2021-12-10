@@ -22,7 +22,7 @@
   let y;
 
   $: if (color_preference_value == 'light') {
-    background = `background: ${artwork_colors_value.LightMuted || '#ffffff'}`;
+    background = `background: ${artwork_colors_value.LightVibrant}`;
   } else {
     background = `background: ${artwork_colors_value.DarkVibrant || '#1e1e1e'}`;
   }

@@ -220,19 +220,19 @@
 		<section id="line"></section>
 		<section id="controls">
 			{#if $authorized}
-				<button on:click={previous} disabled={$queuePosition == 0}>
+				<button class="simple" on:click={previous} disabled={$queuePosition == 0}>
 					<Previous color={defaultButtonColor} width={'1.5rem'} height={'1.5rem'} />
 				</button>
 				{#if !$playing}
-					<button on:click={play}>
+					<button class="simple" on:click={play}>
 						<Play color={actionButtonColor} width={'2rem'} height={'2rem'} />
 					</button>
 				{:else}
-					<button on:click={pause}>
+					<button class="simple" on:click={pause}>
 						<Pause color={actionButtonColor} width={'2rem'} height={'2rem'} />
 					</button>
 				{/if}
-				<button on:click={next} disabled={$queuePosition == $queue.length - 1}>
+				<button class="simple" on:click={next} disabled={$queuePosition == $queue.length - 1}>
 					<Next color={defaultButtonColor} width={'1.5rem'} height={'1.5rem'} />
 				</button>
 			{/if}
@@ -336,12 +336,5 @@
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
 		align-items: center;
-	}
-
-	#controls button {
-		display: block;
-		background: none;
-		outline: none;
-		border: none;
 	}
 </style>

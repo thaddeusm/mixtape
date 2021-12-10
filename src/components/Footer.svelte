@@ -23,23 +23,67 @@
   const unsubscribeMode = mode.subscribe(value => {
     mode_value = value;
   });
+
+  $: background = `background: ${artwork_colors_value.DarkVibrant}`;
+  let underline;
+  let color;
+
+  $: if (color_preference_value == 'light') {
+    underline = `border-bottom: 1px solid ${artwork_colors_value.LightVibrant}`;
+    color = `color: ${artwork_colors_value.LightVibrant}`;
+  } else {
+    underline = `border-bottom: 1px solid ${artwork_colors_value.LightVibrant}`;
+    color = `color: ${artwork_colors_value.LightVibrant}`;
+  }
+
+  function jumpToTop() {
+    window.scrollTo(0, 0);
+  }
 </script>
 
-<footer>
+<footer style={background}>
   {#if $mode == 'view'}
-    <button class="call-to-action">
-      make your own
-    </button>
+    <aside id="cta">
+      <button class="call-to-action">
+        make your own
+      </button>
+    </aside>
   {/if}
-  <button class="simple">about</button>
-  <button class="simple">terms</button>
-  <button id="toTop">
-    <UpArrow width={'1rem'} height={'1rem'} color={$artworkColors.LightMuted} />
+  <button class="simple" style={color} id="about">about</button>
+  <button class="simple" style={color} id="terms">terms</button>
+  <button class="simple" id="up" on:click={jumpToTop}>
+    <UpArrow width={'1rem'} height={'1rem'} color={'#ffffff'} />
   </button>
 </footer>
 
 <style>
   footer {
-    background: var(--foreground);
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-areas:
+      "cta cta cta"
+      "about up terms";
+    align-items: center;
+    justify-content: center;
+    height: 10rem;
+    padding: 2rem 0 0 0;
+  }
+
+  #about {
+    grid-area: about;
+  }
+
+  #terms {
+    grid-area: terms;
+  }
+
+  #up {
+    grid-area: up;
+  }
+
+  #cta {
+    grid-area: cta;
+    text-align: center;
   }
 </style>
