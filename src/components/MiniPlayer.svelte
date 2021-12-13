@@ -5,6 +5,8 @@
   import Pause from './../icons/Pause.svelte';
   import { artworkColors, music, queue, queuePosition, authorized, playing } from './../stores.js';
 
+  export let artwork = null;
+
 	let artwork_colors_value;
 	let music_value;
 	let queue_value;
@@ -38,7 +40,8 @@
 
   $: actionButtonColor = artwork_colors_value.DarkVibrant;
 
-  $: border = `border: ${10 - ((queue_position_value / queue_value.length) * 10)}px solid black`;
+  $: border = `border-radius: 100%; border: ${10 - ((queue_position_value / queue_value.length) * 10)}px solid black`;
+  $: imageBackground = `width: 55px; height: 55px; background: linear-gradient(to right, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.6) 100%), url('${artwork}'); background-position: center;`;
 
 	function play() {
 		playing.set(true);
@@ -56,28 +59,31 @@
 	}
 </script>
 
-<section>
+<section class={!artwork ? 'no-artwork' : 'artwork'}>
   {#if !$playing}
-    <button on:click={play} style={border} class="play">
+    <button on:click={play} style={artwork ? imageBackground : border} class="play">
       <Play color={actionButtonColor} width={'1.15rem'} height={'1.15rem'} />
     </button>
   {:else}
-    <button on:click={pause} style={border}>
+    <button on:click={pause} style={artwork ? imageBackground : border}>
       <Pause color={actionButtonColor} width={'1.15rem'} height={'1.15rem'} />
     </button>
   {/if}
 </section>
 
 <style>
-  section {
+  .no-artwork {
     height: 100%;
     display: grid;
     justify-content: center;
     align-items: center;
   }
 
+  .artwork {
+    display: inline;
+  }
+
   button {
-    border-radius: 100%;
     padding: .4rem;
     background: #ffffff;
   }

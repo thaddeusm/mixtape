@@ -2,6 +2,7 @@
   import { artworkColors, music, queue, queuePosition, colorPreference } from './../stores.js';
 
   import Playlist from './../icons/Playlist.svelte';
+  import MiniPlayer from './../components/MiniPlayer.svelte';
 
   let artwork_colors_value;
   let music_value;
@@ -29,15 +30,15 @@
 		color_preference_value = value;
 	});
 
-  function getArtwork(urlTemplate) {
+  async function getArtwork(urlTemplate) {
     let arr = urlTemplate.split('{w}x{h}');
 
-    return arr[0] + '55x55cc.jpeg';
+    return await arr[0] + '55x55cc.jpeg';
   }
 
   function shorten(txt) {
-    if (txt.length > 25) {
-      return txt.slice(0, 25) + '...';
+    if (txt.length > 22) {
+      return txt.slice(0, 22) + '...';
     } else {
       return txt;
     }
@@ -64,7 +65,17 @@
 <ul style={listGradient}>
   {#each $queue as item, index}
     <li style={listItemShadow}>
-      <img src="{getArtwork(item.artworkURL)}" alt={`${item.attributes.albumName} artwork`}>
+      {#await getArtwork(item.artworkURL)}
+
+      {:then src}
+        {#if $queuePosition == index}
+          <section class="artwork">
+            <MiniPlayer artwork={src} />
+          </section>
+        {:else}
+          <img class="artwork" {src} alt={`${item.attributes.albumName} artwork`}>
+        {/if}
+      {/await}
       <h2>{shorten(item.attributes.name)}</h2>
       <h3>{shorten(item.attributes.artistName)}</h3>
     </li>
@@ -97,7 +108,7 @@
     align-items: center;
   }
 
-  li img {
+  .artwork {
     grid-area: art;
   }
 
@@ -107,5 +118,9 @@
 
   li h3 {
     grid-area: song;
+  }
+
+  .active {
+
   }
 </style>
