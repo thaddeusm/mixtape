@@ -24,6 +24,10 @@ input:focus {
 		--text: #ffffff;
 		--foreground: #454545;
 	}
+
+	::selection {
+
+	}
 }
 
 @media (prefers-color-scheme: light) {
@@ -32,10 +36,10 @@ input:focus {
 		--text: #1e1e1e;
 		--foreground: #efefef;
 	}
-}
 
-::selection {
+	::selection {
 
+	}
 }
 
 html, body {

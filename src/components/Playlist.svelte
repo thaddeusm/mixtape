@@ -60,7 +60,7 @@
 </script>
 
 <section id="icon">
-  <Playlist color={iconColor} width={'3rem'} height={'3rem'} />
+  <Playlist color={iconColor} width={'2rem'} height={'2rem'} />
 </section>
 <ul style={listGradient}>
   {#each $queue as item, index}

@@ -39,12 +39,16 @@
   function jumpToTop() {
     window.scrollTo(0, 0);
   }
+
+  function changeToEditMode() {
+    mode.set('edit');
+  }
 </script>
 
 <footer style={background}>
   {#if $mode == 'view'}
     <aside id="cta">
-      <button class="call-to-action">
+      <button class="call-to-action" on:click={changeToEditMode}>
         make your own
       </button>
     </aside>

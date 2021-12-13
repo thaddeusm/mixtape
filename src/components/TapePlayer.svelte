@@ -106,23 +106,8 @@
 		}
 	}
 
-	async function getRecentMusic() {
+	async function getMusic() {
 		let results = await music_value.api.library;
-
-		let recentlyAdded = await results.recentlyAdded();
-
-		mixMeta.set({
-			title: recentlyAdded[0].attributes.name,
-			description: `An album by ${recentlyAdded[0].attributes.artistName} that you most recently added to your Apple Music Library.`
-		});
-
-		let track = recentlyAdded[0].attributes.playParams;
-
-		let artworkUrl = recentlyAdded[0].attributes.artwork.url;
-
-		let arr = artworkUrl.split('{w}x{h}');
-
-		artwork = arr[0] + '500x500cc.jpeg';
 
 		await getImageColors(artwork);
 
@@ -212,11 +197,7 @@
 	}
 
 	onMount(() => {
-		if (authorized_value) {
-				getRecentMusic();
-		}
-
-		console.log(music_value)
+		// await getMusic();
 	});
 </script>
 
