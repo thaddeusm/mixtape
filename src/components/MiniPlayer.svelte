@@ -6,6 +6,8 @@
   import { artworkColors, music, queue, queuePosition, authorized, playing } from './../stores.js';
 
   export let artwork = null;
+  export let secondary = false;
+  export let index = null;
 
 	let artwork_colors_value;
 	let music_value;
@@ -41,7 +43,8 @@
   $: actionButtonColor = artwork_colors_value.DarkVibrant;
 
   $: border = `border-radius: 100%; border: ${10 - ((queue_position_value / queue_value.length) * 10)}px solid black`;
-  $: imageBackground = `width: 55px; height: 55px; background: linear-gradient(to right, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.6) 100%), url('${artwork}'); background-position: center;`;
+  $: imageBackgroundOpaque = `width: 55px; height: 55px; background: linear-gradient(to right, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.6) 100%), url('${artwork}'); background-position: center;`;
+  $: imageBackgroundFull = `width: 55px; height: 55px; background: url('${artwork}'); background-position: center;`;
 
 	function play() {
 		playing.set(true);
@@ -57,16 +60,30 @@
 		playing.set(false);
 		music_value.stop();
 	}
+
+  function skipTo() {
+    music_value.changeToMediaAtIndex(index);
+
+		if (!playing_value) {
+			playing.set(true);
+		}
+
+		queuePosition.set(music_value._player._queue._position);
+  }
 </script>
 
 <section class={!artwork ? 'no-artwork' : 'artwork'}>
-  {#if !$playing}
-    <button on:click={play} style={artwork ? imageBackground : border} class="play">
+  {#if !$playing && !secondary}
+    <button on:click={play} style={artwork ? imageBackgroundOpaque : border}>
       <Play color={actionButtonColor} width={'1.15rem'} height={'1.15rem'} />
     </button>
-  {:else}
-    <button on:click={pause} style={artwork ? imageBackground : border}>
+  {:else if $playing && !secondary}
+    <button on:click={pause} style={artwork ? imageBackgroundOpaque : border}>
       <Pause color={actionButtonColor} width={'1.15rem'} height={'1.15rem'} />
+    </button>
+  {:else if secondary}
+    <button on:click={skipTo} style={artwork ? imageBackgroundFull : border}>
+
     </button>
   {/if}
 </section>

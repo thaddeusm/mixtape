@@ -66,15 +66,10 @@
   {#each $queue as item, index}
     <li style={listItemShadow}>
       {#await getArtwork(item.artworkURL)}
-
       {:then src}
-        {#if $queuePosition == index}
-          <section class="artwork">
-            <MiniPlayer artwork={src} />
-          </section>
-        {:else}
-          <img class="artwork" {src} alt={`${item.attributes.albumName} artwork`}>
-        {/if}
+        <section class="artwork">
+          <MiniPlayer artwork={src} secondary={$queuePosition !== index} {index} />
+        </section>
       {/await}
       <h2>{shorten(item.attributes.name)}</h2>
       <h3>{shorten(item.attributes.artistName)}</h3>
@@ -118,9 +113,5 @@
 
   li h3 {
     grid-area: song;
-  }
-
-  .active {
-
   }
 </style>
