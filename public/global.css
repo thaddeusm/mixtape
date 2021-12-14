@@ -137,3 +137,11 @@ button:disabled {
 .simple:hover {
 	background: none;
 }
+
+a {
+	color: var(--text);
+}
+
+a:visited {
+	color: var(--text);
+}

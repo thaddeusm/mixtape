@@ -1,7 +1,7 @@
 <script>
   import UpArrow from './../icons/UpArrow.svelte';
 
-  import { artworkColors, colorPreference, mixMeta, mode } from './../stores.js';
+  import { artworkColors, colorPreference, mixMeta, mode, queue } from './../stores.js';
 
   let artwork_colors_value;
   let color_preference_value;
@@ -45,7 +45,7 @@
   }
 </script>
 
-<footer style={background}>
+<footer class={$queue.length > 0 ? 'full' : 'simple'} style={background}>
   {#if $mode == 'view'}
     <aside id="cta">
       <button class="call-to-action" on:click={changeToEditMode}>
@@ -55,19 +55,36 @@
   {/if}
   <button class="simple" style={color} id="about">about</button>
   <button class="simple" style={color} id="terms">terms</button>
-  <button class="simple" id="up" on:click={jumpToTop}>
-    <UpArrow width={'1.15rem'} height={'1.15rem'} color={'#ffffff'} />
-  </button>
+  {#if $queue.length > 0}
+    <button class="simple icon" on:click={jumpToTop}>
+      <UpArrow width={'1.15rem'} height={'1.15rem'} color={'#ffffff'} />
+    </button>
+  {/if}
 </footer>
 
 <style>
-  footer {
+  .simple {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "about terms";
+    align-items: center;
+    justify-content: center;
+    height: 5rem;
+  }
+
+  .simple button {
+    display: block;
+  }
+
+  .full {
     display: grid;
     grid-template-rows: auto 1fr;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-areas:
       "cta cta cta"
-      "about up terms";
+      "about icon terms";
     align-items: center;
     justify-content: center;
     height: 10rem;
@@ -82,8 +99,8 @@
     grid-area: terms;
   }
 
-  #up {
-    grid-area: up;
+  .icon {
+    grid-area: icon;
   }
 
   #cta {

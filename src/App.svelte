@@ -114,13 +114,18 @@
 		{#if !$authorized}
 			<TapePlayer />
 			<section id="authorization">
-				<p>a subscription to Apple Music is required</p>
-				<p>to listen:</p>
+				<p>A subscription to Apple Music is required.</p>
 				<section id="authorizationButtonContainer">
 					<button class="call-to-action" on:click={authorize}>
 						Authorize
 					</button>
 				</section>
+				<p>
+					Don't have a subscription?
+				</p>
+				<p>
+					<a href="https://www.apple.com/apple-music/" target="_blank">Try Apple Music</a>
+				</p>
 			</section>
 		{:else}
 			<TapePlayer />
@@ -138,6 +143,10 @@
 	}
 
 	#authorization {
-		padding: 10% 5%;
+		margin: 15% 7%;
+	}
+
+	#authorizationButtonContainer {
+		margin: 5% auto 15% auto;
 	}
 </style>
