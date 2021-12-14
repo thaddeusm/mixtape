@@ -1,7 +1,8 @@
 <script>
-  import { artworkColors, music, queue, queuePosition, colorPreference } from './../stores.js';
+  import { artworkColors, music, queue, queuePosition, colorPreference, mode } from './../stores.js';
 
   import Playlist from './../icons/Playlist.svelte';
+  import New from './../icons/New.svelte';
   import MiniPlayer from './../components/MiniPlayer.svelte';
 
   let artwork_colors_value;
@@ -9,6 +10,7 @@
   let queue_value;
   let queue_position_value;
 	let color_preference_value;
+  let mode_value;
 
   const unsubscribeArtworkColors = artworkColors.subscribe(value => {
     artwork_colors_value = value;
@@ -29,6 +31,10 @@
   const unsubscribeColorPreference = colorPreference.subscribe(value => {
 		color_preference_value = value;
 	});
+
+  const unsubscribeMode = mode.subscribe(value => {
+    mode_value = value;
+  });
 
   async function getArtwork(urlTemplate) {
     let arr = urlTemplate.split('{w}x{h}');
@@ -64,7 +70,7 @@
 </section>
 <ul style={listGradient}>
   {#each $queue as item, index}
-    <li style={listItemShadow}>
+    <li class="queue-item" style={listItemShadow}>
       {#await getArtwork(item.artworkURL)}
       {:then src}
         <section class="artwork">
@@ -75,6 +81,13 @@
       <h3>{shorten(item.attributes.artistName)}</h3>
     </li>
   {/each}
+  {#if $mode == 'edit'}
+    <li>
+      <button class="simple">
+        <New color={iconColor} width={'2rem'} height={'2rem'} />
+      </button>
+    </li>
+  {/if}
 </ul>
 
 <style>
@@ -85,7 +98,7 @@
 
   ul {
     margin: 0 auto;
-    padding: 0 0 1rem 0;
+    padding: 1rem 0;
   }
 
   li {
@@ -93,6 +106,9 @@
     padding: .5rem;
     background: var(--foreground);
     color: var(--text);
+  }
+
+  .queue-item {
     text-align: left;
     display: grid;
     grid-template-columns: 22% 1fr;

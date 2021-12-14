@@ -134,7 +134,7 @@
 <style>
 	main {
 		text-align: center;
-		margin-top: 7rem;
+		padding-top: 7rem;
 	}
 
 	#authorization {

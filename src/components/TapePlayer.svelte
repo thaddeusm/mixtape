@@ -214,7 +214,7 @@
 		</aside>
 		<section id="line"></section>
 		<section id="controls">
-			{#if $authorized}
+			{#if $authorized && $queue.length > 0}
 				<button class="simple" on:click={previous} disabled={$queuePosition == 0}>
 					<Previous color={defaultButtonColor} width={'1.5rem'} height={'1.5rem'} />
 				</button>

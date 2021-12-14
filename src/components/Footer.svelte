@@ -63,7 +63,7 @@
 <style>
   footer {
     display: grid;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: auto 1fr;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-areas:
       "cta cta cta"
@@ -71,7 +71,7 @@
     align-items: center;
     justify-content: center;
     height: 10rem;
-    padding: 2rem 0 0 0;
+    padding: 1rem 0 0 0;
   }
 
   #about {
