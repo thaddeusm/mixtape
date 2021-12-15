@@ -62,7 +62,13 @@
 
   $: listGradient = `background: ${artwork_colors_value.LightVibrant}; background: -webkit-linear-gradient(2deg, ${artwork_colors_value.DarkVibrant}, 10%, ${background}); background: -moz-linear-gradient(2deg, ${artwork_colors_value.DarkVibrant}, 10%, ${background}); background: linear-gradient(2deg, ${artwork_colors_value.DarkVibrant}, 10%, ${background})`;
   $: listItemShadow = `box-shadow: .05rem .05rem 0 ${artwork_colors_value.DarkVibrant || black}, -.05rem -.05rem 0 ${artwork_colors_value.LightMuted || white};`
-  $: iconColor = artwork_colors_value.Vibrant;
+
+  let iconColor;
+  $: if (color_preference_value == 'light') {
+    iconColor = artwork_colors_value.DarkVibrant;
+  } else {
+    iconColor = artwork_colors_value.LightVibrant;
+  }
 </script>
 
 <section id="icon">

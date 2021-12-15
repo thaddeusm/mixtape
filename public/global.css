@@ -145,3 +145,11 @@ a {
 a:visited {
 	color: var(--text);
 }
+
+input[type=text] {
+	background: none;
+	border: none;
+	font-weight: var(--default-weight);
+	color: var(--text);
+	font-family: "Dosis";
+}
