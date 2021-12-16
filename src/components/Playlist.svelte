@@ -4,6 +4,7 @@
   import Playlist from './../icons/Playlist.svelte';
   import New from './../icons/New.svelte';
   import MiniPlayer from './../components/MiniPlayer.svelte';
+  import Search from './../components/Search.svelte';
 
   let artwork_colors_value;
   let music_value;
@@ -50,6 +51,12 @@
     }
   }
 
+  let searching = false;
+
+  function toggleSearch() {
+    searching = !searching;
+  }
+
   let background;
 
   $: {
@@ -88,11 +95,17 @@
     </li>
   {/each}
   {#if $mode == 'edit'}
-    <li>
-      <button class="simple">
-        <New color={iconColor} width={'2rem'} height={'2rem'} />
-      </button>
-    </li>
+    {#if searching}
+      <li>
+        <Search />
+      </li>
+    {:else}
+      <li>
+        <button class="simple" on:click={toggleSearch}>
+          <New color={iconColor} width={'2rem'} height={'2rem'} />
+        </button>
+      </li>
+    {/if}
   {/if}
 </ul>
 
