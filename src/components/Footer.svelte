@@ -45,7 +45,7 @@
   }
 </script>
 
-<footer class={$queue.length > 0 ? 'full' : 'simple'} style={background}>
+<footer class="{$queue.length > 0 ? 'full' : 'mini'}" style={background}>
   {#if $mode == 'view'}
     <aside id="cta">
       <button class="call-to-action" on:click={changeToEditMode}>
@@ -63,19 +63,14 @@
 </footer>
 
 <style>
-  .simple {
+  .mini {
     display: grid;
     grid-template-rows: 1fr;
     grid-template-columns: 1fr 1fr;
     grid-template-areas:
       "about terms";
     align-items: center;
-    justify-content: center;
     height: 5rem;
-  }
-
-  .simple button {
-    display: block;
   }
 
   .full {

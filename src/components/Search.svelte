@@ -1,4 +1,5 @@
 <script>
+  import { onMount } from 'svelte';
   import { music, artworkColors, colorPreference, mixMeta, mode, authorized } from './../stores.js';
 
   import Search from './../icons/Search.svelte';
@@ -27,25 +28,13 @@
 
   let query = '';
   let results = {
-    songs: {data: []},
-    albums: {data: []},
-    artists: {data: []}
+    songs: {data: []}
   };
 
-  async function search() {
-    results = await music_value.api.search(`${query}`, { limit: 10, types: 'artists,albums,songs' });
-
-    console.log(results);
-  }
-
-  $: if (query.length > 0) {
-    search();
-  }
-
-  async function getArtwork(urlTemplate) {
-    let arr = urlTemplate.split('{w}x{h}');
-
-    return await arr[0] + '55x55cc.jpeg';
+  async function search(e) {
+    if (e.keyCode == 32) {
+      results = await music_value.api.search(`${query}`, { limit: 5, types: 'songs' });
+    }
   }
 
   function shorten(txt) {
@@ -62,27 +51,22 @@
   } else {
     iconColor = artwork_colors_value.LightVibrant;
   }
-
-  $: listItemShadow = `box-shadow: .05rem .05rem 0 ${artwork_colors_value.DarkVibrant || black}, -.05rem -.05rem 0 ${artwork_colors_value.LightMuted || white};`
 </script>
 
 <section>
   <header>
     <sub><Search width={'1.2rem'} height={'1.2rem'} color={iconColor} /></sub>
-    <input type="text" bind:value={query} placeholder="song, artist, or album name">
+    <input type="text" bind:value={query} on:keydown={search} placeholder="song name">
   </header>
   <ul class="results">
     {#each results.songs.data as song, index}
-    <li class="result" style={listItemShadow}>
-      {#await getArtwork(song.attributes.artwork.url)}
-      {:then src}
-        <section class="artwork">
-          <AddSongButton artwork={src} {song} />
+      <li class="result">
+        <h2>{shorten(song.attributes.name)}</h2>
+        <h3>{shorten(song.attributes.artistName)}</h3>
+        <section class="add-song">
+          <AddSongButton {song} />
         </section>
-      {/await}
-      <h2>{shorten(song.attributes.name)}</h2>
-      <h3>{shorten(song.attributes.artistName)}</h3>
-    </li>
+      </li>
     {/each}
   </ul>
 </section>
@@ -120,36 +104,33 @@
   }
 
   li {
-    margin: 1.5rem .5rem;
-    padding: .5rem;
-    background: var(--foreground);
+    margin: 1.5rem 0;
+    background: var(--background);
     color: var(--text);
   }
 
   .result {
     text-align: left;
     display: grid;
-    grid-template-columns: 22% 1fr;
+    grid-template-columns: 1fr auto;
     grid-template-rows: 1fr 1fr;
     grid-template-areas:
-      "art artist"
-      "art song";
+      "song add"
+      "artist add";
     align-items: center;
+    border-left: .5rem solid var(--text);
+    padding-left: .5rem;
   }
 
-  .artwork {
-    grid-area: art;
-  }
-
-  .artwork img {
-
+  .add-song {
+    grid-area: add;
   }
 
   .result h2 {
-    grid-area: artist;
+    grid-area: song;
   }
 
   .result h3 {
-    grid-area: song;
+    grid-area: artist;
   }
 </style>

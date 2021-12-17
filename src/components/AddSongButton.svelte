@@ -1,11 +1,13 @@
 <script>
   import New from './../icons/New.svelte';
 
-  import { artworkColors, music, queue } from './../stores.js';
+  import { setArtwork, getImageColors } from './../artwork.js';
+  import { artworkColors, music, queue, colorPreference } from './../stores.js';
 
   let artwork_colors_value;
   let music_value;
   let queue_value;
+  let color_preference_value;
 
   const unsubscribeArtworkColors = artworkColors.subscribe(value => {
     artwork_colors_value = value;
@@ -19,25 +21,40 @@
     queue_value = value;
   });
 
-  export let artwork;
+  const unsubscribeColorPreference = colorPreference.subscribe(value => {
+		color_preference_value = value;
+	});
+
   export let song;
 
-  function addSong() {
+  async function addSong() {
+    let obj = {
+			[song.attributes.playParams.kind]: song.attributes.playParams.id
+		};
 
+    if (queue_value.length > 0) {
+      await music_value.playLater(obj);
+    } else {
+      await music_value.setQueue(obj);
+      setArtwork(song.attributes.artwork.url);
+      getImageColors();
+    }
+
+    queue.set(music_value._player._queue.items);
   }
 
-  $: actionButtonColor = artwork_colors_value.DarkVibrant;
-
-  $: imageBackgroundOpaque = `width: 55px; height: 55px; background: linear-gradient(to right, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.85) 100%), url('${artwork}'); background-position: center;`;
+  let iconColor;
+  $: if (color_preference_value == 'light') {
+    iconColor = artwork_colors_value.DarkVibrant;
+  } else {
+    iconColor = artwork_colors_value.LightVibrant;
+  }
 </script>
 
-<button on:click={addSong} style={imageBackgroundOpaque}>
-  <New color={actionButtonColor} width={'1.5rem'} height={'1.5rem'} />
+<button class="simple" on:click={addSong}>
+  <New color={iconColor} width={'1.5rem'} height={'1.5rem'} />
 </button>
 
 <style>
-  button {
-    padding: .4rem;
-    background: #ffffff;
-  }
+
 </style>

@@ -17,6 +17,8 @@ export const authorized = writable(false);
 
 export const mode = writable('edit');
 
+export const artwork = writable('');
+
 export const artworkColors = writable({
 	DarkMuted: '#1e1e1e',
 	DarkVibrant: '#454545',

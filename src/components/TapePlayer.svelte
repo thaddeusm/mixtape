@@ -1,14 +1,17 @@
 <script>
 	import { onMount } from 'svelte';
 
+	import { setArtwork, getImageColors } from './../artwork.js';
+
 	import TapeCog from './../icons/TapeCog.svelte';
 	import Play from './../icons/Play.svelte';
 	import Pause from './../icons/Pause.svelte';
 	import Next from './../icons/Next.svelte';
 	import Previous from './../icons/Previous.svelte';
 
-	import { artworkColors, music, queue, queuePosition, authorized, playing, mixMeta } from './../stores.js';
+	import { artwork, artworkColors, music, queue, queuePosition, authorized, playing, mixMeta } from './../stores.js';
 
+	let artwork_value;
 	let artwork_colors_value;
 	let music_value;
 	let queue_value;
@@ -16,6 +19,10 @@
 	let authorized_value;
 	let playing_value;
 	let mix_meta_value;
+
+	const unsubscribeArtwork = artwork.subscribe(value => {
+		artwork_value = value;
+	});
 
 	const unsubscribeArtworkColors = artworkColors.subscribe(value => {
 		artwork_colors_value = value;
@@ -51,14 +58,16 @@
 	let interval = null;
 	let rotation = 0;
 
-	let artwork = '';
-
 	let durations = [];
 
 	$: if (playing_value) {
 		startInterval();
 	} else {
 		clearInterval(interval);
+	}
+
+	$: if (artwork_value !== '' && queue_position_value) {
+		setArtwork(queue_value[queue_position_value].attributes.artwork.url);
 	}
 
 	$: if (durations.length > 0) {
@@ -76,35 +85,10 @@
 
 	$: leftStyle = `border: ${portionPassed / 3 > 3 ? Math.floor(portionPassed) / 3 : 3}px solid black; transform: rotate(${rotation}deg)`;
 	$: rightStyle = `border: ${portionRemaining / 3 > 3 ? Math.floor(portionRemaining) / 3 : 3}px solid black; transform: rotate(${rotation}deg)`;
-	$: background = `background: linear-gradient(to right, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.6) 100%), url('${artwork}'); background-position: center; box-shadow: .2rem .2rem 0 ${artwork_colors_value.DarkVibrant || black}, -.2rem -.2rem 0 ${artwork_colors_value.LightMuted || white};`;
+	$: background = `background: linear-gradient(to right, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.6) 100%), url('${artwork_value}'); background-position: center; box-shadow: .2rem .2rem 0 ${artwork_colors_value.DarkVibrant || black}, -.2rem -.2rem 0 ${artwork_colors_value.LightMuted || white};`;
 
 	$: actionButtonColor = artwork_colors_value.DarkVibrant;
 	$: defaultButtonColor = artwork_colors_value.Muted;
-
-	async function getImageColors(url) {
-		let data = {
-			photoURL: url
-		};
-
-		let res;
-		try {
-			res = await fetch('/api/parseImageColors.js', {
-				method: 'POST',
-				mode: 'cors',
-				cache: 'no-cache',
-				credentials: 'same-origin',
-				headers: {
-				  'Content-Type': 'application/json',
-				  'cache-control': 'no-cache'
-				},
-				body: JSON.stringify(data)
-			});
-
-			artworkColors.set(await res.json());
-		} catch(err) {
-			console.log(err);
-		}
-	}
 
 	async function getMusic() {
 		let results = await music_value.api.library;
