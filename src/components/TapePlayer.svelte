@@ -78,7 +78,6 @@
 
 	$: if (queue_value.length) {
 		duration = totalDuration();
-
 	}
 
 	$: portionRemaining = (currentTime / duration) * 100;

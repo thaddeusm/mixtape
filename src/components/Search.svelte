@@ -32,9 +32,7 @@
   };
 
   async function search(e) {
-    if (e.keyCode == 32) {
-      results = await music_value.api.search(`${query}`, { limit: 5, types: 'songs' });
-    }
+    results = await music_value.api.search(`${query}`, { limit: 5, types: 'songs' });
   }
 
   function shorten(txt) {
