@@ -37,7 +37,15 @@ export const getImageColors = async () => {
 }
 
 export const setArtwork = (artworkUrl) => {
-  let arr = artworkUrl.split('{w}x{h}');
+  let arr;
+
+  if (artworkUrl.indexOf('{w}x{h}') == -1) {
+    arr = artworkUrl.split('2000x2000bb.jpg');
+  } else {
+    arr = artworkUrl.split('{w}x{h}');
+  }
 
   artwork.set(arr[0] + '500x500cc.jpeg');
+
+  console.log(artwork_value)
 }

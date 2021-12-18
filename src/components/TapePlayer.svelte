@@ -66,10 +66,6 @@
 		clearInterval(interval);
 	}
 
-	$: if (artwork_value !== '' && queue_position_value) {
-		setArtwork(queue_value[queue_position_value].attributes.artwork.url);
-	}
-
 	$: if (durations.length > 0) {
 		if (queue_position_value > 0) {
 			currentTime = durations.slice(0, queue_position_value).reduce((acc, currentValue) => {
@@ -80,12 +76,17 @@
 		}
 	}
 
+	$: if (queue_value.length) {
+		duration = totalDuration();
+
+	}
+
 	$: portionRemaining = (currentTime / duration) * 100;
 	$: portionPassed = 100 - portionRemaining;
 
 	$: leftStyle = `border: ${portionPassed / 3 > 3 ? Math.floor(portionPassed) / 3 : 3}px solid black; transform: rotate(${rotation}deg)`;
 	$: rightStyle = `border: ${portionRemaining / 3 > 3 ? Math.floor(portionRemaining) / 3 : 3}px solid black; transform: rotate(${rotation}deg)`;
-	$: background = `background: linear-gradient(to right, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.6) 100%), url('${artwork_value}'); background-position: center; box-shadow: .2rem .2rem 0 ${artwork_colors_value.DarkVibrant || black}, -.2rem -.2rem 0 ${artwork_colors_value.LightMuted || white};`;
+	$: background = `background: linear-gradient(to right, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.6) 100%), url('${artwork_value}'); background-position: center; box-shadow: .2rem .2rem 0 ${artwork_colors_value.DarkVibrant || 'black'}, -.2rem -.2rem 0 ${artwork_colors_value.LightMuted || 'white'};`;
 
 	$: actionButtonColor = artwork_colors_value.DarkVibrant;
 	$: defaultButtonColor = artwork_colors_value.Muted;
@@ -106,7 +107,7 @@
 		duration = await totalDuration();
 	}
 
-	async function totalDuration() {
+	function totalDuration() {
 		let total = 0;
 
 		for (let i=0; i<queue_value.length; i++) {
@@ -160,24 +161,30 @@
 		music_value.stop();
 	}
 
-	function next() {
-		music_value.changeToMediaAtIndex(queue_position_value + 1);
+	async function next() {
+		await music_value.changeToMediaAtIndex(queue_position_value + 1);
 
 		if (!playing_value) {
 			playing.set(true);
 		}
 
-		queuePosition.set(music_value._player._queue._position);
+		await queuePosition.set(music_value._player._queue._position);
+
+		await setArtwork(queue_value[queue_position_value].attributes.artwork.url);
+		await getImageColors();
 	}
 
-	function previous() {
-		music_value.changeToMediaAtIndex(queue_position_value - 1);
+	async function previous() {
+		await music_value.changeToMediaAtIndex(queue_position_value - 1);
 
 		if (!playing_value) {
 			playing.set(true);
 		}
 
-		queuePosition.set(music_value._player._queue._position);
+		await queuePosition.set(music_value._player._queue._position);
+
+		await setArtwork(queue_value[queue_position_value].attributes.artwork.url);
+		await getImageColors();
 	}
 
 	onMount(() => {
