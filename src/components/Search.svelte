@@ -34,15 +34,17 @@
   let timeout = null;
   let searching = false;
 
-  async function search(e) {
+  async function search(q) {
     clearTimeout(timeout);
 
     timeout = setTimeout(async () => {
         searching = true;
-        results = await music_value.api.search(`${query}`, { limit: 5, types: 'songs' });
+        results = await music_value.api.search(`${q}`, { limit: 5, types: 'songs' });
         searching = false;
     }, 1000);
   }
+
+  $: search(query);
 
   function shorten(txt) {
     if (txt.length > 22) {
@@ -63,7 +65,7 @@
 <section>
   <header>
     <sub><Search width={'1.2rem'} height={'1.2rem'} color={iconColor} /></sub>
-    <input type="text" bind:value={query} on:keydown={search} placeholder="song name">
+    <input type="text" bind:value={query} placeholder="song name">
   </header>
   <ul class="results">
     {#if searching}
