@@ -38,9 +38,7 @@
     clearTimeout(timeout);
 
     timeout = setTimeout(async () => {
-        searching = true;
         results = await music_value.api.search(`${query}`, { limit: 5, types: 'songs' });
-        searching = false;
     }, 1000);
   }
 
@@ -70,9 +68,6 @@
     <input type="text" bind:value={query} placeholder="song name">
   </header>
   <ul class="results">
-    {#if searching}
-      <li class="loading">...</li>
-    {/if}
     {#each results.songs.data as song, index}
       <li class="result">
         <h2>{shorten(song.attributes.name)}</h2>
