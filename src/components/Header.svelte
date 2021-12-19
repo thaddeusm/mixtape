@@ -94,6 +94,6 @@
   input[type=text] {
     font-size: 1.5rem;
     max-width: 235px;
-    min-width: 75px;
+    min-width: 90px;
   }
 </style>
