@@ -61,6 +61,8 @@
     <aside>
       <MiniPlayer />
     </aside>
+  {:else}
+    <!-- todo: share button -->
   {/if}
 </header>
 
@@ -92,5 +94,6 @@
   input[type=text] {
     font-size: 1.5rem;
     max-width: 235px;
+    min-width: 75px;
   }
 </style>

@@ -31,8 +31,17 @@
     songs: {data: []}
   };
 
+  let timeout = null;
+  let searching = false;
+
   async function search(e) {
-    results = await music_value.api.search(`${query}`, { limit: 5, types: 'songs' });
+    clearTimeout(timeout);
+
+    timeout = setTimeout(async () => {
+        searching = true;
+        results = await music_value.api.search(`${query}`, { limit: 5, types: 'songs' });
+        searching = false;
+    }, 1000);
   }
 
   function shorten(txt) {
@@ -57,6 +66,9 @@
     <input type="text" bind:value={query} on:keydown={search} placeholder="song name">
   </header>
   <ul class="results">
+    {#if searching}
+      <li class="loading">...</li>
+    {/if}
     {#each results.songs.data as song, index}
       <li class="result">
         <h2>{shorten(song.attributes.name)}</h2>
@@ -99,6 +111,7 @@
   .results {
     margin: 0 auto;
     padding: 1rem 0;
+    list-style: none;
   }
 
   li {
@@ -130,5 +143,10 @@
 
   .result h3 {
     grid-area: artist;
+  }
+
+  .loading {
+    text-align: center;
+    margin: 0;
   }
 </style>
