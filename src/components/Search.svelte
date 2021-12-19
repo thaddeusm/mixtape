@@ -34,17 +34,19 @@
   let timeout = null;
   let searching = false;
 
-  async function search(q) {
+  async function search() {
     clearTimeout(timeout);
 
     timeout = setTimeout(async () => {
         searching = true;
-        results = await music_value.api.search(`${q}`, { limit: 5, types: 'songs' });
+        results = await music_value.api.search(`${query}`, { limit: 5, types: 'songs' });
         searching = false;
     }, 1000);
   }
 
-  $: search(query);
+  $: if (query.length > 0) {
+    search();
+  }
 
   function shorten(txt) {
     if (txt.length > 22) {
