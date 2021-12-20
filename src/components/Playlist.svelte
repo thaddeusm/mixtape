@@ -1,5 +1,6 @@
 <script>
   import { artworkColors, music, queue, queuePosition, colorPreference, mode } from './../stores.js';
+  import { getArtwork } from './../artwork.js';
 
   import Playlist from './../icons/Playlist.svelte';
   import New from './../icons/New.svelte';
@@ -36,12 +37,6 @@
   const unsubscribeMode = mode.subscribe(value => {
     mode_value = value;
   });
-
-  async function getArtwork(urlTemplate) {
-    let arr = urlTemplate.split('{w}x{h}');
-
-    return await arr[0] + '55x55cc.jpeg';
-  }
 
   function shorten(txt) {
     if (txt.length > 22) {

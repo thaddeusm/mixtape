@@ -36,7 +36,7 @@ export const getImageColors = async () => {
   }
 }
 
-export const setArtwork = (artworkUrl) => {
+export const getArtwork = async (artworkUrl) => {
   let arr;
 
   if (artworkUrl.indexOf('{w}x{h}') == -1) {
@@ -45,7 +45,9 @@ export const setArtwork = (artworkUrl) => {
     arr = artworkUrl.split('{w}x{h}');
   }
 
-  artwork.set(arr[0] + '500x500cc.jpeg');
+  return arr[0] + '500x500cc.jpeg';
+}
 
-  console.log(artwork_value)
+export const setArtwork = async (artworkUrl) => {
+  artwork.set(await getArtwork(artworkUrl));
 }
