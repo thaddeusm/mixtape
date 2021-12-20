@@ -230,9 +230,7 @@
 	}
 
 	onMount(() => {
-		setTimeout(() => {
-			checkQueryParams();
-		}, 1000)
+		checkQueryParams();
 	});
 </script>
 
