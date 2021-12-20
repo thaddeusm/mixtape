@@ -1,4 +1,8 @@
 <script>
+  import { createEventDispatcher } from 'svelte';
+
+  const dispatch = createEventDispatcher();
+
   import New from './../icons/New.svelte';
 
   import { setArtwork, getImageColors } from './../artwork.js';
@@ -37,10 +41,11 @@
     } else {
       await music_value.setQueue(obj);
       await setArtwork(song.attributes.artwork.url);
-      getImageColors();
+      await getImageColors();
     }
 
     queue.set(music_value._player._queue.items);
+    dispatch('song-added');
   }
 
   let iconColor;

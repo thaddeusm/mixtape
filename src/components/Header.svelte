@@ -63,7 +63,7 @@
   {:else}
     {#if $mode == 'edit' && $authorized}
       <section class="title">
-        <input type="text" bind:value={$mixMeta.title} maxlength="24" style={dynamicWidth}>
+        <input type="text" bind:value={$mixMeta.title} maxlength="18" style={dynamicWidth}>
         <sup><Pencil width={'1rem'} height={'1rem'} color={iconColor} /></sup>
       </section>
     {:else}

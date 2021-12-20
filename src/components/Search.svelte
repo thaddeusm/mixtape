@@ -39,7 +39,7 @@
 
     timeout = setTimeout(async () => {
         results = await music_value.api.search(`${query}`, { limit: 10, types: 'songs' });
-    }, 500);
+    }, 750);
   }
 
   $: if (query.length > 0) {
@@ -52,6 +52,10 @@
     } else {
       return txt;
     }
+  }
+
+  function clearQuery() {
+    query = '';
   }
 
   let iconColor;
@@ -73,7 +77,7 @@
         <h2>{shorten(song.attributes.name)}</h2>
         <h3>{shorten(song.attributes.artistName)}</h3>
         <section class="add-song">
-          <AddSongButton {song} />
+          <AddSongButton {song} on:song-added={clearQuery} />
         </section>
       </li>
     {/each}
