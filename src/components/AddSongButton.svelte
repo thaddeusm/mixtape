@@ -36,7 +36,7 @@
       await music_value.playLater(obj);
     } else {
       await music_value.setQueue(obj);
-      setArtwork(song.attributes.artwork.url);
+      await setArtwork(song.attributes.artwork.url);
       getImageColors();
     }
 

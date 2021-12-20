@@ -140,7 +140,7 @@
 
 					queue.set(music_value._player._queue.items);
 
-					setArtwork(queue_value[0].attributes.artwork.url);
+					await setArtwork(queue_value[0].attributes.artwork.url);
 					getImageColors();
 				}
 
