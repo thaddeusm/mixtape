@@ -131,6 +131,8 @@
 
 					if (i == 0) {
 						await music_value.setQueue(obj);
+						setArtwork(song.attributes.artwork.url);
+			      getImageColors();
 					} else {
 						await music_value.playLater(obj);
 					}
