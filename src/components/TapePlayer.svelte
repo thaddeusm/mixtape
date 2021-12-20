@@ -89,7 +89,7 @@
 
 	// update query params and localStorage dynamically
 	$: {
-		if ('URLSearchParams' in window && mode_value == 'edit') {
+		if ('URLSearchParams' in window && mode_value == 'edit' && queue_value.length > 0) {
 	    let searchParams = new URLSearchParams(window.location.search)
 	    searchParams.set('title', mix_meta_value.title);
 			searchParams.set('description', mix_meta_value.description);
