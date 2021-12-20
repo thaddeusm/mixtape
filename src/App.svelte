@@ -128,7 +128,7 @@
 				</p>
 			</section>
 		{:else}
-			<TapePlayer />
+			<TapePlayer playable={true} />
 			<Description />
 			<Playlist />
 		{/if}

@@ -60,61 +60,32 @@
   }
 </script>
 
-<footer class="{$mode == 'edit' ? 'mini' : 'full'}" style={background}>
-  {#if $mode !== 'edit'}
-    <aside id="cta">
-      <button class="call-to-action" on:click={changeToEditMode}>
-        make your own
+{#if $mode !== 'edit' || $queue.length > 0}
+  <footer style={background}>
+    {#if $mode !== 'edit'}
+      <aside id="cta">
+        <button class="call-to-action" on:click={changeToEditMode}>
+          create a mixtape
+        </button>
+      </aside>
+    {/if}
+    {#if $queue.length > 0}
+      <button class="simple icon" on:click={jumpToTop}>
+        <UpArrow width={'1.15rem'} height={'1.15rem'} color={'#ffffff'} />
       </button>
-    </aside>
-  {/if}
-  <button class="simple" style={color} id="about">about</button>
-  <button class="simple" style={color} id="terms">terms</button>
-  {#if $queue.length > 0}
-    <button class="simple icon" on:click={jumpToTop}>
-      <UpArrow width={'1.15rem'} height={'1.15rem'} color={'#ffffff'} />
-    </button>
-  {/if}
-</footer>
+    {/if}
+  </footer>
+{/if}
 
 <style>
-  .mini {
+  footer {
+    height: 8rem;
     display: grid;
-    grid-template-rows: 1fr;
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas:
-      "about terms";
-    align-items: center;
-    height: 5rem;
-  }
-
-  .full {
-    display: grid;
-    grid-template-rows: auto 1fr;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-areas:
-      "cta cta cta"
-      "about icon terms";
     align-items: center;
     justify-content: center;
-    height: 10rem;
-    padding: 1rem 0 0 0;
   }
 
-  #about {
-    grid-area: about;
-  }
-
-  #terms {
-    grid-area: terms;
-  }
-
-  .icon {
-    grid-area: icon;
-  }
-
-  #cta {
-    grid-area: cta;
-    text-align: center;
+  .call-to-action {
+    background: var(--background);
   }
 </style>

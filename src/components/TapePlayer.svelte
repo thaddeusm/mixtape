@@ -57,6 +57,8 @@
 		mode_value = value;
 	});
 
+	export let playable = false;
+
 	let duration = 100;
 	let currentTime = 0;
 
@@ -230,7 +232,7 @@
 	}
 
 	onMount(() => {
-		checkQueryParams();
+		if (playable) checkQueryParams();
 	});
 </script>
 

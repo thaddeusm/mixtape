@@ -1,5 +1,6 @@
 <script>
   import MiniPlayer from './../components/MiniPlayer.svelte';
+  import Modal from './../components/Modal.svelte';
   import Pencil from './../icons/Pencil.svelte';
   import { artworkColors, colorPreference, mixMeta, mode, authorized } from './../stores.js';
 
@@ -28,6 +29,12 @@
     background = `background: ${artwork_colors_value.DarkVibrant}`;
   }
 
+  let modalOpen = false;
+
+  function toggleModal() {
+    modalOpen = !modalOpen;
+  }
+
   function shorten(txt) {
     if (txt.length > 20) {
       return txt.slice(0, 20) + '...';
@@ -49,20 +56,40 @@
 <svelte:window bind:scrollY={y}></svelte:window>
 
 <header style={background}>
-  {#if $mode == 'edit' && $authorized}
-    <section class="title">
-      <input type="text" bind:value={$mixMeta.title} maxlength="24" style={dynamicWidth}>
-      <sup><Pencil width={'1rem'} height={'1rem'} color={iconColor} /></sup>
-    </section>
+  {#if modalOpen}
+    <h2 class="title">
+      About Mixtape
+    </h2>
   {:else}
-    <h2 class="title">{shorten($mixMeta.title)}</h2>
+    {#if $mode == 'edit' && $authorized}
+      <section class="title">
+        <input type="text" bind:value={$mixMeta.title} maxlength="24" style={dynamicWidth}>
+        <sup><Pencil width={'1rem'} height={'1rem'} color={iconColor} /></sup>
+      </section>
+    {:else}
+      <h2 class="title">{shorten($mixMeta.title)}</h2>
+    {/if}
   {/if}
   {#if y > 300}
     <aside>
       <MiniPlayer />
     </aside>
+  {:else}
+    <aside>
+      <button class="simple" on:click={toggleModal}>
+        {#if modalOpen}
+          X
+        {:else}
+          ?
+        {/if}
+      </button>
+    </aside>
   {/if}
 </header>
+
+{#if modalOpen}
+  <Modal />
+{/if}
 
 <style>
   header {
@@ -89,11 +116,16 @@
     height: 100%;
     display: grid;
     align-items: center;
+    justify-content: center;
   }
 
   input[type=text] {
     font-size: 1.5rem;
     max-width: 235px;
     min-width: 100px;
+  }
+
+  .simple {
+    font-size: 1.5rem;
   }
 </style>
