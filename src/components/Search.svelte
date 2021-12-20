@@ -65,7 +65,7 @@
 <section>
   <header>
     <sub><Search width={'1.2rem'} height={'1.2rem'} color={iconColor} /></sub>
-    <input type="text" bind:value={query} placeholder="song name">
+    <input type="text" bind:value={query} placeholder="search by song title">
   </header>
   <ul class="results">
     {#each results.songs.data as song, index}
