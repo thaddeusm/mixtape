@@ -129,7 +129,12 @@
 						"song": songs[i]
 					};
 
-					await music_value.setQueue(obj);
+					if (i == 0) {
+						await music_value.setQueue(obj);
+					} else {
+						await music_value.playLater(obj);
+					}
+
 					queue.set(music_value._player._queue.items);
 				}
 
