@@ -61,8 +61,6 @@
     <aside>
       <MiniPlayer />
     </aside>
-  {:else}
-    <!-- todo: share button -->
   {/if}
 </header>
 
@@ -76,7 +74,7 @@
     display: grid;
     grid-template-columns: 7% 70% 16% 7%;
     grid-template-rows: 1fr;
-    grid-template-areas: ". title MiniPlayer .";
+    grid-template-areas: ". title actions .";
     z-index: 100;
     justify-content: center;
     align-items: center;
@@ -87,8 +85,10 @@
   }
 
   aside {
-    grid-area: MiniPlayer;
+    grid-area: actions;
     height: 100%;
+    display: grid;
+    align-items: center;
   }
 
   input[type=text] {

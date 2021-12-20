@@ -32,8 +32,8 @@
     underline = `border-bottom: 1px solid ${artwork_colors_value.LightVibrant}`;
     color = `color: ${artwork_colors_value.LightVibrant}`;
   } else {
-    underline = `border-bottom: 1px solid ${artwork_colors_value.LightVibrant}`;
-    color = `color: ${artwork_colors_value.LightVibrant}`;
+    underline = `border-bottom: 1px solid ${artwork_colors_value.LightMuted}`;
+    color = `color: ${artwork_colors_value.LightMuted}`;
   }
 
   function jumpToTop() {

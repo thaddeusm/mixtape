@@ -9,7 +9,7 @@
 	import Next from './../icons/Next.svelte';
 	import Previous from './../icons/Previous.svelte';
 
-	import { artwork, artworkColors, music, queue, queuePosition, authorized, playing, mixMeta } from './../stores.js';
+	import { artwork, artworkColors, music, queue, queuePosition, authorized, playing, mixMeta, mode } from './../stores.js';
 
 	let artwork_value;
 	let artwork_colors_value;
@@ -19,6 +19,7 @@
 	let authorized_value;
 	let playing_value;
 	let mix_meta_value;
+	let mode_value;
 
 	const unsubscribeArtwork = artwork.subscribe(value => {
 		artwork_value = value;
@@ -52,6 +53,10 @@
 		mix_meta_value = value;
 	});
 
+	const unsubscribeMode = mode.subscribe(value => {
+		mode_value = value;
+	});
+
 	let duration = 100;
 	let currentTime = 0;
 
@@ -80,6 +85,23 @@
 		duration = totalDuration();
 	}
 
+	$: {
+		if ('URLSearchParams' in window && mode_value == 'edit') {
+	    let searchParams = new URLSearchParams(window.location.search)
+	    searchParams.set('title', mix_meta_value.title);
+			searchParams.set('description', mix_meta_value.description);
+
+			let songs = [];
+			for (let i=0; i<queue_value.length; i++) {
+				songs.push(queue_value[i].attributes.playParams.id);
+			}
+			searchParams.set('songs', JSON.stringify(songs));
+
+	    let newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
+	    history.pushState(null, '', newRelativePathQuery);
+		}
+	}
+
 	$: portionRemaining = (currentTime / duration) * 100;
 	$: portionPassed = 100 - portionRemaining;
 
@@ -90,20 +112,32 @@
 	$: actionButtonColor = artwork_colors_value.DarkVibrant;
 	$: defaultButtonColor = artwork_colors_value.Muted;
 
-	async function getMusic() {
-		let results = await music_value.api.library;
+	async function checkQueryParams() {
+		if ('URLSearchParams' in window && mode_value !== 'edit') {
+			let params = new URLSearchParams(window.location.search);
 
-		await getImageColors(artwork);
+			if (params.get('title') && params.get('description') && params.get('songs')) {
+				mixMeta.set({
+					title: params.get('title'),
+					description: params.get('description')
+				});
 
-		let obj = {
-			[track.kind]: track.id
-		};
+				let songs = JSON.parse(params.get('songs'));
 
-		await music_value.setQueue(obj);
+				for (let i=0; i<songs.length; i++) {
+					let obj = {
+						"song": songs[i]
+					};
 
-		queue.set(music_value._player._queue.items);
+					await music_value.setQueue(obj);
+					queue.set(music_value._player._queue.items);
+				}
 
-		duration = await totalDuration();
+				duration = await totalDuration();
+			} else {
+				mode.set('edit');
+			}
+		}
 	}
 
 	function totalDuration() {
@@ -187,7 +221,7 @@
 	}
 
 	onMount(() => {
-		// await getMusic();
+		checkQueryParams();
 	});
 </script>
 

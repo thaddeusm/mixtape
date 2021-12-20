@@ -43,9 +43,13 @@
   p {
     text-align: left;
     line-height: 1.5;
-    margin: 3% 7% 15% 7%;
+    margin: 15% 7%;
     border: none;
     outline: none;
+  }
+
+  p[contenteditable="true"] {
+    margin: 3% 7% 15% 7%;
   }
 
   .icon {

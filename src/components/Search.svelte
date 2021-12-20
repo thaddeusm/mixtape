@@ -39,7 +39,7 @@
 
     timeout = setTimeout(async () => {
         results = await music_value.api.search(`${query}`, { limit: 10, types: 'songs' });
-    }, 1000);
+    }, 500);
   }
 
   $: if (query.length > 0) {

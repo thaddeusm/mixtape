@@ -15,7 +15,7 @@ export const mixMeta = writable({
 
 export const authorized = writable(false);
 
-export const mode = writable('edit');
+export const mode = writable('play');
 
 export const artwork = writable('');
 
