@@ -63,7 +63,8 @@
 	}
 
   async function skipTo() {
-    music_value.changeToMediaAtIndex(index);
+    await music_value.changeToMediaAtIndex(index);
+    queuePosition.set(music_value._player._queue._position);
 
 		if (!playing_value) {
 			playing.set(true);
@@ -71,8 +72,6 @@
 
     await setArtwork(queue_value[index].attributes.artwork.url);
     await getImageColors();
-
-		queuePosition.set(music_value._player._queue._position);
   }
 </script>
 

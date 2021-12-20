@@ -153,6 +153,7 @@
 
 	function totalDuration() {
 		let total = 0;
+		durations = [];
 
 		for (let i=0; i<queue_value.length; i++) {
 			let item = queue_value[i];
