@@ -6,7 +6,7 @@
 	import Playlist from './components/Playlist.svelte';
 	import Footer from './components/Footer.svelte';
 
-	import { artworkColors, music, authorized, colorPreference } from './stores.js';
+	import { artworkColors, music, authorized, colorPreference, mixMeta } from './stores.js';
 
 	let artwork_colors_value;
 	let music_value;
@@ -104,6 +104,15 @@
 <svelte:head>
 	<meta name="theme-color" content={artwork_colors_value.LightVibrant} media="(prefers-color-scheme: light)">
 	<meta name="theme-color" content={artwork_colors_value.DarkVibrant} media="(prefers-color-scheme: dark)">
+	{#if $mixMeta.title !== 'Mixtape Title'}
+		<title>
+			 Mixtape | {$mixMeta.title}
+		</title>
+	{:else}
+		<title>
+			Mixtape
+		</title>
+	{/if}
 </svelte:head>
 
 <Header />
