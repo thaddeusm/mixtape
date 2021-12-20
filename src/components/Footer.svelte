@@ -1,7 +1,7 @@
 <script>
   import UpArrow from './../icons/UpArrow.svelte';
 
-  import { artworkColors, colorPreference, mixMeta, mode, queue } from './../stores.js';
+  import { artworkColors, colorPreference, mixMeta, mode, queue, queuePosition, artwork } from './../stores.js';
 
   let artwork_colors_value;
   let color_preference_value;
@@ -42,10 +42,25 @@
 
   function changeToEditMode() {
     mode.set('edit');
+    mixMeta.set({
+    	'title': 'Mixtape Title',
+    	'description': 'Mixtape description...'
+    });
+    queue.set([]);
+    queuePosition.set(0);
+    artworkColors.set({
+    	DarkMuted: '#1e1e1e',
+    	DarkVibrant: '#454545',
+    	LightMuted: '#ffffff',
+    	LightVibrant: '#efefef',
+    	Muted: '#90a4ae',
+    	Vibrant: '#cfd8dc'
+    });
+    artwork.set('');
   }
 </script>
 
-<footer class="{$queue.length > 0 ? 'full' : 'mini'}" style={background}>
+<footer class="{$mode == 'edit' ? 'mini' : 'full'}" style={background}>
   {#if $mode !== 'edit'}
     <aside id="cta">
       <button class="call-to-action" on:click={changeToEditMode}>

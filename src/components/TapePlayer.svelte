@@ -85,6 +85,7 @@
 		duration = totalDuration();
 	}
 
+	// update query params and localStorage dynamically
 	$: {
 		if ('URLSearchParams' in window && mode_value == 'edit') {
 	    let searchParams = new URLSearchParams(window.location.search)
@@ -131,13 +132,14 @@
 
 					if (i == 0) {
 						await music_value.setQueue(obj);
-						setArtwork(song.attributes.artwork.url);
-			      getImageColors();
 					} else {
 						await music_value.playLater(obj);
 					}
 
 					queue.set(music_value._player._queue.items);
+
+					setArtwork(queue_value[0].attributes.artwork.url);
+					getImageColors();
 				}
 
 				duration = await totalDuration();
@@ -228,7 +230,9 @@
 	}
 
 	onMount(() => {
-		checkQueryParams();
+		setTimeout(() => {
+			checkQueryParams();
+		}, 1000)
 	});
 </script>
 
