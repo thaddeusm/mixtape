@@ -113,6 +113,7 @@
   ul {
     margin: 0 auto;
     padding: 1rem 0;
+    transition: background .5s ease-in!important;
   }
 
   li {

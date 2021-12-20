@@ -105,6 +105,7 @@
     z-index: 100;
     justify-content: center;
     align-items: center;
+    transition: background .5s ease-in;
   }
 
   .title {

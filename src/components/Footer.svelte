@@ -83,6 +83,7 @@
     display: grid;
     align-items: center;
     justify-content: center;
+    transition: background .5s ease-in;
   }
 
   .call-to-action {

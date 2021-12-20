@@ -333,6 +333,7 @@
 		align-items: center;
 		justify-content: center;
 		background-repeat: no-repeat;
+		transition: box-shadow .5s ease-in;
 	}
 
 	aside {
