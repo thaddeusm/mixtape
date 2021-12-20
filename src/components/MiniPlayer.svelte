@@ -4,6 +4,7 @@
   import Play from './../icons/Play.svelte';
   import Pause from './../icons/Pause.svelte';
   import { artworkColors, music, queue, queuePosition, authorized, playing } from './../stores.js';
+  import { setArtwork } from './../artwork';
 
   export let artwork = null;
   export let secondary = false;
@@ -67,6 +68,8 @@
 		if (!playing_value) {
 			playing.set(true);
 		}
+
+    setArtwork(queue_value[index].attributes.artwork.url);
 
 		queuePosition.set(music_value._player._queue._position);
   }
