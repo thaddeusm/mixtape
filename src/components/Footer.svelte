@@ -46,7 +46,7 @@
 </script>
 
 <footer class="{$queue.length > 0 ? 'full' : 'mini'}" style={background}>
-  {#if $mode == 'view'}
+  {#if $mode !== 'edit'}
     <aside id="cta">
       <button class="call-to-action" on:click={changeToEditMode}>
         make your own
