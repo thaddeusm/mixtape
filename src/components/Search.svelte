@@ -36,11 +36,11 @@
     clearTimeout(timeout);
 
     timeout = setTimeout(async () => {
-        let res;
-        // results = await music_value.api.music(`${query}`, { limit: 10, types: 'songs' });
-        res = await music_value.api.music(`v1/catalog/us/search?term=${query}&limit=10&types=songs`);
-        results = await res.data.results.songs.data;
-        console.log(results)
+        if (query !== '') {
+          let res;
+          res = await music_value.api.music(`v1/catalog/us/search?term=${query}&limit=10&types=songs`);
+          results = await res.data.results.songs.data;
+        }
     }, 750);
   }
 

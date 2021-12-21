@@ -74,7 +74,6 @@
 	}
 
 	$: if (durations.length > 0) {
-		console.log(durations)
 		if (queue_position_value > 0) {
 			currentTime = durations.slice(0, queue_position_value).reduce((acc, currentValue) => {
 				return acc + currentValue;

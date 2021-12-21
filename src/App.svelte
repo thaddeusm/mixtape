@@ -89,7 +89,6 @@
 		initialized = await initalizeMusicKit();
 
 		if (initialized) {
-			console.log(music_value)
 			if (music_value.isAuthorized) {
 				authorized.set(true);
 			} else {
