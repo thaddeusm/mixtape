@@ -27,7 +27,6 @@
 
 <style>
   aside {
-    display: fixed;
     top: 4rem;
     background: var(--background);
     color: var(--text);

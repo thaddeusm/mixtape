@@ -4,6 +4,7 @@
   const dispatch = createEventDispatcher();
 
   import New from './../icons/New.svelte';
+  import TapeCog from './../icons/TapeCog.svelte';
 
   import { setArtwork, getImageColors } from './../artwork.js';
   import { artworkColors, music, queue, colorPreference } from './../stores.js';
@@ -30,8 +31,10 @@
 	});
 
   export let song;
+  let loading;
 
   async function addSong() {
+    loading = true;
     let obj = {
 			[song.attributes.playParams.kind]: song.attributes.playParams.id
 		};
@@ -45,6 +48,7 @@
     }
 
     queue.set(music_value._player._queue.items);
+    loading = false;
     dispatch('song-added');
   }
 
@@ -56,10 +60,22 @@
   }
 </script>
 
-<button class="simple" on:click={addSong}>
-  <New color={iconColor} width={'1.5rem'} height={'1.5rem'} />
+<button class="simple" on:click={addSong} class:loading>
+  {#if loading}
+    <TapeCog />
+  {:else}
+    <New color={iconColor} width={'1.5rem'} height={'1.5rem'} />
+  {/if}
 </button>
 
 <style>
+  button {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
 
+  .loading {
+    transform: rotate(180deg);
+    transition: transform 1.75s;
+  }
 </style>

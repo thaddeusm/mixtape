@@ -46,12 +46,6 @@
     }
   }
 
-  let searching = false;
-
-  function toggleSearch() {
-    searching = !searching;
-  }
-
   let background;
 
   $: {
@@ -90,17 +84,9 @@
     </li>
   {/each}
   {#if $mode == 'edit'}
-    {#if searching}
-      <li>
-        <Search />
-      </li>
-    {:else}
-      <li>
-        <button class="simple" on:click={toggleSearch}>
-          <New color={iconColor} width={'2rem'} height={'2rem'} />
-        </button>
-      </li>
-    {/if}
+    <li>
+      <Search />
+    </li>
   {/if}
 </ul>
 

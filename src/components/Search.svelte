@@ -54,8 +54,11 @@
     }
   }
 
-  function clearQuery() {
+  function clearSearch() {
     query = '';
+    results = {
+      songs: {data: []}
+    };
   }
 
   let iconColor;
@@ -77,7 +80,7 @@
         <h2>{shorten(song.attributes.name)}</h2>
         <h3>{shorten(song.attributes.artistName)}</h3>
         <section class="add-song">
-          <AddSongButton {song} on:song-added={clearQuery} />
+          <AddSongButton {song} on:song-added={clearSearch} />
         </section>
       </li>
     {/each}

@@ -1,6 +1,6 @@
 <script>
   import MiniPlayer from './../components/MiniPlayer.svelte';
-  import Modal from './../components/Modal.svelte';
+  import About from './../components/About.svelte';
   import Pencil from './../icons/Pencil.svelte';
   import { artworkColors, colorPreference, mixMeta, mode, authorized } from './../stores.js';
 
@@ -56,19 +56,13 @@
 <svelte:window bind:scrollY={y}></svelte:window>
 
 <header style={background}>
-  {#if modalOpen}
-    <h2 class="title">
-      About Mixtape
-    </h2>
+  {#if $mode == 'edit' && $authorized}
+    <section class="title">
+      <input type="text" bind:value={$mixMeta.title} maxlength="18" style={dynamicWidth}>
+      <sup><Pencil width={'1rem'} height={'1rem'} color={iconColor} /></sup>
+    </section>
   {:else}
-    {#if $mode == 'edit' && $authorized}
-      <section class="title">
-        <input type="text" bind:value={$mixMeta.title} maxlength="18" style={dynamicWidth}>
-        <sup><Pencil width={'1rem'} height={'1rem'} color={iconColor} /></sup>
-      </section>
-    {:else}
-      <h2 class="title">{shorten($mixMeta.title)}</h2>
-    {/if}
+    <h2 class="title">{shorten($mixMeta.title)}</h2>
   {/if}
   {#if y > 300}
     <aside>
@@ -88,7 +82,7 @@
 </header>
 
 {#if modalOpen}
-  <Modal />
+  <About />
 {/if}
 
 <style>
