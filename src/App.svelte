@@ -54,7 +54,7 @@
 	}
 
 	async function initalizeMusicKit() {
-		MusicKit.configure({
+		await MusicKit.configure({
 		    developerToken: await getToken(),
 				app: {
 		      name: 'Mixtape Message',
@@ -89,6 +89,7 @@
 		initialized = await initalizeMusicKit();
 
 		if (initialized) {
+			console.log(music_value)
 			if (music_value.isAuthorized) {
 				authorized.set(true);
 			} else {

@@ -48,6 +48,18 @@ export const getArtwork = async (artworkUrl) => {
   return arr[0] + '500x500cc.jpeg';
 }
 
+export const getThumbnail = async (artworkUrl) => {
+  let arr;
+
+  if (artworkUrl.indexOf('{w}x{h}') == -1) {
+    arr = artworkUrl.split('2000x2000bb.jpg');
+  } else {
+    arr = artworkUrl.split('{w}x{h}');
+  }
+
+  return arr[0] + '55x55cc.jpeg';
+}
+
 export const setArtwork = async (artworkUrl) => {
   artwork.set(await getArtwork(artworkUrl));
 }

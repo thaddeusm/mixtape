@@ -47,7 +47,7 @@
       await getImageColors();
     }
 
-    queue.set(music_value._player._queue.items);
+    queue.set(music_value.queue.items);
     loading = false;
     dispatch('song-added');
   }

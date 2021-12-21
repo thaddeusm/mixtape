@@ -27,9 +27,7 @@
   });
 
   let query = '';
-  let results = {
-    songs: {data: []}
-  };
+  let results = [];
 
   let timeout = null;
   let searching = false;
@@ -38,7 +36,11 @@
     clearTimeout(timeout);
 
     timeout = setTimeout(async () => {
-        results = await music_value.api.search(`${query}`, { limit: 10, types: 'songs' });
+        let res;
+        // results = await music_value.api.music(`${query}`, { limit: 10, types: 'songs' });
+        res = await music_value.api.music(`v1/catalog/us/search?term=${query}&limit=10&types=songs`);
+        results = await res.data.results.songs.data;
+        console.log(results)
     }, 750);
   }
 
@@ -56,9 +58,7 @@
 
   function clearSearch() {
     query = '';
-    results = {
-      songs: {data: []}
-    };
+    results = [];
   }
 
   let iconColor;
@@ -75,7 +75,7 @@
     <input type="text" bind:value={query} placeholder="search by song title">
   </header>
   <ul class="results">
-    {#each results.songs.data as song, index}
+    {#each results as song, index}
       <li class="result">
         <h2>{shorten(song.attributes.name)}</h2>
         <h3>{shorten(song.attributes.artistName)}</h3>

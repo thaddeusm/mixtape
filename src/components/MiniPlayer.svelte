@@ -64,7 +64,7 @@
 
   async function skipTo() {
     await music_value.changeToMediaAtIndex(index);
-    queuePosition.set(music_value._player._queue._position);
+    queuePosition.set(music_value.queue.position);
 
 		if (!playing_value) {
 			playing.set(true);

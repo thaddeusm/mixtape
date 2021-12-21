@@ -74,6 +74,7 @@
 	}
 
 	$: if (durations.length > 0) {
+		console.log(durations)
 		if (queue_position_value > 0) {
 			currentTime = durations.slice(0, queue_position_value).reduce((acc, currentValue) => {
 				return acc + currentValue;
@@ -138,7 +139,7 @@
 						await music_value.playLater(obj);
 					}
 
-					queue.set(music_value._player._queue.items);
+					queue.set(music_value.queue.items);
 
 					await setArtwork(queue_value[0].attributes.artwork.url);
 					await getImageColors();
@@ -171,7 +172,7 @@
 		interval = setInterval(() => {
 			currentTime++;
 
-			queuePosition.set(music_value._player._queue._position);
+			queuePosition.set(music_value.queue.position);
 
 			if (currentTime >= duration) {
 				stop();
@@ -213,7 +214,7 @@
 			playing.set(true);
 		}
 
-		await queuePosition.set(music_value._player._queue._position);
+		await queuePosition.set(music_value.queue.position);
 
 		await setArtwork(queue_value[queue_position_value].attributes.artwork.url);
 		await getImageColors();
@@ -226,7 +227,7 @@
 			playing.set(true);
 		}
 
-		await queuePosition.set(music_value._player._queue._position);
+		await queuePosition.set(music_value.queue.position);
 
 		await setArtwork(queue_value[queue_position_value].attributes.artwork.url);
 		await getImageColors();

@@ -1,9 +1,9 @@
 <script>
-  import { artworkColors, music, queue, queuePosition, colorPreference, mode } from './../stores.js';
-  import { getArtwork } from './../artwork.js';
+  import { artworkColors, music, queue, queuePosition, colorPreference, mode, playing } from './../stores.js';
+  import { getThumbnail } from './../artwork.js';
 
   import Playlist from './../icons/Playlist.svelte';
-  import New from './../icons/New.svelte';
+  import Remove from './../icons/Remove.svelte';
   import MiniPlayer from './../components/MiniPlayer.svelte';
   import Search from './../components/Search.svelte';
 
@@ -46,6 +46,11 @@
     }
   }
 
+  async function removeTrack(index) {
+    await music_value.queue.remove(index);
+    queue.set(music_value.queue.items);
+  }
+
   let background;
 
   $: {
@@ -73,7 +78,7 @@
 <ul style={listGradient}>
   {#each $queue as item, index}
     <li class="queue-item" style={listItemShadow}>
-      {#await getArtwork(item.artworkURL)}
+      {#await getThumbnail(item.artworkURL)}
       {:then src}
         <section class="artwork">
           <MiniPlayer artwork={src} secondary={$queuePosition !== index} {index} />
@@ -81,6 +86,13 @@
       {/await}
       <h2>{shorten(item.attributes.name)}</h2>
       <h3>{shorten(item.attributes.artistName)}</h3>
+      {#if $mode == 'edit'}
+        <section class="remove">
+          <button class="simple" on:click={() => {removeTrack(index)}} disabled={$playing && $queuePosition == index}>
+            <Remove color={iconColor} width={'1.5rem'} height={'1.5rem'} />
+          </button>
+        </section>
+      {/if}
     </li>
   {/each}
   {#if $mode == 'edit'}
@@ -112,11 +124,11 @@
   .queue-item {
     text-align: left;
     display: grid;
-    grid-template-columns: 22% 1fr;
+    grid-template-columns: 22% 1fr auto;
     grid-template-rows: 1fr 1fr;
     grid-template-areas:
-      "art artist"
-      "art song";
+      "art artist remove"
+      "art song remove";
     align-items: center;
   }
 
@@ -130,5 +142,10 @@
 
   li h3 {
     grid-area: song;
+  }
+
+  .remove {
+    grid-area: remove;
+    padding-right: .5rem;
   }
 </style>
