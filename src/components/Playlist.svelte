@@ -13,6 +13,7 @@
   let queue_position_value;
 	let color_preference_value;
   let mode_value;
+  let playing_value;
 
   const unsubscribeArtworkColors = artworkColors.subscribe(value => {
     artwork_colors_value = value;
@@ -38,6 +39,10 @@
     mode_value = value;
   });
 
+  const unsubscribePlaying = playing.subscribe(value => {
+    playing_value = value;
+  });
+
   function shorten(txt) {
     if (txt.length > 22) {
       return txt.slice(0, 22) + '...';
@@ -59,6 +64,14 @@
     } else {
       background = '#ffffff';
     }
+  }
+
+  let nowPlayingItemIndex;
+
+  $: if (playing_value || queue_position_value) {
+    setTimeout(() => {
+      nowPlayingItemIndex = music_value.nowPlayingItemIndex;
+    }, 1000);
   }
 
   $: listGradient = `background: ${artwork_colors_value.LightVibrant}; background: -webkit-linear-gradient(2deg, ${artwork_colors_value.DarkVibrant}, 10%, ${background}); background: -moz-linear-gradient(2deg, ${artwork_colors_value.DarkVibrant}, 10%, ${background}); background: linear-gradient(2deg, ${artwork_colors_value.DarkVibrant}, 10%, ${background})`;
@@ -88,7 +101,7 @@
       <h3>{shorten(item.attributes.artistName)}</h3>
       {#if $mode == 'edit'}
         <section class="remove">
-          <button class="simple" on:click={() => {removeTrack(index)}} disabled={$playing && $queuePosition == index}>
+          <button class="simple" on:click={() => {removeTrack(index)}} disabled={nowPlayingItemIndex == index}>
             <Remove color={iconColor} width={'1.5rem'} height={'1.5rem'} />
           </button>
         </section>
