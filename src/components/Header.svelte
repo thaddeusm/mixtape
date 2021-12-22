@@ -32,6 +32,7 @@
   let modalOpen = false;
 
   function toggleModal() {
+    window.scrollTo(0, 0);
     modalOpen = !modalOpen;
   }
 

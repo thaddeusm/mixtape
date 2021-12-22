@@ -52,7 +52,7 @@
   }
 
   async function removeTrack(index) {
-    await music_value.pause();
+    await music_value.stop();
     await music_value.queue.reset();
     await music_value.queue.remove(index);
     await queue.set(music_value.queue.items);
