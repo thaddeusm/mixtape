@@ -58,7 +58,7 @@
     await queue.set(music_value.queue.items);
     await queuePosition.set(0);
 
-    if (typeof queue_value[queue_position_value] == Object) {
+    if (typeof queue_value[queue_position_value] == 'object') {
       await setArtwork(queue_value[queue_position_value].attributes.artwork.url);
       await getImageColors();
     } else {
