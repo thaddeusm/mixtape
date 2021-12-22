@@ -73,9 +73,4 @@
     width: 1.5rem;
     height: 1.5rem;
   }
-
-  .loading {
-    transform: rotate(180deg);
-    transition: transform 2s;
-  }
 </style>

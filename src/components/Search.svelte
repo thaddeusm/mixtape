@@ -3,6 +3,7 @@
   import { music, artworkColors, colorPreference, mixMeta, mode, authorized } from './../stores.js';
 
   import Search from './../icons/Search.svelte';
+  import TapeCog from './../icons/TapeCog.svelte';
   import AddSongButton from './../components/AddSongButton.svelte';
 
   let music_value;
@@ -37,9 +38,11 @@
 
     timeout = setTimeout(async () => {
         if (query !== '') {
+          searching = true;
           let res;
           res = await music_value.api.music(`v1/catalog/us/search?term=${query}&limit=10&types=songs`);
           results = await res.data.results.songs.data;
+          searching = false;
         }
     }, 750);
   }
@@ -75,6 +78,11 @@
     <input type="text" bind:value={query} placeholder="search by song title">
   </header>
   <ul class="results">
+    {#if searching}
+      <li class="loading-results">
+        <div class="loading"><TapeCog /></div>
+      </li>
+    {/if}
     {#each results as song, index}
       <li class="result">
         <h2>{shorten(song.attributes.name)}</h2>
@@ -151,7 +159,7 @@
     grid-area: artist;
   }
 
-  .loading {
+  .loading-results {
     text-align: center;
     margin: 0;
   }
