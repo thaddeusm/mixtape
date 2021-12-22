@@ -76,6 +76,6 @@
 
   .loading {
     transform: rotate(180deg);
-    transition: transform 1.75s;
+    transition: transform 2s;
   }
 </style>

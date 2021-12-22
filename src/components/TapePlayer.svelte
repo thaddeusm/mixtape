@@ -73,7 +73,7 @@
 		clearInterval(interval);
 	}
 
-	$: if (durations.length > 0) {
+	$: {
 		if (queue_position_value > 0) {
 			currentTime = durations.slice(0, queue_position_value).reduce((acc, currentValue) => {
 				return acc + currentValue;
@@ -173,8 +173,8 @@
 
 			queuePosition.set(music_value.queue.position);
 
-			if (currentTime >= duration) {
-				stop();
+			if (currentTime >= duration + 2) {
+				pause();
 				reset();
 			}
 
@@ -191,19 +191,19 @@
 		rotation = 0;
 	}
 
-	function play() {
+	async function play() {
+		await music_value.play();
 		playing.set(true);
-		music_value.play();
 	}
 
-	function pause() {
+	async function pause() {
+		await music_value.pause();
 		playing.set(false);
-		music_value.pause();
 	}
 
-	function stop() {
+	async function stop() {
+		await music_value.stop();
 		playing.set(false);
-		music_value.stop();
 	}
 
 	async function next() {

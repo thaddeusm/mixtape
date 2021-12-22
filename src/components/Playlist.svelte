@@ -1,6 +1,6 @@
 <script>
   import { artworkColors, music, queue, queuePosition, colorPreference, mode, playing } from './../stores.js';
-  import { getThumbnail } from './../artwork.js';
+  import { getThumbnail, setArtwork, getImageColors, clearArtwork, resetColors } from './../artwork.js';
 
   import Playlist from './../icons/Playlist.svelte';
   import Remove from './../icons/Remove.svelte';
@@ -44,16 +44,27 @@
   });
 
   function shorten(txt) {
-    if (txt.length > 22) {
-      return txt.slice(0, 22) + '...';
+    if (txt.length > 20) {
+      return txt.slice(0, 20) + '...';
     } else {
       return txt;
     }
   }
 
   async function removeTrack(index) {
+    await music_value.pause();
+    await music_value.queue.reset();
     await music_value.queue.remove(index);
-    queue.set(music_value.queue.items);
+    await queue.set(music_value.queue.items);
+    await queuePosition.set(0);
+
+    if (typeof queue_value[queue_position_value] == Object) {
+      await setArtwork(queue_value[queue_position_value].attributes.artwork.url);
+      await getImageColors();
+    } else {
+      await clearArtwork();
+      await resetColors();
+    }
   }
 
   let background;
@@ -71,7 +82,7 @@
   $: if (playing_value || queue_position_value) {
     setTimeout(() => {
       nowPlayingItemIndex = music_value.nowPlayingItemIndex;
-    }, 1000);
+    }, 700);
   }
 
   $: listGradient = `background: ${artwork_colors_value.LightVibrant}; background: -webkit-linear-gradient(2deg, ${artwork_colors_value.DarkVibrant}, 10%, ${background}); background: -moz-linear-gradient(2deg, ${artwork_colors_value.DarkVibrant}, 10%, ${background}); background: linear-gradient(2deg, ${artwork_colors_value.DarkVibrant}, 10%, ${background})`;
@@ -91,8 +102,7 @@
 <ul style={listGradient}>
   {#each $queue as item, index}
     <li class="queue-item" style={listItemShadow}>
-      {#await getThumbnail(item.artworkURL)}
-      {:then src}
+      {#await getThumbnail(item.artworkURL) then src}
         <section class="artwork">
           <MiniPlayer artwork={src} secondary={$queuePosition !== index} {index} />
         </section>
@@ -101,7 +111,7 @@
       <h3>{shorten(item.attributes.artistName)}</h3>
       {#if $mode == 'edit'}
         <section class="remove">
-          <button class="simple" on:click={() => {removeTrack(index)}} disabled={nowPlayingItemIndex == index}>
+          <button class="simple" on:click={() => {removeTrack(index)}} disabled={$playing}>
             <Remove color={iconColor} width={'1.5rem'} height={'1.5rem'} />
           </button>
         </section>

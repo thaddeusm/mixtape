@@ -36,6 +36,17 @@ export const getImageColors = async () => {
   }
 }
 
+export const resetColors = async () => {
+  artworkColors.set({
+  	DarkMuted: '#1e1e1e',
+  	DarkVibrant: '#454545',
+  	LightMuted: '#ffffff',
+  	LightVibrant: '#efefef',
+  	Muted: '#90a4ae',
+  	Vibrant: '#cfd8dc'
+  });
+}
+
 export const getArtwork = async (artworkUrl) => {
   let arr;
 
@@ -62,4 +73,8 @@ export const getThumbnail = async (artworkUrl) => {
 
 export const setArtwork = async (artworkUrl) => {
   artwork.set(await getArtwork(artworkUrl));
+}
+
+export const clearArtwork = async () => {
+  artwork.set('');
 }
