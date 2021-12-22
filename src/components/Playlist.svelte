@@ -96,36 +96,42 @@
   }
 </script>
 
-<section id="icon">
-  <Playlist color={iconColor} width={'2rem'} height={'2rem'} />
+<section class="container" style={listGradient}>
+  <section id="icon">
+    <Playlist color={iconColor} width={'2rem'} height={'2rem'} />
+  </section>
+  <ul>
+    {#each $queue as item, index}
+      <li class="queue-item" style={listItemShadow}>
+        {#await getThumbnail(item.artworkURL) then src}
+          <section class="artwork">
+            <MiniPlayer artwork={src} secondary={$queuePosition !== index} {index} />
+          </section>
+        {/await}
+        <h2>{shorten(item.attributes.name)}</h2>
+        <h3>{shorten(item.attributes.artistName)}</h3>
+        {#if $mode == 'edit'}
+          <section class="remove">
+            <button class="simple" on:click={() => {removeTrack(index)}} disabled={$playing}>
+              <Remove color={iconColor} width={'1.5rem'} height={'1.5rem'} />
+            </button>
+          </section>
+        {/if}
+      </li>
+    {/each}
+    {#if $mode == 'edit'}
+      <li>
+        <Search />
+      </li>
+    {/if}
+  </ul>
 </section>
-<ul style={listGradient}>
-  {#each $queue as item, index}
-    <li class="queue-item" style={listItemShadow}>
-      {#await getThumbnail(item.artworkURL) then src}
-        <section class="artwork">
-          <MiniPlayer artwork={src} secondary={$queuePosition !== index} {index} />
-        </section>
-      {/await}
-      <h2>{shorten(item.attributes.name)}</h2>
-      <h3>{shorten(item.attributes.artistName)}</h3>
-      {#if $mode == 'edit'}
-        <section class="remove">
-          <button class="simple" on:click={() => {removeTrack(index)}} disabled={$playing}>
-            <Remove color={iconColor} width={'1.5rem'} height={'1.5rem'} />
-          </button>
-        </section>
-      {/if}
-    </li>
-  {/each}
-  {#if $mode == 'edit'}
-    <li>
-      <Search />
-    </li>
-  {/if}
-</ul>
 
 <style>
+  .container {
+    height: 100%;
+  }
+
   #icon {
     text-align: center;
     margin-top: 4rem;
@@ -135,10 +141,19 @@
     margin: 0 auto;
     padding: 1rem 0;
     transition: background .5s ease-in!important;
+    list-style: none;
+  }
+
+  @media screen and (min-width: 901px) {
+    ul {
+      max-height: 350px;
+      overflow: scroll;
+    }
   }
 
   li {
-    margin: 1.5rem .5rem;
+    margin: 1.5rem auto;
+    max-width: 450px;
     padding: .5rem;
     background: var(--foreground);
     color: var(--text);

@@ -272,7 +272,7 @@
 </div>
 
 <style>
-	@media screen and (max-width: 530px) {
+	@media screen and (max-width: 1500px) {
 		#tape {
 			width: 20rem;
 			max-width: 310px;
@@ -286,23 +286,10 @@
 		}
 	}
 
-	@media screen and (min-width: 531px) and (max-width: 800px) {
+	@media screen and (min-width: 1501px) {
 		#tape {
 			width: 28rem;
-			height: 18rem;
-			grid-template-columns: 1fr 7rem 5rem 7rem 1fr;
-		}
-
-		#line {
-			height: 405%;
-			margin-top: -42%;
-		}
-	}
-
-	@media screen and (min-width: 801px) {
-		#tape {
-			width: 28rem;
-			height: 18rem;
+			height: 19rem;
 			grid-template-columns: 1fr 7rem 5rem 7rem 1fr;
 		}
 

@@ -5,6 +5,7 @@
 	import Description from './components/Description.svelte';
 	import Playlist from './components/Playlist.svelte';
 	import Footer from './components/Footer.svelte';
+	import About from './components/About.svelte';
 
 	import { artworkColors, music, authorized, colorPreference, mixMeta } from './stores.js';
 
@@ -115,47 +116,169 @@
 	{/if}
 </svelte:head>
 
-<Header />
-<main>
-	{#await initialized}
-		<h1>initializing...</h1>
-	{:then}
-		{#if !$authorized}
-			<TapePlayer />
-			<section id="authorization">
-				<p>A subscription to Apple Music is required.</p>
-				<section id="authorizationButtonContainer">
-					<button class="call-to-action" on:click={authorize}>
-						Authorize
-					</button>
+<div class="container">
+	<header>
+		<Header />
+	</header>
+	<main class={$authorized ? 'authorized' : 'unauthorized'}>
+		{#await initialized then data}
+			{#if !$authorized}
+				<section id="tapePlayer">
+					<TapePlayer />
 				</section>
-				<p>
-					Don't have a subscription?
-				</p>
-				<p>
-					<a href="https://www.apple.com/apple-music/" target="_blank">Try Apple Music</a>
-				</p>
-			</section>
-		{:else}
-			<TapePlayer playable={true} />
-			<Description />
-			<Playlist />
-		{/if}
-	{/await}
-</main>
-<Footer />
+				<section id="authorization">
+					<p>A subscription to Apple Music is required.</p>
+					<section id="authorizationButtonContainer">
+						<button class="call-to-action" on:click={authorize}>
+							Authorize
+						</button>
+					</section>
+					<p>
+						Don't have a subscription?
+					</p>
+					<p>
+						<a href="https://www.apple.com/apple-music/" target="_blank">Try Apple Music</a>
+					</p>
+				</section>
+			{:else}
+				<section id="tapePlayer">
+					<TapePlayer playable={true} />
+				</section>
+				<section id="description">
+					<Description />
+				</section>
+				<section id="about">
+					<About />
+				</section>
+				<section id="playlist">
+					<Playlist />
+				</section>
+			{/if}
+		{/await}
+	</main>
+	<footer>
+		<Footer />
+	</footer>
+</div>
 
 <style>
+@media screen and (max-width: 1100px) {
+	.container {
+		grid-template-rows: auto 1fr auto;
+		grid-template-areas:
+			"header"
+			"main"
+			"footer";
+	}
+
+	.authorized {
+		grid-template-rows: auto auto 1fr;
+		grid-template-areas:
+			"tapePlayer"
+			"description"
+			"playlist";
+		align-items: center;
+	}
+
+	.unauthorized {
+		grid-template-rows: 1fr 1fr 1fr;
+		grid-template-areas:
+			"tapePlayer"
+			"authorization"
+			"authorization";
+		align-items: center;
+	}
+
+	main {
+		padding-top: 7rem;
+	}
+
+	#playlist {
+		align-self: flex-end;
+	}
+
+	#about {
+		display: none;
+	}
+}
+
+@media screen and (min-width: 1101px) {
+	.container {
+		grid-template-rows: auto 1fr auto;
+		grid-template-columns: 30% 70%;
+		grid-template-areas:
+			"header header"
+			"main main"
+			"footer .";
+	}
+
+	.authorized {
+		grid-template-rows: 50% 50%;
+		grid-template-columns: 30% 70%;
+		grid-template-areas:
+			"tapePlayer description"
+			"playlist about"
+			"playlist about";
+		align-items: flex-end;
+	}
+
+	.unauthorized {
+		grid-template-rows: 1fr;
+		grid-template-columns: 30% 70%;
+		grid-template-areas:
+			"tapePlayer authorization";
+		align-items: center;
+	}
+
+	#about {
+		text-align: left;
+	}
+}
+
+	.container {
+		display: grid;
+		height: 100%;
+	}
+
+	header {
+		grid-area: header;
+	}
+
 	main {
 		text-align: center;
-		padding-top: 7rem;
+		grid-area: main;
+	}
+
+	.authorized {
+		display: grid;
+	}
+
+	.unauthorized {
+		display: grid;
 	}
 
 	#authorization {
 		margin: 15% 7%;
+		grid-area: authorization;
 	}
 
 	#authorizationButtonContainer {
 		margin: 5% auto 15% auto;
+	}
+
+	#tapePlayer {
+		grid-area: tapePlayer;
+	}
+
+	#description {
+		grid-area: description;
+	}
+
+	#playlist {
+		grid-area: playlist;
+	}
+
+	footer {
+		grid-area: footer;
 	}
 </style>

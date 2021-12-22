@@ -56,47 +56,67 @@
 
 <svelte:window bind:scrollY={y}></svelte:window>
 
-<header style={background}>
-  {#if $mode == 'edit' && $authorized}
-    <section class="title">
-      <input type="text" bind:value={$mixMeta.title} maxlength="18" style={dynamicWidth}>
-      <sup><Pencil width={'1rem'} height={'1rem'} color={iconColor} /></sup>
-    </section>
-  {:else}
-    <h2 class="title">{shorten($mixMeta.title)}</h2>
-  {/if}
-  {#if y > 300}
-    <aside>
-      <MiniPlayer />
-    </aside>
-  {:else}
-    <aside>
-      <button class="simple" on:click={toggleModal}>
-        {#if modalOpen}
-          X
-        {:else}
-          ?
-        {/if}
-      </button>
-    </aside>
-  {/if}
-</header>
+{#if $authorized}
+  <header style={background}>
+    {#if $mode == 'edit'}
+      <section class="title">
+        <input type="text" bind:value={$mixMeta.title} maxlength="18" style={dynamicWidth}>
+        <sup><Pencil width={'1rem'} height={'1rem'} color={iconColor} /></sup>
+      </section>
+    {:else}
+      <h2 class="title">{shorten($mixMeta.title)}</h2>
+    {/if}
+    {#if y > 300}
+      <aside>
+        <MiniPlayer />
+      </aside>
+    {:else}
+      <aside>
+        <button class="simple" on:click={toggleModal}>
+          {#if modalOpen}
+            X
+          {:else}
+            ?
+          {/if}
+        </button>
+      </aside>
+    {/if}
+  </header>
+{/if}
 
 {#if modalOpen}
   <About />
 {/if}
 
 <style>
+  @media screen and (max-width: 1100px) {
+    header {
+      width: 100%;
+      grid-template-columns: 7% 70% 16% 7%;
+      grid-template-rows: 1fr;
+      grid-template-areas: ". title actions .";
+    }
+  }
+
+  @media screen and (min-width: 1101px) {
+    header {
+      width: 30%;
+      grid-template-rows: 1fr;
+      grid-template-areas: "title";
+      text-align: center;
+    }
+
+    .simple {
+      display: none;
+    }
+  }
+
   header {
     height: 4rem;
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
     display: grid;
-    grid-template-columns: 7% 70% 16% 7%;
-    grid-template-rows: 1fr;
-    grid-template-areas: ". title actions .";
     z-index: 100;
     justify-content: center;
     align-items: center;

@@ -1,7 +1,7 @@
 <script>
   import UpArrow from './../icons/UpArrow.svelte';
 
-  import { artworkColors, colorPreference, mixMeta, mode, queue, queuePosition, artwork } from './../stores.js';
+  import { artworkColors, colorPreference, mixMeta, mode, queue, queuePosition, artwork, authorized } from './../stores.js';
 
   let artwork_colors_value;
   let color_preference_value;
@@ -60,33 +60,40 @@
   }
 </script>
 
-{#if $mode !== 'edit' || $queue.length > 0}
-  <footer style={background}>
-    {#if $mode !== 'edit'}
-      <aside id="cta">
-        <button class="call-to-action" on:click={changeToEditMode}>
-          create a mixtape
-        </button>
-      </aside>
-    {/if}
-    {#if $queue.length > 0}
-      <button class="simple icon" on:click={jumpToTop}>
-        <UpArrow width={'1.15rem'} height={'1.15rem'} color={'#ffffff'} />
+<footer style={background}>
+  {#if $mode !== 'edit' && $authorized}
+    <aside id="cta">
+      <button class="call-to-action" on:click={changeToEditMode}>
+        create a mixtape
       </button>
-    {/if}
-  </footer>
-{/if}
+    </aside>
+  {/if}
+  {#if $queue.length > 0}
+    <button class="simple icon" on:click={jumpToTop}>
+      <UpArrow width={'1.15rem'} height={'1.15rem'} color={'#ffffff'} />
+    </button>
+  {/if}
+</footer>
 
 <style>
   footer {
-    height: 8rem;
     display: grid;
     align-items: center;
     justify-content: center;
     transition: background .5s ease-in;
   }
 
+  @media screen and (min-width: 901px) {
+    .icon {
+      display: none;
+    }
+  }
+
   .call-to-action {
     background: var(--background);
+  }
+
+  #cta {
+    margin: 2rem auto;
   }
 </style>
