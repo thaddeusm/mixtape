@@ -93,7 +93,7 @@
     background: var(--background);
   }
 
-  #cta {
-    margin: 2rem auto;
+  button {
+    margin: 1.5rem auto;
   }
 </style>
