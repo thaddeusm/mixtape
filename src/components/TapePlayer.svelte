@@ -87,6 +87,12 @@
 		duration = totalDuration();
 	}
 
+	$: if (queue_position_value) {
+		setArtwork(queue_value[queue_position_value].attributes.artwork.url).then(() => {
+			getImageColors();
+		});
+	}
+
 	// update query params and localStorage dynamically
 	$: {
 		if ('URLSearchParams' in window && mode_value == 'edit' && queue_value.length > 0) {
