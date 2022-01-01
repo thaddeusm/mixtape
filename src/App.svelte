@@ -126,7 +126,7 @@
 					<TapePlayer />
 				</section>
 				<section id="authorization">
-					<p>A subscription to Apple Music is required to listen to {$mixMeta.title}.</p>
+					<p>A subscription to Apple Music is required to access {$mixMeta.title}.</p>
 					<section id="authorizationButtonContainer">
 						<button class="call-to-action" on:click={authorize}>
 							Sign in

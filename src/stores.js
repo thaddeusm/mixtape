@@ -9,7 +9,7 @@ export const queue = writable([]);
 export const queuePosition = writable(0);
 
 export const mixMeta = writable({
-	'title': 'Mixtape Title',
+	'title': 'Mixtape',
 	'description': 'Mixtape description...'
 });
 
