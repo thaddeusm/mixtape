@@ -82,7 +82,7 @@
           create a mixtape
         </button>
       {:else}
-        <button class="call-to-action" on:click={share}>
+        <button class="call-to-action" on:click={share} disabled={$queue.length == 0}>
           share your mixtape
         </button>
       {/if}
