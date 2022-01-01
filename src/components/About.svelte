@@ -6,13 +6,16 @@
     Mixtape is an experimental web interface for <a target="_blank" href="https://www.apple.com/apple-music/">Apple Music</a> that aims to simplify the process of curating and sharing music (with a touch of nostaglia).
   </p>
   <p>
-    It is maintained by <a target="_blank" href="https://thaddeus.education">Thaddeus McCleary</a>. <a href="mailto:ibises_segues_06@icloud.com?subject=Mixtape">Questions, comments, or ideas</a>?
+    It is maintained by <a target="_blank" href="https://thaddeus.education">Thaddeus McCleary</a>.
+  </p>
+  <p>
+     <a href="mailto:ibises_segues_06@icloud.com?subject=Mixtape">Questions, comments, or ideas</a>?
   </p>
   <h2>
     How to Share
   </h2>
   <p>
-    All information related to the mixtape you create is shared via a URL. You can share a mixtape by simply sharing the full URL you see in the address bar with others. No information is stored in any third-party database.
+    All information related to the mixtape you create is shared via a URL. You can share a mixtape by simply sharing the full URL you see in the address bar with others or by clicking the "share your mixtape button".
   </p>
   <h2>
     Terms
