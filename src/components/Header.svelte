@@ -1,5 +1,6 @@
 <script>
   import MiniPlayer from './../components/MiniPlayer.svelte';
+  import Modal from './../components/Modal.svelte';
   import About from './../components/About.svelte';
   import Pencil from './../icons/Pencil.svelte';
   import { artworkColors, colorPreference, mixMeta, mode, authorized } from './../stores.js';
@@ -44,7 +45,7 @@
     }
   }
 
-  $: dynamicWidth = `width: ${mix_meta_value.title.length * 10}px`;
+  $: dynamicWidth = `width: ${mix_meta_value.title.length * 11}px`;
 
   let iconColor;
   $: if (color_preference_value == 'light') {
@@ -85,34 +86,55 @@
 {/if}
 
 {#if modalOpen}
-  <About />
+  <div class="overlay">
+    <Modal on:close-modal={toggleModal}>
+      <About />
+    </Modal>
+  </div>
+  <div class="inline">
+    <About />
+  </div>
 {/if}
 
 <style>
   @media screen and (max-width: 1100px) {
     header {
-      width: 100%;
       grid-template-columns: 7% 70% 16% 7%;
       grid-template-rows: 1fr;
       grid-template-areas: ". title actions .";
+    }
+
+    .overlay {
+      display: none;
+    }
+
+    input[type="text"] {
+      max-width: 235px;
+      min-width: 150px;
     }
   }
 
   @media screen and (min-width: 1101px) {
     header {
-      width: 30%;
       grid-template-rows: 1fr;
-      grid-template-areas: "title";
+      grid-template-columns: 30% 1fr 4%;
+      grid-template-areas: "title . actions";
       text-align: center;
+      background: none!important;
     }
 
-    .simple {
+    .inline {
       display: none;
+    }
+
+    input[type="text"] {
+      min-width: 80px;
     }
   }
 
   header {
     height: 4rem;
+    width: 100%;
     position: fixed;
     top: 0;
     left: 0;
@@ -136,9 +158,7 @@
   }
 
   input[type=text] {
-    font-size: 1.5rem;
-    max-width: 235px;
-    min-width: 100px;
+    font-size: 1.7rem;
   }
 
   .simple {

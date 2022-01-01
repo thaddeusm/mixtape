@@ -58,14 +58,34 @@
     });
     artwork.set('');
   }
+
+  async function share() {
+    let shareData = {
+      title: 'Mixtape',
+      text: `Check out this mix: ${mix_meta_value.title}`,
+      url: window.location.href
+    }
+
+    try {
+      await navigator.share(shareData);
+    } catch(err) {
+      console.log(err);
+    }
+  }
 </script>
 
 <footer style={background}>
-  {#if $mode !== 'edit' && $authorized}
+  {#if $authorized}
     <aside id="cta">
-      <button class="call-to-action" on:click={changeToEditMode}>
-        create a mixtape
-      </button>
+      {#if $mode !== 'edit'}
+        <button class="call-to-action" on:click={changeToEditMode}>
+          create a mixtape
+        </button>
+      {:else}
+        <button class="call-to-action" on:click={share}>
+          share your mixtape
+        </button>
+      {/if}
     </aside>
   {/if}
   {#if $queue.length > 0}
@@ -76,6 +96,22 @@
 </footer>
 
 <style>
+  @media screen and (max-width: 1100px) {
+    button {
+      margin: 1.5rem auto;
+    }
+  }
+
+  @media screen and (min-width: 1101px) {
+    button {
+      margin: 3rem auto;
+    }
+
+    .icon {
+      display: none;
+    }
+  }
+
   footer {
     display: grid;
     align-items: center;
@@ -83,17 +119,7 @@
     transition: background .5s ease-in;
   }
 
-  @media screen and (min-width: 901px) {
-    .icon {
-      display: none;
-    }
-  }
-
   .call-to-action {
     background: var(--background);
-  }
-
-  button {
-    margin: 1.5rem auto;
   }
 </style>

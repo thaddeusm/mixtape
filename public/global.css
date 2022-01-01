@@ -16,6 +16,7 @@ input:focus {
 
 :root {
 	--default-weight: 200;
+	--strong: 400;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -72,30 +73,30 @@ body {
 
 h1 {
 	font-size: 2.5rem;
-	font-weight: var(--default-weight);
+	font-weight: var(--strong);
 	color: var(--text);
 }
 
 h2 {
-	font-size: 1.5rem;
-	font-weight: var(--default-weight);
+	font-size: 1.7rem;
+	font-weight: var(--strong);
 	color: var(--text);
 }
 
 h3 {
-	font-size: 1.2rem;
+	font-size: 1.6rem;
 	font-weight: var(--default-weight);
 	color: var(--text);
 }
 
 h4 {
-	font-size: 1rem;
+	font-size: 1.2rem;
 	font-weight: var(--default-weight);
 	color: var(--text);
 }
 
 p {
-	font-size: 1.2rem;
+	font-size: 1.5rem;
 	font-weight: var(--default-weight);
 	margin: 1.5rem .5rem;
 	color: var(--text);
@@ -116,8 +117,8 @@ button:disabled {
 }
 
 .call-to-action {
-	font-size: 1.2rem;
-	font-weight: 400;
+	font-size: 1.5rem;
+	font-weight: var(--strong);
 	padding: .5rem 1rem;
 	border-radius: 0;
 	border: none;

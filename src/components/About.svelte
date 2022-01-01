@@ -8,15 +8,15 @@
   <p>
     It is maintained by <a target="_blank" href="https://thaddeus.education">Thaddeus McCleary</a>. <a href="mailto:ibises_segues_06@icloud.com?subject=Mixtape">Questions, comments, or ideas</a>?
   </p>
-  <h3>
+  <h2>
     How to Share
-  </h3>
+  </h2>
   <p>
     All information related to the mixtape you create is shared via a URL. You can share a mixtape by simply sharing the full URL you see in the address bar with others. No information is stored in any third-party database.
   </p>
-  <h3>
+  <h2>
     Terms
-  </h3>
+  </h2>
   <p>
     Apple and Apple Music are trademarks of Apple Inc., registered in the U.S. and other countries.
   </p>
@@ -26,14 +26,19 @@
 </aside>
 
 <style>
-  aside {
-    top: 4rem;
-    background: var(--background);
-    color: var(--text);
-    padding: 5rem 7% 0 7%;
+  @media screen and (max-width: 1100px) {
+    aside {
+      top: 4rem;
+      padding: 5rem 7% 0 7%;
+    }
   }
 
-  h3 {
+  aside {
+    background: var(--background);
+    color: var(--text);
+  }
+
+  h2 {
     margin-top: 3rem;
   }
 

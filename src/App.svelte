@@ -5,7 +5,6 @@
 	import Description from './components/Description.svelte';
 	import Playlist from './components/Playlist.svelte';
 	import Footer from './components/Footer.svelte';
-	import About from './components/About.svelte';
 
 	import { artworkColors, music, authorized, colorPreference, mixMeta } from './stores.js';
 
@@ -147,9 +146,6 @@
 				<section id="description">
 					<Description />
 				</section>
-				<section id="about">
-					<About />
-				</section>
 				<section id="playlist">
 					<Playlist />
 				</section>
@@ -196,10 +192,6 @@
 	#playlist {
 		align-self: flex-end;
 	}
-
-	#about {
-		display: none;
-	}
 }
 
 @media screen and (min-width: 1101px) {
@@ -213,13 +205,11 @@
 	}
 
 	.authorized {
-		grid-template-rows: 50% 50%;
+		grid-template-rows: auto 500px;
 		grid-template-columns: 30% 70%;
 		grid-template-areas:
 			"tapePlayer description"
-			"playlist about"
-			"playlist about";
-		align-items: flex-end;
+			"playlist description";
 	}
 
 	.unauthorized {
@@ -230,8 +220,17 @@
 		align-items: center;
 	}
 
-	#about {
-		text-align: left;
+	#playlist {
+		align-self: flex-end;
+	}
+
+	#tapePlayer {
+		align-self: center;
+	}
+
+	#description {
+		align-self: flex-start;
+		padding-top: 3rem;
 	}
 }
 

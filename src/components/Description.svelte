@@ -41,9 +41,13 @@
 
 <style>
   @media screen and (min-width: 1101px) {
-    p {
+    p[contenteditable="true"] {
       border-left: 1rem solid var(--foreground);
       padding-left: 2rem;
+    }
+
+    .icon {
+      text-align: center;
     }
   }
 
@@ -51,7 +55,6 @@
     text-align: left;
     line-height: 1.5;
     margin: 15% 7%;
-    /* border: none; */
     outline: none;
   }
 
@@ -62,12 +65,5 @@
   .icon {
     text-align: center;
     margin-top: 12%;
-  }
-
-  @media screen and (min-width: 901px) {
-    .icon {
-      text-align: left;
-      margin-left: 7%;
-    }
   }
 </style>

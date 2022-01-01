@@ -144,9 +144,9 @@
     list-style: none;
   }
 
-  @media screen and (min-width: 901px) {
+  @media screen and (min-width: 1101px) {
     ul {
-      max-height: 350px;
+      height: 500px;
       overflow: scroll;
     }
   }
