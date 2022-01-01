@@ -93,21 +93,27 @@
 		});
 	}
 
+	let paramsTimeout = null;
+
 	// update query params and localStorage dynamically
 	$: {
 		if ('URLSearchParams' in window && mode_value == 'edit' && queue_value.length > 0) {
-	    let searchParams = new URLSearchParams(window.location.search)
-	    searchParams.set('title', mix_meta_value.title);
-			searchParams.set('description', mix_meta_value.description);
+			clearTimeout(paramsTimeout);
 
-			let songs = [];
-			for (let i=0; i<queue_value.length; i++) {
-				songs.push(queue_value[i].attributes.playParams.id);
-			}
-			searchParams.set('songs', JSON.stringify(songs));
+	    paramsTimeout = setTimeout(async () => {
+				let searchParams = new URLSearchParams(window.location.search)
+				searchParams.set('title', mix_meta_value.title);
+				searchParams.set('description', mix_meta_value.description);
 
-	    let newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
-	    history.pushState(null, '', newRelativePathQuery);
+				let songs = [];
+				for (let i=0; i<queue_value.length; i++) {
+					songs.push(queue_value[i].attributes.playParams.id);
+				}
+				searchParams.set('songs', JSON.stringify(songs));
+
+				let newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
+				history.pushState(null, '', newRelativePathQuery);
+	    }, 1500);
 		}
 	}
 
@@ -295,7 +301,7 @@
 	@media screen and (min-width: 1501px) {
 		#tape {
 			width: 28rem;
-			height: 19rem;
+			height: 21rem;
 			grid-template-columns: 1fr 7rem 5rem 7rem 1fr;
 		}
 
