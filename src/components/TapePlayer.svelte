@@ -93,27 +93,21 @@
 		});
 	}
 
-	let paramsTimeout = null;
-
 	// update query params and localStorage dynamically
 	$: {
 		if ('URLSearchParams' in window && mode_value == 'edit' && queue_value.length > 0) {
-			clearTimeout(paramsTimeout);
+			let searchParams = new URLSearchParams(window.location.search)
+			searchParams.set('title', mix_meta_value.title);
+			searchParams.set('description', mix_meta_value.description);
 
-	    paramsTimeout = setTimeout(async () => {
-				let searchParams = new URLSearchParams(window.location.search)
-				searchParams.set('title', mix_meta_value.title);
-				searchParams.set('description', mix_meta_value.description);
+			let songs = [];
+			for (let i=0; i<queue_value.length; i++) {
+				songs.push(queue_value[i].attributes.playParams.id);
+			}
+			searchParams.set('songs', JSON.stringify(songs));
 
-				let songs = [];
-				for (let i=0; i<queue_value.length; i++) {
-					songs.push(queue_value[i].attributes.playParams.id);
-				}
-				searchParams.set('songs', JSON.stringify(songs));
-
-				let newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
-				history.pushState(null, '', newRelativePathQuery);
-	    }, 1500);
+			let newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
+			history.pushState(null, '', newRelativePathQuery);
 		}
 	}
 

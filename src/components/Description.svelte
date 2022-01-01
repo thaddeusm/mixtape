@@ -18,6 +18,18 @@
 		color_preference_value = value;
 	});
 
+  let description = null;
+
+  let timeout = null;
+
+  function saveDescription() {
+    clearTimeout(timeout);
+
+    timeout = setTimeout(() => {
+      mixMeta.set({title: mix_meta_value.title, description: description.innerText});
+    }, 1500);
+  }
+
   let iconColor;
   $: if (color_preference_value == 'light') {
     iconColor = artwork_colors_value.DarkVibrant;
@@ -30,7 +42,7 @@
   <section class="icon">
     <Pencil width={'1rem'} height={'1rem'} color={iconColor} />
   </section>
-  <p contenteditable="true" bind:innerHTML={$mixMeta.description}>
+  <p contenteditable="true" bind:this={description} on:keyup={saveDescription}>
     {$mixMeta.description}
   </p>
 {:else}
@@ -56,6 +68,7 @@
     line-height: 1.5;
     margin: 15% 7%;
     outline: none;
+    white-space: pre-wrap;
   }
 
   p[contenteditable="true"] {
