@@ -128,20 +128,10 @@
 </section>
 
 <style>
-  .container {
-    height: 100%;
-  }
-
-  #icon {
-    text-align: center;
-    margin-top: 4rem;
-  }
-
-  ul {
-    margin: 0 auto;
-    padding: 1rem 0;
-    transition: background .5s ease-in!important;
-    list-style: none;
+  @media screen and (max-width: 1100px) {
+    #icon {
+      margin-top: 4rem;
+    }
   }
 
   @media screen and (min-width: 1101px) {
@@ -149,6 +139,21 @@
       height: 500px;
       overflow: scroll;
     }
+  }
+
+  .container {
+    height: 100%;
+  }
+
+  #icon {
+    text-align: center;
+  }
+
+  ul {
+    margin: 0 auto;
+    padding: 1rem 0;
+    transition: background .5s ease-in!important;
+    list-style: none;
   }
 
   li {

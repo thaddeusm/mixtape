@@ -4,7 +4,7 @@
   const dispatch = createEventDispatcher();
 
   import New from './../icons/New.svelte';
-  import TapeCog from './../icons/TapeCog.svelte';
+  import Loading from './../components/Loading.svelte';
 
   import { setArtwork, getImageColors } from './../artwork.js';
   import { artworkColors, music, queue, colorPreference } from './../stores.js';
@@ -62,7 +62,7 @@
 
 <button class="simple" on:click={addSong} class:loading>
   {#if loading}
-    <TapeCog />
+    <Loading />
   {:else}
     <New color={iconColor} width={'1.5rem'} height={'1.5rem'} />
   {/if}

@@ -3,7 +3,7 @@
   import { music, artworkColors, colorPreference, mixMeta, mode, authorized } from './../stores.js';
 
   import Search from './../icons/Search.svelte';
-  import TapeCog from './../icons/TapeCog.svelte';
+  import Loading from './../components/Loading.svelte';
   import AddSongButton from './../components/AddSongButton.svelte';
 
   let music_value;
@@ -80,7 +80,7 @@
   <ul class="results">
     {#if searching}
       <li class="loading-results">
-        <div class="loading"><TapeCog /></div>
+        <Loading />
       </li>
     {/if}
     {#each results as song, index}

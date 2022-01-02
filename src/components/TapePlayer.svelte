@@ -59,6 +59,8 @@
 
 	export let playable = false;
 
+	let loading = false;
+
 	let duration = 100;
 	let currentTime = 0;
 
@@ -109,7 +111,7 @@
 			let newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
 
 			history.pushState(null, '', newRelativePathQuery);
-			localStorage.set(`mix: ${mix_meta_value.title}`, newRelativePathQuery);
+			localStorage.setItem(`mix: ${mix_meta_value.title}`, newRelativePathQuery);
 		}
 	}
 
@@ -200,26 +202,35 @@
 	}
 
 	async function play() {
+		loading = true;
 		await music_value.play();
 		playing.set(true);
+		loading = false;
 	}
 
 	async function pause() {
+		loading = true;
 		await music_value.pause();
 		playing.set(false);
+		loading = false;
 	}
 
 	async function stop() {
+		loading = true;
 		await music_value.stop();
 		playing.set(false);
+		loading = false;
 	}
 
 	async function next() {
+		loading = true;
 		await music_value.changeToMediaAtIndex(queue_position_value + 1);
 
 		if (!playing_value) {
 			playing.set(true);
 		}
+
+		loading = false;
 
 		await queuePosition.set(music_value.queue.position);
 
@@ -228,11 +239,14 @@
 	}
 
 	async function previous() {
+		loading = true;
 		await music_value.changeToMediaAtIndex(queue_position_value - 1);
 
 		if (!playing_value) {
 			playing.set(true);
 		}
+
+		loading = false;
 
 		await queuePosition.set(music_value.queue.position);
 
@@ -259,19 +273,19 @@
 		<section id="line"></section>
 		<section id="controls">
 			{#if $authorized && $queue.length > 0}
-				<button class="simple" on:click={previous} disabled={$queuePosition == 0}>
+				<button class="simple" on:click={previous} disabled={$queuePosition == 0 || loading}>
 					<Previous color={defaultButtonColor} width={'1.5rem'} height={'1.5rem'} />
 				</button>
 				{#if !$playing}
-					<button class="simple" on:click={play}>
+					<button class="simple" on:click={play} disabled={loading}>
 						<Play color={actionButtonColor} width={'2rem'} height={'2rem'} />
 					</button>
 				{:else}
-					<button class="simple" on:click={pause}>
+					<button class="simple" on:click={pause} disabled={loading}>
 						<Pause color={actionButtonColor} width={'2rem'} height={'2rem'} />
 					</button>
 				{/if}
-				<button class="simple" on:click={next} disabled={$queuePosition == $queue.length - 1}>
+				<button class="simple" on:click={next} disabled={$queuePosition == $queue.length - 1 || loading}>
 					<Next color={defaultButtonColor} width={'1.5rem'} height={'1.5rem'} />
 				</button>
 			{/if}
@@ -297,7 +311,7 @@
 	@media screen and (min-width: 1501px) {
 		#tape {
 			width: 28rem;
-			height: 21rem;
+			height: 20rem;
 			grid-template-columns: 1fr 7rem 5rem 7rem 1fr;
 		}
 
