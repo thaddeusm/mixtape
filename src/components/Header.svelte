@@ -97,7 +97,7 @@
 {/if}
 
 <style>
-  @media screen and (max-width: 1100px) {
+  @media screen and (max-width: 500px) {
     header {
       grid-template-columns: 7% 70% 16% 7%;
       grid-template-rows: 1fr;
@@ -110,6 +110,23 @@
 
     input[type="text"] {
       max-width: 235px;
+      min-width: 150px;
+    }
+  }
+
+  @media screen and (min-width: 501px) and (max-width: 1101px) {
+    header {
+      grid-template-columns: 7% 70% 16% 7%;
+      grid-template-rows: 1fr;
+      grid-template-areas: ". title actions .";
+    }
+
+    .overlay {
+      display: none;
+    }
+
+    input[type="text"] {
+      max-width: 300px;
       min-width: 150px;
     }
   }

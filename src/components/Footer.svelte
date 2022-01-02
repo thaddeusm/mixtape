@@ -57,6 +57,7 @@
     	Vibrant: '#cfd8dc'
     });
     artwork.set('');
+    jumpToTop();
   }
 
   async function share() {
