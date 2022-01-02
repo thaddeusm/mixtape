@@ -98,6 +98,10 @@
 
 		window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', setColorPreference);
 		setColorPreference();
+
+		console.log('stored mixes: ', Object.keys(localStorage).filter((key) => {
+			if (key.indexOf('mix: ') !== -1) return true;
+		}));
 	});
 </script>
 

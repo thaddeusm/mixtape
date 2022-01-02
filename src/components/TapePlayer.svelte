@@ -107,7 +107,9 @@
 			searchParams.set('songs', JSON.stringify(songs));
 
 			let newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
+
 			history.pushState(null, '', newRelativePathQuery);
+			localStorage.set(`mix: ${mix_meta_value.title}`, newRelativePathQuery);
 		}
 	}
 
