@@ -12,6 +12,11 @@
 	let music_value;
 	let authorized_value;
 	let color_preference_value;
+	let mix_meta_value;
+
+  const unsubscribeMixMeta = mixMeta.subscribe(value => {
+    mix_meta_value = value;
+  });
 
 	const unsubscribeArtworkColors = artworkColors.subscribe(value => {
 		artwork_colors_value = value;
@@ -99,24 +104,18 @@
 		window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', setColorPreference);
 		setColorPreference();
 
-		console.log('stored mixes: ', Object.keys(localStorage).filter((key) => {
-			if (key.indexOf('mix: ') !== -1) return true;
-		}));
+		// console.log('stored mixes: ', Object.keys(localStorage).filter((key) => {
+		// 	if (key.indexOf('mix: ') !== -1) return true;
+		// }));
 	});
 </script>
 
 <svelte:head>
 	<meta name="theme-color" content={artwork_colors_value.LightVibrant} media="(prefers-color-scheme: light)">
 	<meta name="theme-color" content={artwork_colors_value.DarkVibrant} media="(prefers-color-scheme: dark)">
-	{#if $mixMeta.title !== 'Mixtape Title'}
-		<title>
-			 Mixtape | {$mixMeta.title}
-		</title>
-	{:else}
-		<title>
-			Mixtape
-		</title>
-	{/if}
+	<title>
+		{$mixMeta.title}
+	</title>
 </svelte:head>
 
 <div class="container">
