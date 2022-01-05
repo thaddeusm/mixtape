@@ -35,6 +35,20 @@
 	});
 
 	let initialized;
+	let storedMixtapes = [];
+
+	async function getStoredMixtapes() {
+		let keys = await Object.keys(localStorage);
+		let values = await Object.values(localStorage);
+
+		for (let i=0; i<keys.length; i++) {
+			if (keys[i].indexOf('mix: ') !== -1) {
+				storedMixtapes.push(values[i]);
+			}
+		}
+
+		console.log(storedMixtapes);
+	}
 
 	async function getToken() {
 		let res;
@@ -104,9 +118,7 @@
 		window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', setColorPreference);
 		setColorPreference();
 
-		// console.log('stored mixes: ', Object.keys(localStorage).filter((key) => {
-		// 	if (key.indexOf('mix: ') !== -1) return true;
-		// }));
+		await getStoredMixtapes();
 	});
 </script>
 

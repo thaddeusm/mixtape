@@ -61,6 +61,16 @@
   }
 
   async function share() {
+    let searchParams = new URLSearchParams(window.location.search);
+    let relativePathQuery = window.location.pathname + '?' + searchParams.toString();
+    let date = new Date();
+
+    if (localStorage.getItem(`mix: ${mix_meta_value.title}`)) {
+      localStorage.setItem(`mix: ${mix_meta_value.title} date: ${date.toString()}`, relativePathQuery);
+    } else {
+      localStorage.setItem(`mix: ${mix_meta_value.title}`, relativePathQuery);
+    }
+
     let shareData = {
       title: 'Mixtape',
       text: `Check out this mix: ${mix_meta_value.title}`,

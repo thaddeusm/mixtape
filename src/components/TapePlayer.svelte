@@ -98,7 +98,7 @@
 	// update query params and localStorage dynamically
 	$: {
 		if ('URLSearchParams' in window && mode_value == 'edit' && queue_value.length > 0) {
-			let searchParams = new URLSearchParams(window.location.search)
+			let searchParams = new URLSearchParams(window.location.search);
 			searchParams.set('title', mix_meta_value.title);
 			searchParams.set('description', mix_meta_value.description);
 
@@ -111,7 +111,6 @@
 			let newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
 
 			history.pushState(null, '', newRelativePathQuery);
-			localStorage.setItem(`mix: ${mix_meta_value.title}`, newRelativePathQuery);
 		}
 	}
 
@@ -152,6 +151,14 @@
 
 					await setArtwork(queue_value[0].attributes.artwork.url);
 					await getImageColors();
+
+					let date = new Date();
+
+			    if (localStorage.getItem(`mix: ${mix_meta_value.title}`)) {
+			      localStorage.setItem(`mix: ${mix_meta_value.title} date: ${date.toString()}`, window.location.search);
+			    } else {
+			      localStorage.setItem(`mix: ${mix_meta_value.title}`, window.location.search);
+			    }
 				}
 
 				duration = await totalDuration();

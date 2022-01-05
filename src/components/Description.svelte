@@ -43,7 +43,7 @@
     <Pencil width={'1rem'} height={'1rem'} color={iconColor} />
   </section>
   <p contenteditable="true" bind:this={description} on:keyup={saveDescription}>
-    {$mixMeta.description}
+    
   </p>
 {:else}
   <p>
