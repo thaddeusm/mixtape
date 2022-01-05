@@ -95,7 +95,7 @@
 		});
 	}
 
-	// update query params and localStorage dynamically
+	// update query params dynamically
 	$: {
 		if ('URLSearchParams' in window && mode_value == 'edit' && queue_value.length > 0) {
 			let searchParams = new URLSearchParams(window.location.search);
@@ -151,14 +151,6 @@
 
 					await setArtwork(queue_value[0].attributes.artwork.url);
 					await getImageColors();
-
-					let date = new Date();
-
-			    if (localStorage.getItem(`mix: ${mix_meta_value.title}`)) {
-			      localStorage.setItem(`mix: ${mix_meta_value.title} date: ${date.toString()}`, window.location.search);
-			    } else {
-			      localStorage.setItem(`mix: ${mix_meta_value.title}`, window.location.search);
-			    }
 				}
 
 				duration = await totalDuration();
