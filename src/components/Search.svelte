@@ -40,8 +40,20 @@
         if (query !== '') {
           searching = true;
           let res;
-          res = await music_value.api.music(`v1/catalog/us/search?term=${query}&limit=10&types=songs`);
-          results = await res.data.results.songs.data;
+          res = await music_value.api.music(`v1/me/library/search?term=${query}&limit=10&types=library-songs`);
+          results = await res.data.results['library-songs'].data;
+
+          if (results.length < 10) {
+            res = await music_value.api.music(`v1/catalog/us/search?term=${query}&limit=${10 - results.length}&types=songs`);
+            let catalogResults = await res.data.results.songs.data;
+
+            for (let i=0; i<catalogResults.length; i++) {
+              results.push(catalogResults[i]);
+            }
+
+            results = results;
+          }
+
           searching = false;
         }
     }, 750);
