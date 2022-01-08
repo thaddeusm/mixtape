@@ -97,9 +97,9 @@
 </script>
 
 <section class="container" style={listGradient}>
-  <section id="icon">
+  <header>
     <Playlist color={iconColor} width={'2rem'} height={'2rem'} />
-  </section>
+  </header>
   <ul>
     {#each $queue as item, index}
       <li class="queue-item" style={listItemShadow}>
@@ -129,7 +129,7 @@
 
 <style>
   @media screen and (max-width: 1100px) {
-    #icon {
+    #header {
       margin-top: 4rem;
     }
   }
@@ -145,7 +145,7 @@
     height: 100%;
   }
 
-  #icon {
+  #header {
     text-align: center;
   }
 
