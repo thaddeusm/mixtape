@@ -69,12 +69,18 @@
     .icon {
       text-align: center;
     }
+
+    p {
+      margin: 0 7%!important;
+      max-height: calc(80vh);
+      overflow: scroll;
+    }
   }
 
   p {
     text-align: left;
     line-height: 1.5;
-    margin: 15% 7%;
+    margin: 10% 7%;
     outline: none;
     white-space: pre-wrap;
   }

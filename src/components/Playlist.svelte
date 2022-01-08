@@ -128,6 +128,13 @@
 </section>
 
 <style>
+  @media screen and (min-width: 1101px) {
+    ul {
+      max-height: 550px;
+      overflow: scroll;
+    }
+  }
+
   .container {
     height: 100%;
   }

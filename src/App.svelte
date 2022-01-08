@@ -229,7 +229,6 @@
 
 	#description {
 		align-self: flex-start;
-		padding-top: 3rem;
 	}
 }
 
