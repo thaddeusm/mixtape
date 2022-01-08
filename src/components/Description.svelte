@@ -1,4 +1,6 @@
 <script>
+  import { onMount } from 'svelte';
+
   import Pencil from './../icons/Pencil.svelte';
   import { mixMeta, mode, authorized, colorPreference, artworkColors } from './../stores.js';
 
@@ -19,6 +21,7 @@
 	});
 
   let description = null;
+  let descriptionLoaded = false;
 
   let timeout = null;
 
@@ -36,6 +39,11 @@
   } else {
     iconColor = artwork_colors_value.LightVibrant;
   }
+
+  $: if (description !== null && !descriptionLoaded) {
+    description.innerText = mix_meta_value.description;
+    descriptionLoaded = true;
+  }
 </script>
 
 {#if $mode == 'edit' && $authorized}
@@ -43,7 +51,7 @@
     <Pencil width={'1rem'} height={'1rem'} color={iconColor} />
   </section>
   <p contenteditable="true" bind:this={description} on:keyup={saveDescription}>
-    
+
   </p>
 {:else}
   <p>

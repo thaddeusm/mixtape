@@ -128,25 +128,13 @@
 </section>
 
 <style>
-  @media screen and (max-width: 1100px) {
-    #header {
-      margin-top: 4rem;
-    }
-  }
-
-  @media screen and (min-width: 1101px) {
-    ul {
-      height: 500px;
-      overflow: scroll;
-    }
-  }
-
   .container {
     height: 100%;
   }
 
-  #header {
+  header {
     text-align: center;
+    margin-top: 4rem;
   }
 
   ul {

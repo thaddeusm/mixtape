@@ -137,7 +137,7 @@
       grid-template-columns: 30% 1fr 4%;
       grid-template-areas: "title . actions";
       text-align: center;
-      background: none!important;
+      background: var(--background)!important;
     }
 
     .inline {

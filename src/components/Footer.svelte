@@ -60,6 +60,10 @@
     jumpToTop();
   }
 
+  function remix() {
+    mode.set('edit');
+  }
+
   async function share() {
     let shareData = {
       title: 'Mixtape',
@@ -82,6 +86,9 @@
         <button class="call-to-action" on:click={changeToEditMode}>
           create a mixtape
         </button>
+        <button class="simple" on:click={remix}>
+          or remix this
+        </button>
       {:else}
         <button class="call-to-action" on:click={share} disabled={$queue.length == 0}>
           share your mixtape
@@ -90,7 +97,7 @@
     </aside>
   {/if}
   {#if $queue.length > 0}
-    <button class="simple icon" on:click={jumpToTop}>
+    <button class="icon simple" on:click={jumpToTop}>
       <UpArrow width={'1.15rem'} height={'1.15rem'} color={'#ffffff'} />
     </button>
   {/if}
@@ -98,14 +105,26 @@
 
 <style>
   @media screen and (max-width: 1100px) {
-    button {
+    .call-to-action {
+      margin: 1.5rem auto;
+    }
+
+    .simple {
+      margin: -1rem auto 1.5rem auto;
+    }
+
+    .icon {
       margin: 1.5rem auto;
     }
   }
 
   @media screen and (min-width: 1101px) {
-    button {
+    .call-to-action {
       margin: 3rem auto;
+    }
+
+    .simple {
+      margin: -2rem auto 3rem auto;
     }
 
     .icon {
@@ -122,5 +141,10 @@
 
   .call-to-action {
     background: var(--background);
+  }
+
+  button {
+    display: block;
+    text-align: center;
   }
 </style>

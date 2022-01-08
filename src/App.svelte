@@ -159,7 +159,7 @@
 <style>
 @media screen and (max-width: 1100px) {
 	.container {
-		grid-template-rows: auto 1fr auto;
+		grid-template-rows: 4rem 1fr auto;
 		grid-template-areas:
 			"header"
 			"main"
@@ -195,7 +195,7 @@
 
 @media screen and (min-width: 1101px) {
 	.container {
-		grid-template-rows: auto 1fr auto;
+		grid-template-rows: 4rem 1fr auto;
 		grid-template-columns: 30% 70%;
 		grid-template-areas:
 			"header header"
@@ -204,7 +204,7 @@
 	}
 
 	.authorized {
-		grid-template-rows: auto 500px;
+		grid-template-rows: 16rem auto;
 		grid-template-columns: 30% 70%;
 		grid-template-areas:
 			"tapePlayer description"
