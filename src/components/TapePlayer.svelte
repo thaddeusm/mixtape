@@ -309,8 +309,8 @@
 
 	@media screen and (min-width: 1501px) {
 		#tape {
-			width: 21rem;
-			height: 14rem;
+			width: 27rem;
+			height: 20rem;
 			grid-template-columns: 1fr 7rem 5rem 7rem 1fr;
 		}
 

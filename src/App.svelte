@@ -196,24 +196,24 @@
 @media screen and (min-width: 1101px) {
 	.container {
 		grid-template-rows: 4rem 1fr auto;
-		grid-template-columns: 30% 70%;
+		grid-template-columns: 50% 50%;
 		grid-template-areas:
 			"header header"
 			"main main"
-			"footer .";
+			". footer";
 	}
 
 	.authorized {
 		grid-template-rows: 16rem auto;
-		grid-template-columns: 30% 70%;
+		grid-template-columns: 50% 50%;
 		grid-template-areas:
 			"tapePlayer description"
-			"playlist description";
+			"tapePlayer playlist";
 	}
 
 	.unauthorized {
 		grid-template-rows: 1fr;
-		grid-template-columns: 30% 70%;
+		grid-template-columns: 50% 50%;
 		grid-template-areas:
 			"tapePlayer authorization";
 		align-items: center;

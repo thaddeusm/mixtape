@@ -61,17 +61,11 @@
 
 <style>
   @media screen and (min-width: 1101px) {
-    p[contenteditable="true"] {
-      border-left: 1rem solid var(--foreground);
-      padding-left: 2rem;
-    }
-
     .icon {
       text-align: center;
     }
 
     p {
-      margin: 0 7%!important;
       max-height: calc(80vh);
       overflow: scroll;
     }
@@ -80,13 +74,9 @@
   p {
     text-align: left;
     line-height: 1.5;
-    margin: 10% 7%;
+    margin: 3rem;
     outline: none;
     white-space: pre-wrap;
-  }
-
-  p[contenteditable="true"] {
-    margin: 3% 7% 15% 7%;
   }
 
   .icon {

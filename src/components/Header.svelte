@@ -134,8 +134,8 @@
   @media screen and (min-width: 1101px) {
     header {
       grid-template-rows: 1fr;
-      grid-template-columns: 30% 1fr 4%;
-      grid-template-areas: "title . actions";
+      grid-template-columns: 50% 1fr 4%;
+      grid-template-areas: ". title actions";
       text-align: center;
       background: var(--background)!important;
     }
@@ -146,6 +146,11 @@
 
     input[type="text"] {
       min-width: 150px;
+    }
+
+    .title {
+      text-align: left;
+      margin-left: 3rem;
     }
   }
 
