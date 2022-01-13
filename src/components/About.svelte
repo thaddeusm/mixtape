@@ -31,8 +31,7 @@
 <style>
   @media screen and (max-width: 1100px) {
     aside {
-      top: 4rem;
-      padding: 5rem 7% 0 7%;
+      padding: 0 7%;
     }
   }
 

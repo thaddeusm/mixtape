@@ -74,11 +74,7 @@
     {:else}
       <aside>
         <button class="simple" on:click={toggleModal}>
-          {#if modalOpen}
-            X
-          {:else}
-            ?
-          {/if}
+          ?
         </button>
       </aside>
     {/if}
@@ -91,9 +87,6 @@
       <About />
     </Modal>
   </div>
-  <div class="inline">
-    <About />
-  </div>
 {/if}
 
 <style>
@@ -102,10 +95,6 @@
       grid-template-columns: 7% 70% 16% 7%;
       grid-template-rows: 1fr;
       grid-template-areas: ". title actions .";
-    }
-
-    .overlay {
-      display: none;
     }
 
     input[type="text"] {
@@ -121,10 +110,6 @@
       grid-template-areas: ". title actions .";
     }
 
-    .overlay {
-      display: none;
-    }
-
     input[type="text"] {
       max-width: 300px;
       min-width: 150px;
@@ -138,10 +123,6 @@
       grid-template-areas: ". title actions";
       text-align: center;
       background: var(--background)!important;
-    }
-
-    .inline {
-      display: none;
     }
 
     input[type="text"] {
