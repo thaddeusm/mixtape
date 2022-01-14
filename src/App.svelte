@@ -204,7 +204,7 @@
 	}
 
 	.authorized {
-		grid-template-rows: 16rem auto;
+		grid-template-rows: 50% 50%;
 		grid-template-columns: 50% 50%;
 		grid-template-areas:
 			"tapePlayer description"
@@ -228,7 +228,7 @@
 	}
 
 	#description {
-		align-self: flex-start;
+		align-self: center;
 	}
 }
 

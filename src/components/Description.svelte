@@ -60,13 +60,19 @@
 {/if}
 
 <style>
+  @media screen and (max-width: 1000px) {
+    .icon {
+      margin-top: 12%;
+    }
+  }
+
   @media screen and (min-width: 1101px) {
     .icon {
       text-align: center;
     }
 
     p {
-      max-height: calc(80vh);
+      max-height: 25vh;
       overflow: scroll;
     }
   }
@@ -81,6 +87,5 @@
 
   .icon {
     text-align: center;
-    margin-top: 12%;
   }
 </style>

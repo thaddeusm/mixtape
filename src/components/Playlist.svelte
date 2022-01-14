@@ -128,9 +128,15 @@
 </section>
 
 <style>
+  @media screen and (max-width: 1100px) {
+    header {
+      margin-top: 4rem;
+    }
+  }
+
   @media screen and (min-width: 1101px) {
-    ul {
-      max-height: 550px;
+    .container {
+      max-height: 35vh;
       overflow: scroll;
     }
   }
@@ -141,7 +147,6 @@
 
   header {
     text-align: center;
-    margin-top: 4rem;
   }
 
   ul {
