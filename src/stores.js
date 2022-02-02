@@ -29,3 +29,5 @@ export const artworkColors = writable({
 });
 
 export const colorPreference = writable('light');
+
+export const loadingTracks = writable(false);

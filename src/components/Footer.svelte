@@ -1,7 +1,7 @@
 <script>
   import UpArrow from './../icons/UpArrow.svelte';
 
-  import { artworkColors, colorPreference, mixMeta, mode, queue, queuePosition, artwork, authorized } from './../stores.js';
+  import { artworkColors, colorPreference, mixMeta, mode, queue, queuePosition, artwork, authorized, loadingTracks } from './../stores.js';
 
   let artwork_colors_value;
   let color_preference_value;
@@ -83,10 +83,10 @@
   {#if $authorized}
     <aside id="cta">
       {#if $mode !== 'edit'}
-        <button class="call-to-action" on:click={changeToEditMode}>
+        <button class="call-to-action" on:click={changeToEditMode} disabled={$loadingTracks}>
           create a mixtape
         </button>
-        <button class="simple" on:click={remix}>
+        <button class="simple" on:click={remix} disabled={$loadingTracks}>
           or remix this
         </button>
       {:else}

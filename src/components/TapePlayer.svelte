@@ -9,7 +9,7 @@
 	import Next from './../icons/Next.svelte';
 	import Previous from './../icons/Previous.svelte';
 
-	import { artwork, artworkColors, music, queue, queuePosition, authorized, playing, mixMeta, mode } from './../stores.js';
+	import { artwork, artworkColors, music, queue, queuePosition, authorized, playing, mixMeta, mode, loadingTracks } from './../stores.js';
 
 	let artwork_value;
 	let artwork_colors_value;
@@ -20,6 +20,7 @@
 	let playing_value;
 	let mix_meta_value;
 	let mode_value;
+	let loading_tracks_value;
 
 	const unsubscribeArtwork = artwork.subscribe(value => {
 		artwork_value = value;
@@ -55,6 +56,10 @@
 
 	const unsubscribeMode = mode.subscribe(value => {
 		mode_value = value;
+	});
+
+	const unsubscribeLoadingTracks = loadingTracks.subscribe(value => {
+		loading_tracks_value = value;
 	});
 
 	export let playable = false;
@@ -129,6 +134,7 @@
 			let params = new URLSearchParams(window.location.search);
 
 			if (params.get('title') && params.get('description') && params.get('songs')) {
+				loadingTracks.set(true);
 				mixMeta.set({
 					title: params.get('title'),
 					description: params.get('description')
@@ -153,6 +159,7 @@
 					await getImageColors();
 				}
 
+				loadingTracks.set(false);
 				duration = await totalDuration();
 			} else {
 				mode.set('edit');
