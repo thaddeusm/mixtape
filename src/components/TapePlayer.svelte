@@ -293,7 +293,7 @@
 </div>
 
 <style>
-	@media screen and (max-width: 1500px) {
+	@media screen and (max-width: 1300px) {
 		#tape {
 			width: 20rem;
 			max-width: 310px;
@@ -307,7 +307,7 @@
 		}
 	}
 
-	@media screen and (min-width: 1501px) {
+	@media screen and (min-width: 1301px) {
 		#tape {
 			width: 31rem;
 			height: 21rem;
