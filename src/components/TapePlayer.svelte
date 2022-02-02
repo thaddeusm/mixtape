@@ -309,14 +309,14 @@
 
 	@media screen and (min-width: 1501px) {
 		#tape {
-			width: 27rem;
-			height: 20rem;
-			grid-template-columns: 1fr 7rem 5rem 7rem 1fr;
+			width: 31rem;
+			height: 21rem;
+			grid-template-columns: 1fr 8rem 6rem 8rem 1fr;
 		}
 
 		#line {
 			height: 405%;
-			margin-top: -45%;
+			margin-top: -40%;
 		}
 	}
 

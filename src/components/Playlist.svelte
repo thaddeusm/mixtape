@@ -158,7 +158,7 @@
 
   li {
     margin: 1.5rem auto;
-    max-width: 450px;
+    max-width: 400px;
     padding: .5rem;
     background: var(--foreground);
     color: var(--text);
@@ -167,7 +167,7 @@
   .queue-item {
     text-align: left;
     display: grid;
-    grid-template-columns: 22% 1fr auto;
+    grid-template-columns: 20% 1fr auto;
     grid-template-rows: 1fr 1fr;
     grid-template-areas:
       "art artist remove"
@@ -177,6 +177,7 @@
 
   .artwork {
     grid-area: art;
+    padding-left: 10%;
   }
 
   li h2 {

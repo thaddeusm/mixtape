@@ -119,7 +119,7 @@
   @media screen and (min-width: 1101px) {
     header {
       grid-template-rows: 1fr;
-      grid-template-columns: 50% 1fr 4%;
+      grid-template-columns: 65% 1fr 4%;
       grid-template-areas: ". title actions";
       text-align: center;
       background: var(--background)!important;

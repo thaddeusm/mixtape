@@ -196,7 +196,7 @@
 @media screen and (min-width: 1101px) {
 	.container {
 		grid-template-rows: 4rem 1fr auto;
-		grid-template-columns: 50% 50%;
+		grid-template-columns: 65% 35%;
 		grid-template-areas:
 			"header header"
 			"main main"
@@ -205,7 +205,7 @@
 
 	.authorized {
 		grid-template-rows: 50% 50%;
-		grid-template-columns: 50% 50%;
+		grid-template-columns: 65% 35%;
 		grid-template-areas:
 			"tapePlayer description"
 			"tapePlayer playlist";
@@ -213,7 +213,7 @@
 
 	.unauthorized {
 		grid-template-rows: 1fr;
-		grid-template-columns: 50% 50%;
+		grid-template-columns: 65% 35%;
 		grid-template-areas:
 			"tapePlayer authorization";
 		align-items: center;
