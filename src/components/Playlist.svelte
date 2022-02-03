@@ -1,11 +1,12 @@
 <script>
-  import { artworkColors, music, queue, queuePosition, colorPreference, mode, playing } from './../stores.js';
+  import { artworkColors, music, queue, queuePosition, colorPreference, mode, playing, loadingTracks } from './../stores.js';
   import { getThumbnail, setArtwork, getImageColors, clearArtwork, resetColors } from './../artwork.js';
 
   import Playlist from './../icons/Playlist.svelte';
   import Remove from './../icons/Remove.svelte';
   import MiniPlayer from './../components/MiniPlayer.svelte';
   import Search from './../components/Search.svelte';
+  import Loading from './../components/Loading.svelte';
 
   let artwork_colors_value;
   let music_value;
@@ -98,7 +99,11 @@
 
 <section class="container" style={listGradient}>
   <header>
-    <Playlist color={iconColor} width={'2rem'} height={'2rem'} />
+    {#if $loadingTracks}
+      <Loading style={''}/>
+    {:else}
+      <Playlist color={iconColor} width={'2rem'} height={'2rem'} />
+    {/if}
   </header>
   <ul>
     {#each $queue as item, index}

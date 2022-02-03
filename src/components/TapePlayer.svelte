@@ -94,12 +94,6 @@
 		duration = totalDuration();
 	}
 
-	$: if (queue_position_value) {
-		setArtwork(queue_value[queue_position_value].attributes.artwork.url).then(() => {
-			getImageColors();
-		});
-	}
-
 	// update query params dynamically
 	$: {
 		if ('URLSearchParams' in window && mode_value == 'edit' && queue_value.length > 0) {
@@ -210,58 +204,55 @@
 	async function play() {
 		loading = true;
 		await music_value.play();
-		playing.set(true);
 		loading = false;
 	}
 
 	async function pause() {
 		loading = true;
 		await music_value.pause();
-		playing.set(false);
 		loading = false;
 	}
 
 	async function stop() {
 		loading = true;
 		await music_value.stop();
-		playing.set(false);
 		loading = false;
 	}
 
 	async function next() {
 		loading = true;
 		await music_value.changeToMediaAtIndex(queue_position_value + 1);
-
-		if (!playing_value) {
-			playing.set(true);
-		}
-
 		loading = false;
-
-		await queuePosition.set(music_value.queue.position);
-
-		await setArtwork(queue_value[queue_position_value].attributes.artwork.url);
-		await getImageColors();
 	}
 
 	async function previous() {
 		loading = true;
 		await music_value.changeToMediaAtIndex(queue_position_value - 1);
-
-		if (!playing_value) {
-			playing.set(true);
-		}
-
 		loading = false;
+	}
 
-		await queuePosition.set(music_value.queue.position);
+	function startListeners() {
+		music_value.addEventListener('playbackStateDidChange', () => {
+			if (music_value.isPlaying) {
+				playing.set(true);
+			} else {
+				playing.set(false);
+			}
+		});
 
-		await setArtwork(queue_value[queue_position_value].attributes.artwork.url);
-		await getImageColors();
+		music_value.addEventListener('queuePositionDidChange', () => {
+			queuePosition.set(music_value.queue.position);
+
+			setArtwork(queue_value[queue_position_value].attributes.artwork.url);
+			getImageColors();
+		});
 	}
 
 	onMount(() => {
-		if (playable) checkQueryParams();
+		if (playable) {
+			checkQueryParams();
+			startListeners();
+		}
 	});
 </script>
 

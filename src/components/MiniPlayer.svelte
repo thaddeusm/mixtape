@@ -4,7 +4,7 @@
   import Loading from './../components/Loading.svelte';
   import Play from './../icons/Play.svelte';
   import Pause from './../icons/Pause.svelte';
-  import { artworkColors, music, queue, queuePosition, authorized, playing } from './../stores.js';
+  import { artworkColors, music, queue, queuePosition, authorized, playing, loadingTracks } from './../stores.js';
   import { setArtwork, getImageColors } from './../artwork';
 
   export let artwork = null;
@@ -91,15 +91,15 @@
     <Loading style={'padding: 1rem;'}/>
   {:else}
     {#if !$playing && !secondary}
-      <button on:click={play} style={artwork ? imageBackgroundOpaque : border}>
+      <button on:click={play} style={artwork ? imageBackgroundOpaque : border} disabled={$loadingTracks}>
         <Play color={actionButtonColor} width={'1.15rem'} height={'1.15rem'} />
       </button>
     {:else if $playing && !secondary}
-      <button on:click={pause} style={artwork ? imageBackgroundOpaque : border}>
+      <button on:click={pause} style={artwork ? imageBackgroundOpaque : border} disabled={$loadingTracks}>
         <Pause color={actionButtonColor} width={'1.15rem'} height={'1.15rem'} />
       </button>
     {:else if secondary}
-      <button on:click={skipTo} style={artwork ? imageBackgroundFull : border}>
+      <button on:click={skipTo} style={artwork ? imageBackgroundFull : border} disabled={$loadingTracks}>
       </button>
     {/if}
   {/if}
