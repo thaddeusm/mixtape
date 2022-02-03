@@ -181,8 +181,6 @@
 		interval = setInterval(() => {
 			currentTime++;
 
-			queuePosition.set(music_value.queue.position);
-
 			if (currentTime >= duration + 2) {
 				pause();
 				reset();
@@ -240,11 +238,15 @@
 			}
 		});
 
-		music_value.addEventListener('queuePositionDidChange', () => {
+		music_value.addEventListener('queuePositionDidChange', async () => {
 			queuePosition.set(music_value.queue.position);
 
-			setArtwork(queue_value[queue_position_value].attributes.artwork.url);
-			getImageColors();
+			await setArtwork(queue_value[queue_position_value].attributes.artwork.url);
+			await getImageColors();
+		});
+
+		music_value.addEventListener('mediaPlaybackError', () => {
+			playing.set(false);
 		});
 	}
 
@@ -252,6 +254,7 @@
 		if (playable) {
 			checkQueryParams();
 			startListeners();
+			console.log(music_value);
 		}
 	});
 </script>
