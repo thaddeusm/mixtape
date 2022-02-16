@@ -41,7 +41,11 @@
           searching = true;
           let res;
           res = await music_value.api.music(`v1/me/library/search?term=${query}&limit=10&types=library-songs`);
-          results = await res.data.results['library-songs'].data;
+          let libraryResults = await res.data;
+
+          if (libraryResults.meta.results.order.length > 0) {
+            results = libraryResults.results['library-songs'].data;
+          }
 
           if (results.length < 10) {
             res = await music_value.api.music(`v1/catalog/us/search?term=${query}&limit=${10 - results.length}&types=songs`);

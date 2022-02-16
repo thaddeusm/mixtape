@@ -254,7 +254,6 @@
 		if (playable) {
 			checkQueryParams();
 			startListeners();
-			console.log(music_value);
 		}
 	});
 </script>
