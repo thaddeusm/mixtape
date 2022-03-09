@@ -85,6 +85,13 @@
 			currentTime = durations.slice(0, queue_position_value).reduce((acc, currentValue) => {
 				return acc + currentValue;
 			});
+
+			if ('ontouchstart' in document.documentElement && navigator.userAgent.match(/Mobi/)) {
+				if (document.hidden) {
+					clearInterval(interval);
+					pause();
+				}
+			}
 		} else {
 			currentTime = 0;
 		}
