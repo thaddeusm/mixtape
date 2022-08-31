@@ -48,7 +48,7 @@
           }
 
           if (results.length < 10) {
-            res = await music_value.api.music(`v1/catalog/us/search?term=${query}&limit=${10 - results.length}&types=songs`);
+            res = await music_value.api.music(`v1/catalog/us/search?term=${query}&limit=${20 - results.length}&types=songs`);
             let catalogResults = await res.data.results.songs.data;
 
             for (let i=0; i<catalogResults.length; i++) {
