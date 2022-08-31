@@ -1,12 +1,13 @@
 <script>
   import UpArrow from './../icons/UpArrow.svelte';
 
-  import { artworkColors, colorPreference, mixMeta, mode, queue, queuePosition, artwork, authorized, loadingTracks } from './../stores.js';
+  import { artworkColors, colorPreference, mixMeta, mode, queue, queuePosition, artwork, authorized, loadingTracks, music } from './../stores.js';
 
   let artwork_colors_value;
   let color_preference_value;
   let mix_meta_value;
   let mode_value;
+  let music_value;
 
   const unsubscribeMixMeta = mixMeta.subscribe(value => {
     mix_meta_value = value;
@@ -23,6 +24,10 @@
   const unsubscribeMode = mode.subscribe(value => {
     mode_value = value;
   });
+
+  const unsubscribeMusic = music.subscribe(value => {
+		music_value = value;
+	});
 
   $: background = `background: ${artwork_colors_value.DarkVibrant}`;
   let underline;
@@ -41,6 +46,7 @@
   }
 
   function changeToEditMode() {
+    music_value.stop();
     mode.set('edit');
     mixMeta.set({
     	'title': 'Mixtape Title',
@@ -61,6 +67,7 @@
   }
 
   function remix() {
+    music_value.stop();
     mode.set('edit');
   }
 
