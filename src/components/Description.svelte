@@ -73,7 +73,7 @@
 
     p {
       max-height: 25vh;
-      overflow: scroll;
+      overflow: auto;
     }
   }
 

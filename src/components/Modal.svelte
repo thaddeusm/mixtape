@@ -36,7 +36,7 @@
   }
 
   aside {
-		overflow: scroll!important;
+		overflow: auto!important;
 		margin: 0;
     background: var(--background);
     padding: 1rem 2rem;

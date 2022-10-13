@@ -142,7 +142,7 @@
   @media screen and (min-width: 1101px) {
     .container {
       max-height: 35vh;
-      overflow: scroll;
+      overflow: auto;
     }
   }
 
