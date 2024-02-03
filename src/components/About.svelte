@@ -6,7 +6,7 @@
     Mixtape is an experimental web interface for <a target="_blank" href="https://www.apple.com/apple-music/">Apple Music</a> that aims to simplify the process of curating and sharing music (with a touch of nostaglia).
   </p>
   <p>
-    It is maintained by <a target="_blank" href="https://thaddeus.education">Thaddeus McCleary</a>.
+    It is maintained by <a target="_blank" href="https://thaddeus-mccleary.vercel.app/">Thaddeus McCleary</a>.
   </p>
   <p>
      <a href="mailto:ibises_segues_06@icloud.com?subject=Mixtape">Questions, comments, or ideas</a>?
