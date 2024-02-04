@@ -41,6 +41,8 @@
     color = `color: ${artwork_colors_value.LightMuted}`;
   }
 
+  let copiedToClipboard = false;
+
   function jumpToTop() {
     window.scrollTo(0, 0);
   }
@@ -82,6 +84,13 @@
       await navigator.share(shareData);
     } catch(err) {
       console.log(err);
+
+      navigator.clipboard.writeText(shareData.url);
+      copiedToClipboard = true;
+
+      setTimeout(function() {
+        copiedToClipboard = false;
+      }, 2000);
     }
   }
 </script>
@@ -97,8 +106,12 @@
           or remix this
         </button>
       {:else}
-        <button class="call-to-action" on:click={share} disabled={$queue.length == 0}>
-          share your mixtape
+        <button class="call-to-action" on:click={share} disabled={$queue.length == 0 || copiedToClipboard}>
+          {#if copiedToClipboard}
+            copied to clipboard
+          {:else}
+            share your mixtape
+          {/if}
         </button>
       {/if}
     </aside>
