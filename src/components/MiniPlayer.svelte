@@ -54,6 +54,8 @@
     loading = true;
     playing.set(true);
 		await music_value.play();
+
+    console.log(queue);
     loading = false;
 	}
 

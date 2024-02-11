@@ -1,6 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import { music, artworkColors, colorPreference, mixMeta, mode, authorized } from './../stores.js';
+  import { getThumbnail, setArtwork } from './../artwork.js';
 
   import Search from './../icons/Search.svelte';
   import Loading from './../components/Loading.svelte';
@@ -58,6 +59,8 @@
             results = results;
           }
 
+          console.log(results);
+
           searching = false;
         }
     }, 750);
@@ -101,6 +104,9 @@
     {/if}
     {#each results as song, index}
       <li class="result">
+        {#await getThumbnail(song.attributes.artwork.url) then src}
+          <img class="result-artwork" src="{src}" alt="{song.attributes.name} artwork" />
+        {/await}
         <h2>{shorten(song.attributes.name)}</h2>
         <h3>{shorten(song.attributes.artistName)}</h3>
         <section class="add-song">
@@ -153,14 +159,12 @@
   .result {
     text-align: left;
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 20% 1fr auto;
     grid-template-rows: 1fr 1fr;
     grid-template-areas:
-      "song add"
-      "artist add";
+      "artwork song add"
+      "artwork artist add";
     align-items: center;
-    border-left: .5rem solid var(--text);
-    padding-left: .5rem;
   }
 
   .add-song {
@@ -173,6 +177,11 @@
 
   .result h3 {
     grid-area: artist;
+  }
+
+  .result-artwork {
+    width: 55px;
+    grid-area: artwork;
   }
 
   .loading-results {
