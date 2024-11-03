@@ -59,11 +59,9 @@
 	}
 
 	async function initalizeMusicKit() {
-		let token = await getToken();
-
 		try {
 			await MusicKit.configure({
-			    developerToken: token,
+			    developerToken: await getToken(),
 					app: {
 			      name: 'Mixtape Message',
 			      build: '0.0.1'
