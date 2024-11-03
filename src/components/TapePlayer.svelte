@@ -210,13 +210,6 @@
 		loading = true;
 		await music_value.play();
 		loading = false;
-
-		try {
-		  const wakeLock = await navigator.wakeLock.request('screen');
-		  console.log('Wake Lock is active');
-		} catch (err) {
-		  console.error(`Wake Lock request failed: ${err.name}, ${err.message}`);
-		}
 	}
 
 	async function pause() {
