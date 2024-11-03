@@ -59,8 +59,6 @@
             results = results;
           }
 
-          console.log(results);
-
           searching = false;
         }
     }, 750);
@@ -89,11 +87,18 @@
   } else {
     iconColor = artwork_colors_value.LightVibrant;
   }
+
+  let borderColor;
+  $: if (color_preference_value == 'light') {
+    borderColor = `border-bottom: 1px solid ${artwork_colors_value.DarkVibrant}`;
+  } else {
+    borderColor = `border-bottom: 1px solid ${artwork_colors_value.LightVibrant}`;
+  }
 </script>
 
 <section>
-  <header>
-    <sub><Search width={'1.2rem'} height={'1.2rem'} color={iconColor} /></sub>
+  <header style={borderColor}>
+    <sub><Search width={'55px'} height={'55px'} color={iconColor} /></sub>
     <input type="text" bind:value={query} placeholder="search by song title">
   </header>
   <ul class="results">
@@ -103,7 +108,7 @@
       </li>
     {/if}
     {#each results as song, index}
-      <li class="result">
+      <li class="result" style={borderColor}>
         {#await getThumbnail(song.attributes.artwork.url) then src}
           <img class="result-artwork" src="{src}" alt="{song.attributes.name} artwork" />
         {/await}
@@ -120,28 +125,29 @@
 <style>
   section {
     background: var(--background);
-    padding: 5% 5% 1% 5%;
+    padding: 5% 3% 1% 3%;
   }
 
   header {
     display: grid;
-    grid-template-columns: 15% 1fr;
+    grid-template-columns: 20% 1fr;
     grid-template-areas:
       "icon input";
     justify-content: center;
+    padding-bottom: 12px;
   }
 
   header sub {
     grid-area: icon;
     display: block;
     align-self: flex-end;
+    margin-left: -10px;
   }
 
   header input[type="text"] {
     grid-area: input;
     font-size: 1.5rem;
     display: block;
-    align-self: flex-start;
   }
 
   .results {
@@ -151,7 +157,6 @@
   }
 
   li {
-    margin: 1.5rem 0;
     background: var(--background);
     color: var(--text);
   }
@@ -165,6 +170,8 @@
       "artwork song add"
       "artwork artist add";
     align-items: center;
+    padding-bottom: 12px;
+    padding-top: 12px;
   }
 
   .add-song {

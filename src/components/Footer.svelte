@@ -163,6 +163,10 @@
     background: var(--background);
   }
 
+  .simple {
+    color: white;
+  }
+
   button {
     display: block;
     text-align: center;

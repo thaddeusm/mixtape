@@ -148,6 +148,8 @@
 
   .container {
     height: 100%;
+    padding-top: 20px;
+    padding-bottom: 20px;
   }
 
   header {
@@ -163,9 +165,7 @@
 
   li {
     margin: 1.5rem auto;
-    max-width: 400px;
-    padding: .5rem;
-    background: var(--foreground);
+    max-width: 416px;
     color: var(--text);
   }
 
@@ -178,6 +178,9 @@
       "art artist remove"
       "art song remove";
     align-items: center;
+    padding: .5rem;
+    background: var(--foreground);
+    max-width: 400px;
   }
 
   .artwork {

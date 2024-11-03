@@ -86,8 +86,8 @@
 		let preference = 'light';
 
 		if (window.matchMedia) {
-	    if(window.matchMedia('(prefers-color-scheme: dark)').matches){
-	      preference = 'dark';
+	    if (window.matchMedia('(prefers-color-scheme: dark)').matches){
+	    	preference = 'dark';
 	    }
 	  }
 
