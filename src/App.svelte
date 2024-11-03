@@ -59,15 +59,21 @@
 	}
 
 	async function initalizeMusicKit() {
-		await MusicKit.configure({
-		    developerToken: await getToken(),
-				app: {
-		      name: 'Mixtape Message',
-		      build: '0.0.1'
-		    }
-		});
+		let token = await getToken();
 
-		music.set(await MusicKit.getInstance());
+		try {
+			await MusicKit.configure({
+			    developerToken: token,
+					app: {
+			      name: 'Mixtape Message',
+			      build: '0.0.1'
+			    }
+			});
+		} catch (err) {
+			console.log(err);
+		}
+
+		music.set(MusicKit.getInstance());
 
 		return true;
 	}
