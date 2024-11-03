@@ -19,7 +19,7 @@
   @media screen and (max-width: 1100px) {
     aside {
       max-height: 60vh
-    };
+    }
   }
 
   .container {
