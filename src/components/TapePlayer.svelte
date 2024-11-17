@@ -265,6 +265,10 @@
 	});
 </script>
 
+<svelte:head>
+	<meta property="og:image" content={artwork_value}>
+</svelte:head>
+
 <div class="container">
 	<section id="tape" style={background}>
 		<aside id="leftSpool" style={leftStyle}>
