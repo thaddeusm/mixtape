@@ -46,6 +46,10 @@
   }
 </script>
 
+<svelte:head>
+  <meta property="og:description" content={description}>
+</svelte:head>
+
 {#if $mode == 'edit' && $authorized}
   <section class="icon">
     <Pencil width={'1rem'} height={'1rem'} color={iconColor} />

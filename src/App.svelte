@@ -114,7 +114,6 @@
 	<meta name="theme-color" content={artwork_colors_value.LightVibrant} media="(prefers-color-scheme: light)">
 	<meta name="theme-color" content={artwork_colors_value.DarkVibrant} media="(prefers-color-scheme: dark)">
 	<meta property="og:title" content={$mixMeta.title}>
-	<meta property="og:description" content="a mixtape powered by Apple Music">
 	<title>
 		{$mixMeta.title}
 	</title>
