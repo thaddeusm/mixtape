@@ -4,6 +4,8 @@
 
   import Playlist from './../icons/Playlist.svelte';
   import Remove from './../icons/Remove.svelte';
+  import UpArrow from './../icons/UpArrow.svelte';
+  import DownArrow from './../icons/DownArrow.svelte';
   import MiniPlayer from './../components/MiniPlayer.svelte';
   import Search from './../components/Search.svelte';
   import Loading from './../components/Loading.svelte';
@@ -68,6 +70,54 @@
     }
   }
 
+  async function moveUp(index) {
+    let newQueue = queue_value;
+    let itemToMove = newQueue[index];
+    newQueue.splice(index, 1);
+    newQueue.splice(index - 1, 0, itemToMove);
+
+    let songIds = newQueue.map(item => item.id);
+
+    await music_value.setQueue({songs: songIds});
+    queue.set(newQueue);
+
+    if (queue_position_value == index) {
+      queuePosition.set(index - 1);
+    }
+
+    if (typeof queue_value[queue_position_value] == 'object') {
+      await setArtwork(queue_value[queue_position_value].attributes.artwork.url);
+      await getImageColors();
+    } else {
+      await clearArtwork();
+      await resetColors();
+    }
+  }
+
+  async function moveDown(index) {
+    let newQueue = queue_value;
+    let itemToMove = newQueue[index];
+    newQueue.splice(index, 1);
+    newQueue.splice(index + 1, 0, itemToMove);
+
+    let songIds = newQueue.map(item => item.id);
+
+    await music_value.setQueue({songs: songIds});
+    queue.set(newQueue);
+
+    if (queue_position_value == index) {
+      queuePosition.set(index + 1);
+    }
+
+    if (typeof queue_value[queue_position_value] == 'object') {
+      await setArtwork(queue_value[queue_position_value].attributes.artwork.url);
+      await getImageColors();
+    } else {
+      await clearArtwork();
+      await resetColors();
+    }
+  }
+
   let background;
 
   $: {
@@ -116,6 +166,18 @@
         <h2>{shorten(item.attributes.name)}</h2>
         <h3>{shorten(item.attributes.artistName)}</h3>
         {#if $mode == 'edit'}
+          <section class="reorder">
+            {#if index > 0}
+              <button class="simple up" on:click={() => {moveUp(index)}} disabled={$playing}>
+                <UpArrow color={iconColor} width={'1.5rem'} height={'1.5rem'} />
+              </button>
+            {/if}
+            {#if index < $queue.length - 1}
+              <button class="simple down" on:click={() => {moveDown(index)}} disabled={$playing}>
+                <DownArrow color={iconColor} width={'1.5rem'} height={'1.5rem'} />
+              </button>
+            {/if}
+          </section>
           <section class="remove">
             <button class="simple" on:click={() => {removeTrack(index)}} disabled={$playing}>
               <Remove color={iconColor} width={'1.5rem'} height={'1.5rem'} />
@@ -172,11 +234,11 @@
   .queue-item {
     text-align: left;
     display: grid;
-    grid-template-columns: 20% 1fr auto;
+    grid-template-columns: 20% 1fr auto 3% auto;
     grid-template-rows: 1fr 1fr;
     grid-template-areas:
-      "art artist remove"
-      "art song remove";
+      "art artist reorder . remove"
+      "art song reorder . remove";
     align-items: center;
     padding: .5rem;
     background: var(--foreground);
@@ -199,5 +261,13 @@
   .remove {
     grid-area: remove;
     padding-right: .5rem;
+  }
+
+  .reorder {
+    grid-area: reorder;
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-gap: 5px;
+    padding-top: 4px;
   }
 </style>
