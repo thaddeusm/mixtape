@@ -181,8 +181,8 @@
             <MiniPlayer artwork={src} secondary={$queuePosition !== index} {index} />
           </section>
         {/await}
-        <h2>{shorten(item.attributes.name)}</h2>
-        <h3>{shorten(item.attributes.artistName)}</h3>
+        <h3>{shorten(item.attributes.name)}</h3>
+        <h4>{shorten(item.attributes.artistName)}</h4>
         {#if $mode == 'edit'}
           <section class="reorder">
             {#if index > 0}
@@ -268,17 +268,16 @@
     padding-left: 10%;
   }
 
-  li h2 {
+  li h3 {
     grid-area: artist;
   }
 
-  li h3 {
+  li h4 {
     grid-area: song;
   }
 
   .remove {
     grid-area: remove;
-    padding-right: .5rem;
   }
 
   .reorder {
