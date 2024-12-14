@@ -155,10 +155,10 @@
 					}
 
 					queue.set(music_value.queue.items);
-
-					await setArtwork(queue_value[0].attributes.artwork.url);
-					await getImageColors();
 				}
+
+				await setArtwork(queue_value[0].attributes.artwork.url);
+				await getImageColors();
 
 				loadingTracks.set(false);
 				duration = await totalDuration();
