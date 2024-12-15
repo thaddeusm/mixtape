@@ -70,13 +70,33 @@
     }
   }
 
+  async function rebuildQueue(songs) {
+    loadingTracks.set(true);
+
+    for (let i=0; i<songs.length; i++) {
+      let obj = {
+        "song": songs[i]
+      };
+
+      if (i == 0) {
+        await music_value.setQueue(obj);
+      } else {
+        await music_value.playLater(obj);
+      }
+    }
+
+    loadingTracks.set(false);
+  }
+
   async function moveUp(index) {
     let newQueue = queue_value;
     let itemToMove = newQueue[index];
     newQueue.splice(index, 1);
     newQueue.splice(index - 1, 0, itemToMove);
 
-    music_value.queue = newQueue;
+    let songIds = newQueue.map(item => item.id);
+
+    await rebuildQueue(songIds);
     queue.set(newQueue);
 
     if (queue_position_value == index) {
@@ -98,7 +118,9 @@
     newQueue.splice(index, 1);
     newQueue.splice(index + 1, 0, itemToMove);
 
-    music_value.queue = newQueue;
+    let songIds = newQueue.map(item => item.id);
+
+    await rebuildQueue(songIds);
     queue.set(newQueue);
 
     if (queue_position_value == index) {
