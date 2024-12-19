@@ -45,7 +45,7 @@
     }
   }
 
-  $: dynamicWidth = `width: ${mix_meta_value.title.length * 11}px`;
+  $: dynamicWidth = `width: ${mix_meta_value.title.length * 14}px`;
 
   let iconColor;
   $: if (color_preference_value == 'light') {

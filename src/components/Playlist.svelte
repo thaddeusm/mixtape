@@ -47,8 +47,16 @@
   });
 
   function shorten(txt) {
-    if (txt.length > 20) {
-      return txt.slice(0, 20) + '...';
+    if (txt.length > 24) {
+      return txt.slice(0, 24) + '...';
+    } else {
+      return txt;
+    }
+  }
+
+  function shortenForEdit(txt) {
+    if (txt.length > 16) {
+      return txt.slice(0, 16) + '...';
     } else {
       return txt;
     }
@@ -181,8 +189,13 @@
             <MiniPlayer artwork={src} secondary={$queuePosition !== index} {index} />
           </section>
         {/await}
-        <h3>{shorten(item.attributes.name)}</h3>
-        <h4>{shorten(item.attributes.artistName)}</h4>
+        {#if $mode == 'edit'}
+          <h3>{shortenForEdit(item.attributes.name)}</h3>
+          <h4>{shortenForEdit(item.attributes.artistName)}</h4>
+        {:else}
+          <h3>{shorten(item.attributes.name)}</h3>
+          <h4>{shorten(item.attributes.artistName)}</h4>
+        {/if}
         {#if $mode == 'edit'}
           <section class="reorder">
             {#if index > 0}
@@ -252,7 +265,7 @@
   .queue-item {
     text-align: left;
     display: grid;
-    grid-template-columns: 20% 1fr auto 3% auto;
+    grid-template-columns: 70px 1fr auto 3% auto;
     grid-template-rows: 1fr 1fr;
     grid-template-areas:
       "art artist reorder . remove"
@@ -261,6 +274,12 @@
     padding: .5rem;
     background: var(--foreground);
     max-width: 400px;
+  }
+
+  @media screen and (max-width: 600px) {
+    .queue-item {
+      padding: .25rem;
+    }
   }
 
   .artwork {
